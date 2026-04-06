@@ -10,6 +10,7 @@ services:
         required: false
     volumes:
       - ..:/workspace:cached
+      - ${REFERENCE_APP_PATH:-/dev/null}:/reference-app:ro,cached
     mem_limit: 16g
     logging:
       driver: 'json-file'
@@ -21,3 +22,4 @@ services:
     command: sleep infinity
     environment:
       - WORKSPACE_FOLDER=/workspace
+      - LINEAR_API_KEY=${LINEAR_API_KEY:-}

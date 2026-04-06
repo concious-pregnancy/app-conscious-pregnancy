@@ -1,15 +1,29 @@
-.process {}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 6rem;
-  align-items: start;
+.process {
+  background: var(--white);
 }
 
-.left {
-  position: sticky;
-  top: 8rem;
+.header {
+  margin-bottom: var(--s8);
+}
+
+.display {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 10vw, 8.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--sage);
+  margin-bottom: var(--s4);
+}
+
+.intro {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  max-width: 44ch;
 }
 
 .steps {
@@ -19,88 +33,62 @@
 }
 
 .step {
-  position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 1.5rem;
-  padding-bottom: 2.5rem;
+  grid-template-columns: 80px 1fr;
+  gap: 2rem;
+  padding: var(--s6) 0;
+  border-top: 1px solid var(--border);
 }
 
 .step:last-child {
-  padding-bottom: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .stepNum {
-  font-family: var(--font-serif);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--sage);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: var(--white);
-  position: relative;
-  z-index: 1;
-  margin-top: 0.1rem;
+  gap: 0.75rem;
+}
+
+.stepNum span {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--sage);
+}
+
+.stepLine {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
 }
 
 .stepContent {
-  padding-top: 0.1rem;
+  max-width: 520px;
 }
 
 .stepTitle {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
   font-weight: 400;
-  color: var(--dark);
-  margin-bottom: 0.5rem;
-  line-height: 1.3;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--sage);
+  margin-bottom: 1rem;
 }
 
 .stepBody {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--muted);
-  line-height: 1.8;
-}
-
-/* Vertical connector line */
-.connector {
-  position: absolute;
-  left: 19px;
-  top: 42px;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--border), transparent);
-}
-
-@media (max-width: 1199px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-  .left {
-    position: static;
-  }
+  line-height: 1.7;
+  max-width: 46ch;
 }
 
 @media (max-width: 809px) {
   .step {
-    grid-template-columns: 44px 1fr;
+    grid-template-columns: 50px 1fr;
     gap: 1rem;
-  }
-  .stepNum {
-    width: 34px;
-    height: 34px;
-    font-size: 0.75rem;
-  }
-  .connector {
-    left: 16px;
-    top: 36px;
   }
 }

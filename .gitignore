@@ -44,6 +44,9 @@ next-env.d.ts
 
 # local deploy artifact
 /frontend-assets/
+/frontend/artifacts/
+/frontend/playwright-report/
+/frontend/test-results/
 
 # Bun
 bun-debug.log*

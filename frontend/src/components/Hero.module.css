@@ -1,139 +1,97 @@
 .hero {
   position: relative;
-  min-height: 100dvh;
-  background: var(--dark);
+  height: 100dvh;
+  min-height: 600px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   overflow: hidden;
+  background: var(--dark);
 }
 
-/* Background image — set via a real photo when available */
-.hero::before {
-  content: '';
+.background {
   position: absolute;
   inset: 0;
-  background-image: url('/hero-pic.webp');
+  background-image: url('/headshots/DSC04448.JPG');
   background-size: cover;
-  background-position: center 20%;
-  opacity: 0.35;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  will-change: transform;
+  transform-origin: center top;
 }
 
 .overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(46, 50, 49, 0.85) 0%,
-    rgba(46, 50, 49, 0.5) 50%,
-    rgba(127, 166, 155, 0.15) 100%
+    to top,
+    rgba(46, 50, 49, 0.72) 0%,
+    rgba(46, 50, 49, 0.25) 40%,
+    rgba(46, 50, 49, 0.08) 70%,
+    transparent 100%
   );
 }
 
 .inner {
   position: relative;
   z-index: 1;
-  padding-top: 8rem;
-  padding-bottom: 6rem;
-}
-
-.content {
-  max-width: 680px;
-}
-
-.eyebrow {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--sage-light);
-  margin-bottom: 1.5rem;
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--pad-x) 5rem;
 }
 
 .heading {
   font-family: var(--font-serif);
-  /* ClearPath uses 152px at desktop — match the scale */
-  font-size: clamp(3.75rem, 10vw, 9.5rem);
+  font-size: clamp(3.5rem, 9.5vw, 8.5rem);
   font-weight: 400;
-  line-height: 0.84;
-  letter-spacing: -0.05em;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
   color: var(--white);
-  margin-bottom: 2rem;
-}
-
-.heading em {
-  font-style: italic;
-  color: var(--sage-light);
-  display: block;
+  margin-bottom: 1.5rem;
 }
 
 .sub {
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-size: clamp(0.95rem, 1.25vw, 1rem);
   color: rgba(255, 255, 255, 0.65);
   max-width: 50ch;
-  line-height: 1.8;
-  margin-bottom: 2.5rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
+.cta {
+  font-size: 0.75rem !important;
 }
 
-.badges {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.badgeDot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--sage);
-  flex-shrink: 0;
-}
-
-/* Scroll indicator */
 .scrollHint {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1;
 }
 
 .scrollHint span {
   display: block;
   width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
+  height: 42px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent);
+  animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.3; transform: scaleY(1); }
-  50% { opacity: 0.8; transform: scaleY(1.1); }
+  50% { opacity: 0.7; transform: scaleY(1.15); }
 }
 
 @media (max-width: 809px) {
-  .heading {
-    font-size: clamp(2.75rem, 10vw, 4rem);
+  .hero {
+    min-height: 100dvh;
   }
-  .actions {
-    flex-direction: column;
-    align-items: flex-start;
+  .heading {
+    font-size: clamp(2.5rem, 11vw, 4rem);
+  }
+  .inner {
+    padding-bottom: 4rem;
   }
 }

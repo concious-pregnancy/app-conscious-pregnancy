@@ -4,21 +4,22 @@
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1.25rem var(--pad-x);
+  padding: 1.15rem var(--pad-x);
   display: flex;
   align-items: center;
   gap: 2rem;
   transition: background 0.35s, box-shadow 0.35s;
 }
 
-/* Transparent over dark hero — links are white */
-.nav .logo {
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
+.logo {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
   font-weight: 400;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
   color: var(--white);
   margin-right: auto;
+  transition: color 0.3s;
 }
 
 .links {
@@ -28,11 +29,11 @@
 }
 
 .links a {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.7);
   transition: color 0.2s;
 }
 
@@ -41,14 +42,34 @@
 }
 
 .cta {
-  font-size: 0.72rem !important;
-  padding: 0.65rem 1.4rem !important;
+  font-size: 0.7rem !important;
+  padding: 0.55rem 1.5rem 0.55rem 1rem !important;
 }
 
-/* After scrolling — light background, dark text */
+.menuBtn {
+  display: none;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, border-color 0.2s, color 0.3s;
+  cursor: pointer;
+}
+
+.menuBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
 .scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--border);
 }
 
@@ -64,11 +85,43 @@
   color: var(--dark);
 }
 
+.scrolled .menuBtn {
+  color: var(--dark);
+  border-color: var(--border);
+  background: rgba(0, 0, 0, 0.03);
+}
+
 @media (max-width: 809px) {
   .links {
     display: none;
-  }
-  .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
     padding: 1rem var(--pad-x);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .linksOpen {
+    display: flex;
+  }
+
+  .linksOpen a {
+    color: var(--dark) !important;
+    padding: 0.75rem 0;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .menuBtn {
+    display: block;
   }
 }
