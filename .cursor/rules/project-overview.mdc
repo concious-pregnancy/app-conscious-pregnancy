@@ -1,0 +1,89 @@
+---
+description: High-level overview of the Conscious Pregnancy project architecture and technology stack.
+globs:
+alwaysApply: true
+---
+
+# IMPORTANT
+
+DO NOT AGREE WITH EVERYTHING I SAY OR ASK FOR IF YOU FIND ISSUES IN MY REQUESTS OR YOU THINK MY DESIGNS OR DECISIONS ARE FLAWED. OFFER ALTERNATIVE BETTER OPTIONS.
+
+# Project: Conscious Pregnancy
+
+A resource and content platform for mindful pregnancy and birth preparation, grounded in functional medicine principles. Helps women approach pregnancy as a whole-body, whole-life experience: optimizing nutrition, reducing toxic load, supporting the nervous system, and preparing intentionally for birth and the postpartum period.
+
+## Brand Identity
+
+- **Name**: Conscious Pregnancy
+- **Positioning**: Functional medicine-informed pregnancy guidance for health-conscious women who want root-cause understanding, not symptom management
+- **Archetype**: The Knowledgeable Friend: evidence-informed, warm, specific, and never fear-based
+- **Audience**: Women who are pregnant or trying to conceive, already follow integrative health content, and want to make informed decisions as intelligent adults
+
+## Brand Voice
+
+- Warm and knowledgeable: write like a trusted practitioner who also knows the research
+- Specific and evidence-informed: cite mechanisms when relevant ("choline is needed for fetal brain development and most prenatal vitamins don't include enough")
+- Never fear-based: inform and empower, do not create anxiety
+- Avoid vague wellness language: "nourish your body," "listen to your intuition," "honor your journey" are not acceptable
+- Speak to readers as capable adults making decisions for themselves and their families
+
+## Safety Rule (CRITICAL)
+
+**NEVER produce individualized medical advice or recommend specific supplement doses as personal prescriptions.** Frame all health content as general information and encourage readers to work with their care provider. Do not disparage conventional OB care. Be accurate about what is evidence-based vs. emerging or practitioner-consensus.
+
+## Core Topic Pillars
+
+| Pillar | Key Topics |
+| --- | --- |
+| Prenatal nutrition | Methylfolate (not synthetic folic acid), choline, DHA, iron, iodine, D3/K2, magnesium, zinc, B12 |
+| Gut health | Maternal microbiome, probiotic strains, GBS prevention |
+| Blood sugar | Gestational diabetes prevention, low-glycemic diet, CGM awareness |
+| Detox and toxic load | Endocrine disruptors, heavy metals, pesticide residue, personal care ingredients |
+| Thyroid and hormones | Subclinical hypothyroidism, TSH targets in pregnancy, iodine, selenium, Hashimoto's |
+| Nervous system | Stress hormones and fetal development, somatic practices, PMADs, sleep |
+| Movement | Exercise in pregnancy, pelvic floor, birth preparation |
+| Birth preparation | Physiological birth, informed consent, hypnobirthing, Spinning Babies |
+| Postpartum | Nutrient repletion, galactagogues, pelvic floor recovery, postpartum thyroiditis, newborn decisions |
+
+## System Architecture
+
+```
+┌──────────────┐
+│   BROWSER    │
+└──────┬───────┘
+       │
+       ▼
+┌──────────────────────────────────────────┐
+│          NEXT.JS APP (:3000)              │
+│                                          │
+│  ┌─────────────┐  ┌──────────────────┐  │
+│  │  App Router  │  │   API Routes     │  │
+│  │  (pages)     │  │   /api/*         │  │
+│  └─────────────┘  └──────────────────┘  │
+│                                          │
+│  ┌─────────────┐                        │
+│  │  Components  │                        │
+│  │  (React 19)  │                        │
+│  └─────────────┘                        │
+└──────────────────────────────────────────┘
+```
+
+## Technology Stack
+
+| Category | Technology | Notes |
+| --- | --- | --- |
+| **Runtime** | Bun | JavaScript/TypeScript runtime |
+| **Framework** | Next.js 16 | App Router, Turbopack |
+| **UI Library** | React 19 | Server and Client Components |
+| **Language** | TypeScript 5.8 | tsgo (TypeScript native preview) |
+| **Styling** | Tailwind CSS | Utility-first CSS |
+| **Animation** | GSAP + Lenis | Scroll animations, smooth scroll |
+| **Linting** | oxlint | Fast linter |
+| **Formatting** | oxfmt | Fast formatter |
+| **Type checking** | tsgo | TypeScript native preview compiler |
+| **Testing** | Bun test runner + Playwright | Unit/integration + E2E |
+| **Dead code** | Knip | Unused exports/imports detection |
+
+## Package Management
+
+- **Use `bun`** for all dependency management. Do NOT use `npm`, `pnpm`, or `yarn`.

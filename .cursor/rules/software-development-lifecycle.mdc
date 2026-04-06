@@ -1,0 +1,199 @@
+---
+description: Step-by-step workflow for planning, implementing, testing, and submitting code changes via pull requests.
+globs:
+alwaysApply: true
+---
+
+# Software Development Lifecycle (SDLC)
+
+Follow this lifecycle for all development work in the Conscious Pregnancy project.
+
+## 0. Before Starting ANY Work (CRITICAL)
+
+**You MUST complete these steps before planning or writing code:**
+
+1. **Delegate to the planner subagent** (`.cursor/agents/planner.md`) - For any non-trivial task, use the planner subagent to investigate and create an implementation plan
+2. **Check for existing Linear ticket** - Ask the user: "Is there an existing Linear ticket for this work?"
+3. **Understand the full workflow** - Your plan must incorporate this entire SDLC
+
+### Ticket Check
+
+Before creating a new ticket:
+
+- **If ticket EXISTS**: Get the ticket ID and reference it throughout your work
+- **If NO ticket**: Create one following the Linear Ticket Skill (`.cursor/skills/linear-ticket/SKILL.md`)
+- **If UNSURE**: Ask the user to clarify before creating a duplicate
+
+### Why Tickets Matter
+
+- Enables traceability: Sentry error -> ticket -> PR -> code
+- Allows team visibility into work in progress
+- Provides context for code reviewers
+
+## 1. Planning & Research
+
+Before writing any code, thoroughly plan your work:
+
+- **Use the planner subagent** (`.cursor/agents/planner.md`) for deep investigation and plan creation
+- **Use all available tools** to research, gather information, and deeply understand the problem
+- **Create a detailed plan** that incorporates this SDLC
+
+### Key Investigation Tools
+
+| Tool | Purpose |
+| --- | --- |
+| `gh` (GitHub CLI) | Create pull requests, read prior pull requests, review PR history, check CI status |
+| Linear MCP | Create/update tickets, search issues, track work |
+| `sentry-cli` | Find production errors, investigate exceptions |
+
+## 2. Test-Driven Development (TDD)
+
+Follow TDD best practices, especially the **Red-Green-Refactor** loop:
+
+1. **Red**: Write a failing test that defines the expected behavior
+2. **Green**: Write the minimum code necessary to make the test pass
+3. **Refactor**: Clean up the code while keeping tests green
+
+### Always Observe Your Code Running
+
+**Every line of code you write should be observed executing** - during TDD, in the browser, error states, and logs. Exceptions: obscure edge cases for type checker satisfaction.
+
+**Trigger all code paths:**
+
+- **Conditionals**: Find ways to make the app enter each branch (if/else, switch cases)
+- **Error handlers**: Trigger the error state to verify catch blocks execute correctly
+- **Edge cases**: Test boundary conditions and empty states
+
+If you write a conditional or error handler but never observe it executing, you don't know if it works. Tests passing is not enough - see the actual behavior in the running application.
+
+### Verify Tests Actually Fail
+
+After your test passes, verify it can fail:
+1. Modify source code to break it
+2. Confirm test fails as expected
+3. Undo the change
+
+Tests that always pass are worthless.
+
+### Test Coverage
+
+Aim for **90%+ test coverage**. The only code that should remain untested is:
+
+- Obscure edge cases that may never realistically happen
+- Code written purely to satisfy the type checker
+
+### Test Types
+
+- **Unit tests & Integration tests**: Use TDD for these tests during development (Bun test runner)
+- **End-to-end tests**: Create an e2e test for new features or bug fixes to verify the full user flow (Playwright)
+
+## 3. Browser Testing for UI Changes
+
+If your work impacts the user-facing website, use a browser to verify functionality and check for regressions.
+
+### Starting the Development Environment
+
+```zsh
+# Single terminal - start the Next.js dev server
+cd frontend && bun dev
+```
+
+The app will be available at `http://localhost:3000`.
+
+### Important Notes
+
+- **Turbopack enabled** - fast hot module replacement for instant feedback
+- **Logs go to stdout** - monitor the terminal for errors and clues
+- **Auto-restart** - the dev server reloads on file changes automatically
+
+## 4. Code Quality Checks
+
+All code changes must pass these checks before proceeding.
+
+From the `frontend/` directory:
+
+```zsh
+# Run ALL checks before committing (in this order):
+bun run format:fix    # Formatting auto-fix (oxfmt) -- ALWAYS RUN FIRST
+bun run lint:fix      # Linting with auto-fix (oxlint)
+bun run knip          # Dead code / unused exports check
+bun run typecheck     # Type checking (tsgo)
+bun test              # Unit tests (Bun test runner)
+```
+
+**NEVER skip `bun run format:fix`** -- it must run before every commit. Formatting failures will break CI.
+
+**Do NOT run `bun run build` locally** -- it is slow and redundant. The build is verified by CI after pushing. Monitor CI checks on the PR instead.
+
+## 5. Pull Request & CI Process
+
+Once your task is complete locally and all checks pass:
+
+### Creating the Pull Request
+
+Follow the **Pull Request Skill** (`.cursor/skills/pull-request/SKILL.md`) for:
+
+1. **Branch naming** - Include ticket ID: `cp-123-brief-description`
+2. **Commit messages** - Reference ticket ID: `fix: description [CP-123]`
+3. **PR description** - Must include:
+   - Problem description
+   - **Linear ticket link** (for tracking)
+   - **Sentry issue links** (if applicable, for context)
+   - Root cause analysis
+   - Solution explanation
+   - Testing instructions
+
+### Cross-Linking Requirements
+
+Every PR must link to:
+
+- Linear ticket (for tracking)
+- Sentry issues (for context on production errors)
+
+After creating the PR, add a comment to the Linear ticket with the PR URL.
+
+### Waiting for CI (CRITICAL)
+
+Your task is **NOT complete** until all CI checks pass.
+
+**Use sleep commands to wait for CI:**
+
+```bash
+# Wait 3 minutes, then check status
+sleep 180 && gh pr checks
+
+# If checks still running, wait another 3 minutes
+sleep 180 && gh pr checks
+```
+
+Repeat the wait cycle until all checks pass or fail.
+
+### CI Checks
+
+The CI pipeline typically runs:
+
+1. Lint
+2. Type check (tsgo)
+3. Unit tests (Bun)
+4. Build (Next.js)
+
+### Handling Cursor Bug Bot (CRITICAL)
+
+The Cursor bug bot automatically reviews PRs and leaves comments. You MUST:
+
+1. **Read ALL bug bot comments** - Don't skip any
+2. **Address EVERY issue raised** - Fix the code or explain why it's not needed
+3. **Push fixes** - Each fix triggers a new CI run
+4. **Wait for CI again** - Use the sleep method above
+5. **Repeat until clean** - No bug bot issues should remain
+
+### Completion Criteria
+
+Work is **ONLY complete** when ALL of these are true:
+
+- [ ] Linear ticket exists and is linked in PR
+- [ ] All CI checks are green
+- [ ] No unresolved Cursor bug bot comments
+- [ ] No outstanding PR review comments
+- [ ] PR description follows the Pull Request Skill
+- [ ] Linear ticket has a comment with PR URL
