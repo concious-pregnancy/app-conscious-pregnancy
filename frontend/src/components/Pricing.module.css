@@ -1,0 +1,165 @@
+.pricing {}
+
+.header {
+  max-width: 640px;
+  margin-bottom: 4rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  position: relative;
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.card:hover {
+  box-shadow: 0 16px 48px rgba(46, 50, 49, 0.1);
+  transform: translateY(-3px);
+}
+
+.featured {
+  border-color: var(--sage);
+  background: var(--dark);
+  color: var(--white);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--sage);
+  color: var(--white);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.planName {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.featured .planName {
+  color: var(--sage-light);
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.price {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--dark);
+}
+
+.featured .price {
+  color: var(--white);
+}
+
+.duration {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.featured .duration {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.cardDesc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.featured .cardDesc {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.featured .feature {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.feature svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--sage);
+}
+
+.featured .feature svg {
+  color: var(--sage-light);
+}
+
+.cardCta {
+  width: 100%;
+  justify-content: center;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+  max-width: 52ch;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+@media (max-width: 1199px) {
+  .cards {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 809px) {
+  .card {
+    padding: 2rem;
+  }
+}

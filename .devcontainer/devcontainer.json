@@ -1,0 +1,79 @@
+{
+  "name": "Conscious Pregnancy",
+  "service": "devcontainer",
+  "dockerComposeFile": "compose.yml",
+  "workspaceFolder": "/workspace",
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js Dev Server",
+      "onAutoForward": "notify"
+    },
+    "9323": {
+      "label": "Playwright UI",
+      "onAutoForward": "silent"
+    }
+  },
+  "updateContentCommand": {
+    "install dependencies": [
+      "/bin/bash",
+      "-c",
+      "cd /workspace/frontend && /root/.bun/bin/bun install"
+    ],
+    "make shell scripts executable": [
+      "/bin/bash",
+      "-c",
+      "chmod +x /workspace/scripts/*.sh 2>/dev/null || true"
+    ]
+  },
+  "postCreateCommand": "/root/.bun/bin/bun --version && cd /workspace/frontend && /root/.bun/bin/bunx oxlint --version || echo 'oxlint installed via package.json'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "webpro.knip",
+        "oxc.oxc-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-playwright.playwright",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "editor.defaultFormatter": "oxc.oxc-vscode",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "[javascript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode",
+          "editor.formatOnSave": true
+        },
+        "eslint.enable": false,
+        "knip.configFilePath": "frontend/knip.json",
+        "knip.enabled": true,
+        "knip.requireConfig": false,
+        "oxc.enable": true,
+        "oxc.path.node": "node",
+        "oxc.configPath": "frontend/oxlint.json",
+        "oxc.tsConfigPath": "frontend/tsconfig.json",
+        "oxc.path.oxlint": "frontend/node_modules/oxlint/bin/oxlint",
+        "oxc.path.oxfmt": "frontend/node_modules/oxfmt/bin/oxfmt",
+        "oxc.fmt.configPath": "frontend/.oxfmtrc.json",
+        // TypeScript Configuration
+        "typescript.tsdk": "${workspaceFolder}/frontend/node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true
+      }
+    }
+  },
+  "postStartCommand": "echo 'Dev container ready. Run: bun dev'"
+}

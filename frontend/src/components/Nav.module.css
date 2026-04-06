@@ -1,0 +1,74 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.25rem var(--pad-x);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  transition: background 0.35s, box-shadow 0.35s;
+}
+
+/* Transparent over dark hero — links are white */
+.nav .logo {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  margin-right: auto;
+}
+
+.links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.links a {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s;
+}
+
+.links a:hover {
+  color: var(--white);
+}
+
+.cta {
+  font-size: 0.72rem !important;
+  padding: 0.65rem 1.4rem !important;
+}
+
+/* After scrolling — light background, dark text */
+.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+.scrolled .logo {
+  color: var(--dark);
+}
+
+.scrolled .links a {
+  color: var(--muted);
+}
+
+.scrolled .links a:hover {
+  color: var(--dark);
+}
+
+@media (max-width: 809px) {
+  .links {
+    display: none;
+  }
+  .nav {
+    padding: 1rem var(--pad-x);
+  }
+}

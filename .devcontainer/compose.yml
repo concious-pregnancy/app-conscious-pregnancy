@@ -1,0 +1,23 @@
+name: 'conscious-pregnancy'
+
+services:
+  devcontainer:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ..:/workspace:cached
+    mem_limit: 16g
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10k'
+        max-file: '10'
+    ports:
+      - '3000:3000'
+    command: sleep infinity
+    environment:
+      - WORKSPACE_FOLDER=/workspace
