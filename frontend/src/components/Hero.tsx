@@ -1,4 +1,4 @@
-import styles from './Hero.module.css'
+import styles from "./Hero.module.css";
 
 export default function Hero() {
   return (
@@ -8,12 +8,14 @@ export default function Hero() {
 
       <div className={styles.inner}>
         <h1 data-reveal className={styles.heading}>
-          Before the Baby,<br /><em>There Is You.</em>
+          Before the Baby,
+          <br />
+          <em>There Is You.</em>
         </h1>
         <p data-reveal className={styles.sub}>
-          A whole-body, whole-partnership approach to preparing for one of the
-          most profound experiences of your life. What you bring into conception
-          shapes the world your child enters.
+          A whole-body, whole-partnership approach to preparing for one of the most profound
+          experiences of your life. What you bring into conception shapes the world your child
+          enters.
         </p>
         <a data-reveal href="#contact" className={`btn btn-ghost-light ${styles.cta}`}>
           <span className="btn-dot" />
@@ -25,5 +27,5 @@ export default function Hero() {
         <span />
       </div>
     </section>
-  )
+  );
 }

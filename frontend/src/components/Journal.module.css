@@ -90,7 +90,9 @@
   letter-spacing: 0.06em;
   color: var(--sage);
   margin-top: 0.25rem;
-  transition: gap 0.2s, color 0.2s;
+  transition:
+    gap 0.2s,
+    color 0.2s;
 }
 
 .readMore:hover {

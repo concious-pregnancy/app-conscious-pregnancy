@@ -1,33 +1,37 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import styles from './Nav.module.css'
+import { useState, useEffect } from "react";
+import styles from "./Nav.module.css";
 
 const links = [
-  { href: '#about', label: 'The Reframe' },
-  { href: '#services', label: 'Modalities' },
-  { href: '#process', label: 'How It Works' },
-  { href: '#faq', label: 'FAQ' },
-]
+  { href: "#about", label: "The Reframe" },
+  { href: "#services", label: "Modalities" },
+  { href: "#process", label: "How It Works" },
+  { href: "#faq", label: "FAQ" },
+];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
-      <a href="#" className={styles.logo}>Conscious Pregnancy</a>
+    <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
+      <a href="#" className={styles.logo}>
+        Conscious Pregnancy
+      </a>
 
-      <ul className={`${styles.links} ${menuOpen ? styles.linksOpen : ''}`}>
+      <ul className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}>
         {links.map((l) => (
           <li key={l.href}>
-            <a href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>
+            <a href={l.href} onClick={() => setMenuOpen(false)}>
+              {l.label}
+            </a>
           </li>
         ))}
       </ul>
@@ -46,5 +50,5 @@ export default function Nav() {
         Menu
       </button>
     </nav>
-  )
+  );
 }

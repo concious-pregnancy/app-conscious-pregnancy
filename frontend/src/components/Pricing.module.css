@@ -31,7 +31,9 @@
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
-  transition: box-shadow 0.25s, transform 0.25s;
+  transition:
+    box-shadow 0.25s,
+    transform 0.25s;
 }
 
 .card:hover {

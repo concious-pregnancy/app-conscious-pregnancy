@@ -9,7 +9,7 @@
 .bg {
   position: absolute;
   inset: 0;
-  background-image: url('/headshots/DSC04000.JPG');
+  background-image: url("/headshots/DSC04000.JPG");
   background-size: cover;
   background-position: center 36%;
   opacity: 0.08;
@@ -97,7 +97,9 @@
   color: var(--white);
   font-family: var(--font-sans);
   font-size: 0.92rem;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .input::placeholder,
@@ -133,7 +135,10 @@
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
 }
 
 .option:hover {

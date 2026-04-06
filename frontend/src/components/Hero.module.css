@@ -12,7 +12,7 @@
 .background {
   position: absolute;
   inset: 0;
-  background-image: url('/headshots/DSC04448.JPG');
+  background-image: url("/headshots/DSC04448.JPG");
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
@@ -80,8 +80,15 @@
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(1); }
-  50% { opacity: 0.7; transform: scaleY(1.15); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scaleY(1.15);
+  }
 }
 
 @media (max-width: 809px) {

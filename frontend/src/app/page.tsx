@@ -1,19 +1,19 @@
-import Nav from '@/components/Nav'
-import Hero from '@/components/Hero'
-import Balance from '@/components/Balance'
-import Services from '@/components/Services'
-import Philosophy from '@/components/Philosophy'
-import Story from '@/components/Story'
-import Process from '@/components/Process'
-import CTA from '@/components/CTA'
-import Pricing from '@/components/Pricing'
-import Credentials from '@/components/Credentials'
-import Quote from '@/components/Quote'
-import Journal from '@/components/Journal'
-import Stats from '@/components/Stats'
-import FAQ from '@/components/FAQ'
-import Contact from '@/components/Contact'
-import Footer from '@/components/Footer'
+import Nav from "@/components/Nav";
+import Hero from "@/components/Hero";
+import Balance from "@/components/Balance";
+import Services from "@/components/Services";
+import Philosophy from "@/components/Philosophy";
+import Story from "@/components/Story";
+import Process from "@/components/Process";
+import CTA from "@/components/CTA";
+import Pricing from "@/components/Pricing";
+import Credentials from "@/components/Credentials";
+import Quote from "@/components/Quote";
+import Journal from "@/components/Journal";
+import Stats from "@/components/Stats";
+import FAQ from "@/components/FAQ";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -49,5 +49,5 @@ export default function Home() {
       </main>
       <Footer />
     </>
-  )
+  );
 }

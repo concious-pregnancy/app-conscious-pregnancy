@@ -1,19 +1,21 @@
-import styles from './CTA.module.css'
+import styles from "./CTA.module.css";
 
 const images = [
-  '/hero-pic.webp',
-  '/hero-pic.webp',
-  '/hero-pic.webp',
-  '/hero-pic.webp',
-  '/hero-pic.webp',
-]
+  "/hero-pic.webp",
+  "/hero-pic.webp",
+  "/hero-pic.webp",
+  "/hero-pic.webp",
+  "/hero-pic.webp",
+];
 
 export default function CTA() {
   return (
     <section data-section="cta" className={styles.cta}>
       <div className="container">
         <h2 data-reveal className={styles.heading}>
-          Ready to prepare<br /><em>with intention?</em>
+          Ready to prepare
+          <br />
+          <em>with intention?</em>
         </h2>
         <div className={styles.row} data-stagger>
           {images.map((src, i) => (
@@ -28,5 +30,5 @@ export default function CTA() {
         </a>
       </div>
     </section>
-  )
+  );
 }
