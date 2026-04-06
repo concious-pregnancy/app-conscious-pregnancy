@@ -6,102 +6,173 @@
   overflow: hidden;
 }
 
-.contact::before {
-  content: '';
+.bg {
   position: absolute;
   inset: 0;
-  background-image: url('/hero-pic.webp');
+  background-image: url("/headshots/DSC04000.JPG");
   background-size: cover;
-  background-position: center 30%;
-  opacity: 0.12;
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(127, 166, 155, 0.15) 0%, transparent 60%);
+  background-position: center 36%;
+  opacity: 0.08;
 }
 
 .inner {
   position: relative;
   z-index: 1;
-  max-width: 720px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.left {
+  position: sticky;
+  top: 8rem;
 }
 
 .label {
   font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--sage-light);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--s3);
 }
 
 .heading {
   font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
   color: var(--white);
-  margin-bottom: 1.5rem;
-}
-
-.heading em {
-  font-style: italic;
-  color: var(--sage-light);
-  display: block;
+  margin-bottom: var(--s3);
 }
 
 .sub {
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.55);
-  max-width: 46ch;
-  line-height: 1.8;
-  margin-bottom: 2.5rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 40ch;
+  line-height: 1.7;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 4rem;
-}
-
-.details {
-  display: flex;
-  gap: 3rem;
-  flex-wrap: wrap;
-  padding-top: 3rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.detail {
+.form {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 1.25rem;
 }
 
-.detailLabel {
-  font-size: 0.65rem;
+.form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fieldLabel {
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.55);
   text-transform: uppercase;
-  color: var(--sage);
 }
 
-.detail span:last-child {
-  font-size: 0.9rem;
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--sage);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
 }
 
-@media (max-width: 809px) {
-  .actions {
-    flex-direction: column;
-    align-items: flex-start;
+.option:hover {
+  border-color: var(--sage);
+  color: var(--white);
+}
+
+.option input {
+  display: none;
+}
+
+.option:has(input:checked) {
+  background: rgba(127, 166, 155, 0.2);
+  border-color: var(--sage);
+  color: var(--white);
+}
+
+.submit {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 1199px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
-  .details {
-    gap: 2rem;
+  .left {
+    position: static;
+  }
+}
+
+@media (max-width: 499px) {
+  .row {
+    grid-template-columns: 1fr;
   }
 }

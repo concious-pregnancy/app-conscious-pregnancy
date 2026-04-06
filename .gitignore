@@ -30,6 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# claude
+.claude/
+
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example
@@ -44,6 +47,9 @@ next-env.d.ts
 
 # local deploy artifact
 /frontend-assets/
+/frontend/artifacts/
+/frontend/playwright-report/
+/frontend/test-results/
 
 # Bun
 bun-debug.log*

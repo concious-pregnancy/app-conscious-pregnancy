@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "Linear": {
+      "command": "bunx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.linear.app/mcp",
+        "--header",
+        "Authorization: Bearer ${LINEAR_API_KEY}"
+      ]
+    }
+  }
+}

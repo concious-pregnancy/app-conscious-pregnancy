@@ -1,72 +1,67 @@
-import styles from './Journal.module.css'
+import styles from "./Journal.module.css";
 
 const articles = [
   {
-    category: 'Gut Health',
-    title: 'Why Your Microbiome Affects Everything — And What to Actually Do About It',
-    date: 'March 2026',
-    read: '8 min',
-    shape: 'pill',
+    title: "Methylfolate vs. Folic Acid: Why the Difference Matters.",
+    excerpt:
+      "Up to 60% of people carry an MTHFR variant that limits their ability to convert synthetic folic acid into the active form the body can use. Here is what to take instead and why.",
+    image: "/hero-pic.webp",
   },
   {
-    category: 'Hormones',
-    title: 'Perimenopause Is Not a Disease. Here\'s How to Work With It.',
-    date: 'February 2026',
-    read: '6 min',
-    shape: 'circle',
+    title: "Your Microbiome Shapes Your Baby's Immune System.",
+    excerpt:
+      "The bacteria colonizing your gut and birth canal are the first organisms your baby encounters. What the research shows about maternal microbiome and infant health outcomes.",
+    image: "/hero-pic.webp",
   },
   {
-    category: 'Psychedelic Integration',
-    title: 'What Integration Actually Means — And Why Most People Skip It',
-    date: 'January 2026',
-    read: '10 min',
-    shape: 'blob',
+    title: "The 90-Day Window: Why Preconception Prep Starts Now.",
+    excerpt:
+      "Sperm take 74 days to mature. Egg quality is influenced by the environment it develops in months before ovulation. The foundation of your child's health is built before the pregnancy test.",
+    image: "/hero-pic.webp",
   },
-]
-
-const shapes: Record<string, string> = {
-  pill: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-  circle: 'circle(50%)',
-  blob: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-}
+];
 
 export default function Journal() {
   return (
-    <section id="journal" className={`section surface-off-white ${styles.journal}`}>
+    <section id="journal" data-section="journal" className={`section ${styles.journal}`}>
       <div className="container">
         <div className={styles.header}>
-          <div>
-            <p className="section-label">Journal</p>
-            <h2 className="section-title">
-              Research and thinking<br />
-              <em>worth reading.</em>
-            </h2>
-          </div>
-          <a href="#" className={`btn btn-ghost ${styles.allLink}`}>
-            View All Articles
-          </a>
+          <p data-reveal className="section-label">
+            Journal
+          </p>
+          <h2 data-reveal className={styles.title}>
+            Evidence, not
+            <br />
+            <em>opinion.</em>
+          </h2>
         </div>
 
         <div className={styles.grid}>
           {articles.map((a) => (
-            <article key={a.title} className={styles.card}>
-              <div
-                className={styles.cardImage}
-                style={{ clipPath: shapes[a.shape] }}
-              />
+            <article key={a.title} className={styles.card} data-stagger>
+              <div className={styles.cardImageWrap}>
+                <img src={a.image} alt="" className={styles.cardImage} loading="lazy" />
+              </div>
               <div className={styles.cardBody}>
-                <div className={styles.meta}>
-                  <span className={styles.cat}>{a.category}</span>
-                  <span className={styles.dot} />
-                  <span className={styles.readTime}>{a.read} read</span>
-                </div>
                 <h3 className={styles.cardTitle}>{a.title}</h3>
-                <p className={styles.date}>{a.date}</p>
+                <p className={styles.excerpt}>{a.excerpt}</p>
+                <a href="#" className={styles.readMore}>
+                  Read Article
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path
+                      d="M2 7h10M8 3l4 4-4 4"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
               </div>
             </article>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
