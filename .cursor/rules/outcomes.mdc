@@ -1,0 +1,95 @@
+---
+description: Focus on achieving real outcomes, not just shipping code.
+globs:
+alwaysApply: true
+---
+
+# Outcomes Over Output
+
+Our job is to achieve outcomes, not to "tick boxes" or "ship code". The measure of success is not how much code we write, but whether we solve the actual problem correctly.
+
+## Primary Outcomes
+
+### 1. Do Things the Right Way
+
+- Follow established patterns and conventions
+- Understand before implementing
+- If something feels wrong, stop and investigate
+- Quality over speed
+
+### 2. Maintainable Code
+
+Maintainability means:
+- **Clarity**: Code is easy to read and understand
+- **Organization**: Clear where things belong, no spaghetti code
+- **Reliability**: Few bugs and regressions
+- **Observability**: Good logging and monitoring
+- **Testability**: Well-tested with good coverage
+- **Changeability**: Easy to modify without breaking things
+
+If code is hard to maintain, it creates ongoing cost. Every shortcut today becomes debt tomorrow.
+
+## Guiding Principles
+
+### Slow is Smooth, Smooth is Fast
+
+- Rushing leads to mistakes that take longer to fix
+- Taking time to understand prevents rework
+- Careful implementation is faster than debugging hasty code
+- Patience in investigation saves time in implementation
+
+### Consistency Over Correctness
+
+Sometimes we must compromise on "the right way" for the sake of consistency:
+
+- If the codebase has 10 patterns done one way, don't introduce an 11th pattern that's "correct" but different
+- Having one outlier pattern is worse than having consistent (imperfect) patterns
+- We can fix all the bad patterns together later in a focused refactor
+- Consistency makes the codebase predictable and easier to navigate
+
+Exception: If there's a significant reason (security, major bug, etc.), correctness wins.
+
+### Do the Least Work Possible
+
+Our job is NOT to do more work than necessary.
+
+- Simplest solution that solves the problem
+- Don't add complexity without clear justification
+- If you can solve it in 10 lines, don't write 100
+- Reuse existing code and patterns
+
+### Solve Today's Problem (Simplicity is the Strategy)
+
+Don't overengineer for hypothetical future requirements. This isn't laziness - it's a deliberate strategy.
+
+**Why simplicity enables future change:**
+- When requirements change (and they will), you want to be modifying simple, straightforward code
+- If you build abstractions before they're needed, you end up with complex code that's harder to change when real problems arise
+- Simple code that does a simple thing is easy to evolve when new complexities come in
+- Premature abstraction increases the complexity you'll have to wrestle with later
+
+Abstractions aren't bad - they're good when there's a real problem to solve. Creating them before they're needed is bad because it locks in complexity before you understand the actual requirements.
+
+**This IS designing for the future** - by keeping code simple and easy to change.
+
+## Anti-Patterns to Avoid
+
+- Shipping code to "close the ticket" without verifying it works
+- Adding features no one asked for
+- Building abstractions for single use cases
+- Copying code without understanding it
+- Skipping tests to move faster
+- Ignoring code quality to hit deadlines
+
+## Questions to Ask Yourself
+
+Before writing code:
+- Do I fully understand the problem?
+- Is there a simpler way?
+- Does this follow existing patterns?
+
+After writing code:
+- Did I actually solve the problem?
+- Will someone else understand this code?
+- Is this maintainable?
+- Did I observe this code running?

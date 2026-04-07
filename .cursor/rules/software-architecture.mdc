@@ -1,0 +1,208 @@
+---
+description: Software architecture patterns and code organization for the Conscious Pregnancy project, including component structure, data fetching, naming conventions, and directory layout.
+globs:
+alwaysApply: true
+---
+
+# Software Architecture
+
+## Next.js App Router
+
+This project uses Next.js 16 with the App Router. Key principles:
+
+- **Server Components by default** - Components are server-rendered unless marked with `"use client"`
+- **File-based routing** - Routes defined by the file system under `frontend/app/`
+- **API Route Handlers** - Backend endpoints in `frontend/app/api/*/route.ts`
+- **Layouts and Templates** - Shared UI in `layout.tsx` files
+
+## Directory Structure
+
+```
+frontend/
+├── app/                    # Next.js App Router
+│   ├── api/               # API route handlers
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Landing page
+│   ├── global-error.tsx   # Global error boundary
+│   ├── not-found.tsx      # 404 page
+│   └── globals.css        # Global styles
+├── components/            # Shared components
+│   └── ui/               # UI primitives
+├── lib/                   # Utilities
+│   └── utils.ts          # Helper functions
+├── hooks/                 # Custom React hooks
+└── styles/                # Global styles
+```
+
+### Where Things Go
+
+| What | Where |
+| --- | --- |
+| Pages and layouts | `frontend/app/` |
+| API route handlers | `frontend/app/api/` |
+| UI primitives | `frontend/components/ui/` |
+| Shared components/sections | `frontend/components/` |
+| Custom hooks | `frontend/hooks/` |
+| Utility functions | `frontend/lib/` |
+| Unit tests | Co-located with source files |
+| E2E tests | `frontend/e2e/` |
+
+## Data Fetching Patterns
+
+### Server Components (Default)
+
+Use for data that doesn't need client interactivity:
+
+```typescript
+// app/page.tsx - Server Component (no "use client")
+export default async function HomePage() {
+  return <LandingPage />;
+}
+```
+
+### API Routes for Form Submissions
+
+Handle form submissions and external integrations through Next.js API routes:
+
+```typescript
+// app/api/contact/route.ts
+export async function POST(request: Request) {
+  const body = await request.json();
+  // Validate with Zod, process, send notifications
+  return Response.json({ success: true });
+}
+```
+
+### When to Use What
+
+| Pattern | Use When |
+| --- | --- |
+| Server Component | Static content, page sections |
+| Client Component | Interactive UI, forms, state |
+| API Route | Form submissions, external integrations |
+
+## Component Patterns
+
+### Server vs Client Components
+
+```typescript
+// Server Component (default) - no directive needed
+export default function HeroSection() {
+  return <section>...</section>;
+}
+
+// Client Component - needs interactivity
+"use client";
+export default function ContactForm() {
+  const [submitted, setSubmitted] = useState(false);
+  return <form onSubmit={...}>...</form>;
+}
+```
+
+### Animation (GSAP + Lenis)
+
+This project uses GSAP for animations and Lenis for smooth scroll. Both require client components:
+
+```typescript
+"use client";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+export default function AnimatedSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    gsap.from(ref.current, { opacity: 0, y: 40, duration: 0.8 });
+  }, []);
+  return <div ref={ref}>...</div>;
+}
+```
+
+## Naming Conventions
+
+### Files
+
+| Element | Convention | Example |
+| --- | --- | --- |
+| Component files | `PascalCase` | `NutritionSection.tsx` |
+| Utility files | `kebab-case` | `form-utils.ts` |
+| Hook files | `camelCase` | `useContactForm.ts` |
+| Test files | `*.test.ts` | `utils.test.ts` |
+| E2E test files | `*.spec.ts` | `home.spec.ts` |
+
+### Code
+
+| Element | Convention | Example |
+| --- | --- | --- |
+| Functions/methods | `camelCase` | `submitContact` |
+| Components | `PascalCase` | `NutritionSection` |
+| Variables | `camelCase` | `formData` |
+| Types/Interfaces | `PascalCase` | `ContactForm` |
+| Constants | `UPPER_SNAKE` | `MAX_RETRY_COUNT` |
+
+## Anti-Patterns
+
+### Don't Put Business Logic in Components
+
+```typescript
+// BAD - Logic mixed into component
+function ContactForm() {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    fetch("/api/contact").then(res => res.json()).then(setData);
+  }, []);
+  return <form>...</form>;
+}
+
+// GOOD - Logic in hook, component just renders
+function ContactForm() {
+  const { submit, isLoading } = useContactForm();
+  return <form onSubmit={submit}>...</form>;
+}
+```
+
+### Don't Catch Errors Unless You Can Recover
+
+```typescript
+// BAD - Swallowing the error
+async function fetchData() {
+  try {
+    const res = await fetch("/api/data");
+    return res.json();
+  } catch (error) {
+    console.log("Error fetching data");
+    return null; // Swallowed!
+  }
+}
+
+// GOOD - Let Next.js error boundaries handle it
+async function fetchData() {
+  const res = await fetch("/api/data");
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+```
+
+### Don't Create Abstractions for Single Use Cases
+
+```typescript
+// BAD - Unnecessary abstraction
+class APIClient {
+  async post(url: string, body: unknown) { /* ... */ }
+}
+
+// GOOD - Direct implementation
+async function submitContact(data: ContactForm) {
+  const res = await fetch("/api/contact", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+```
+
+## UI/UX
+
+- **Tailwind CSS** for all styling: no CSS modules, no styled-components
+- **GSAP** for animations: scroll-triggered reveals, transitions
+- **Lenis** for smooth scroll
+- **Mobile-first** responsive design
