@@ -17,8 +17,6 @@ services:
       options:
         max-size: '10k'
         max-file: '10'
-    ports:
-      - '3000:3000'
     command: sleep infinity
     environment:
       - WORKSPACE_FOLDER=/workspace

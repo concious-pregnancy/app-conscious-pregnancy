@@ -3,6 +3,7 @@
   "service": "devcontainer",
   "dockerComposeFile": "compose.yml",
   "workspaceFolder": "/workspace",
+  "forwardPorts": [3000, 9323],
   "portsAttributes": {
     "3000": {
       "label": "Next.js Dev Server",
