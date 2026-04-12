@@ -19,7 +19,7 @@ export default function Balance() {
         </div>
       </div>
 
-      <div className={styles.bottom}>
+      <div className={`${styles.bottom} noise-overlay`}>
         <div className="container">
           <h2 data-reveal className={styles.headingLight}>
             The health and vitality you bring into conception is the very first gift you give your

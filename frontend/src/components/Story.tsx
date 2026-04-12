@@ -35,8 +35,14 @@ export default function Story({
             Read Full Story
           </a>
         </div>
-        <div className={styles.imageWrap} data-reveal>
-          <img src={image} alt={imageAlt} className={styles.image} loading="lazy" />
+        <div className={styles.imageWrap} data-parallax-speed="0.12">
+          <img
+            src={image}
+            alt={imageAlt}
+            className={styles.image}
+            loading="lazy"
+            data-zoom-scroll
+          />
         </div>
       </div>
     </section>

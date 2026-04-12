@@ -10,7 +10,7 @@ const images = [
 
 export default function CTA() {
   return (
-    <section data-section="cta" className={styles.cta}>
+    <section data-section="cta" className={`${styles.cta} noise-overlay`}>
       <div className="container">
         <h2 data-reveal className={styles.heading}>
           Ready to prepare

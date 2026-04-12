@@ -25,7 +25,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" data-section="services" className={styles.services}>
+    <section id="services" data-section="services" className={`${styles.services} noise-overlay`}>
       <div className={styles.grid}>
         {services.map((s) => (
           <a key={s.title} href="#contact" className={styles.card} data-stagger>

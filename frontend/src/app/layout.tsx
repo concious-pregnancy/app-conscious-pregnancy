@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Crimson_Text, Inter } from "next/font/google";
+import { Crimson_Text, Inter, Fragment_Mono } from "next/font/google";
 import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
@@ -18,6 +18,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const fragmentMono = Fragment_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Conscious Pregnancy | Dr. Ashley Alden",
   description:
@@ -27,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${crimsonText.variable} ${inter.variable}`}>
+      <body className={`${crimsonText.variable} ${inter.variable} ${fragmentMono.variable}`}>
         <MotionProvider />
         {children}
       </body>
