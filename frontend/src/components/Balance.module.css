@@ -9,9 +9,9 @@
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--sage);
@@ -40,6 +40,7 @@
   padding: var(--s12) 0 var(--s16);
   background: var(--dark);
   color: var(--white);
+  position: relative;
 }
 
 .headingLight {

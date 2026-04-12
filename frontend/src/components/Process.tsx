@@ -25,29 +25,31 @@ const steps = [
 
 export default function Process() {
   return (
-    <section id="process" data-section="process" className={`section ${styles.process}`}>
-      <div className="container">
-        <div className={styles.header}>
+    <section
+      id="process"
+      data-section="process"
+      className={styles.process}
+      style={{ "--step-count": steps.length } as React.CSSProperties}
+    >
+      <div className={styles.inner} data-process-inner>
+        <div className={styles.left}>
           <h2 data-reveal className={styles.display}>
-            How It Works
+            How It
+            <br />
+            Works
           </h2>
           <p data-reveal className={styles.intro}>
             The 90-day preconception window is not a countdown. It is the most meaningful investment
-            you can make before conception. Here is how we work through it together.
+            you can make before conception.
           </p>
         </div>
 
-        <div className={styles.steps}>
+        <div className={styles.track}>
           {steps.map((s) => (
-            <div key={s.num} className={styles.step} data-stagger>
-              <div className={styles.stepNum}>
-                <span>{s.num}</span>
-                <div className={styles.stepLine} />
-              </div>
-              <div className={styles.stepContent}>
-                <h3 className={styles.stepTitle}>{s.title}</h3>
-                <p className={styles.stepBody}>{s.body}</p>
-              </div>
+            <div key={s.num} className={styles.step} data-process-step>
+              <span className={styles.stepNum}>{s.num}</span>
+              <h3 className={styles.stepTitle}>{s.title}</h3>
+              <p className={styles.stepBody}>{s.body}</p>
             </div>
           ))}
         </div>

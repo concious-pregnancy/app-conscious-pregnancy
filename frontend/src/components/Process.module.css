@@ -1,14 +1,32 @@
+/* ── Outer: provides scroll space for sticky effect ────────── */
 .process {
   background: var(--white);
+  height: calc(var(--step-count, 4) * 100vh);
 }
 
-.header {
-  margin-bottom: var(--s8);
+/* ── Inner: sticky viewport-height panel ───────────────────── */
+.inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: center;
+  padding: var(--s16) var(--pad-x);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+/* ── Left column: stays visible throughout ─────────────────── */
+.left {
+  /* static — always visible */
 }
 
 .display {
   font-family: var(--font-serif);
-  font-size: clamp(4rem, 10vw, 8.5rem);
+  font-size: clamp(4.5rem, 10vw, 9rem);
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.04em;
@@ -18,77 +36,77 @@
 
 .intro {
   font-family: var(--font-sans);
-  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.02em;
-  color: var(--dark);
-  max-width: 44ch;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  max-width: 36ch;
 }
 
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+/* ── Right column: step cards stack here ───────────────────── */
+.track {
+  position: relative;
+  height: 280px;
 }
 
 .step {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 2rem;
-  padding: var(--s6) 0;
-  border-top: 1px solid var(--border);
-}
-
-.step:last-child {
-  border-bottom: 1px solid var(--border);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .stepNum {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.stepNum span {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
   color: var(--sage);
-}
-
-.stepLine {
-  width: 1px;
-  flex: 1;
-  background: var(--border);
-}
-
-.stepContent {
-  max-width: 520px;
+  margin-bottom: var(--s3);
 }
 
 .stepTitle {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-size: clamp(2.75rem, 5.5vw, 5.5rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--sage);
-  margin-bottom: 1rem;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: var(--dark);
+  margin-bottom: var(--s3);
 }
 
 .stepBody {
   font-size: 1rem;
   color: var(--muted);
   line-height: 1.7;
-  max-width: 46ch;
+  max-width: 44ch;
 }
 
+/* ── Mobile: revert to vertical stack ──────────────────────── */
 @media (max-width: 809px) {
+  .process {
+    height: auto;
+  }
+
+  .inner {
+    position: static;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: var(--s8) var(--pad-x);
+  }
+
+  .track {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
   .step {
-    grid-template-columns: 50px 1fr;
-    gap: 1rem;
+    position: static;
   }
 }
