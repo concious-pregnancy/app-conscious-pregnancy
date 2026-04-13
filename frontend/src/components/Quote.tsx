@@ -3,6 +3,18 @@ import styles from "./Quote.module.css";
 export default function Quote() {
   return (
     <section data-section="quote" className={styles.quote}>
+      <svg
+        className={styles.curve}
+        viewBox="0 0 1514 441"
+        fill="none"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z"
+          fill="var(--off-white)"
+        />
+      </svg>
       <div className="container">
         <div className={styles.inner}>
           <div className={styles.stars} data-reveal aria-label="5 out of 5 stars">

@@ -87,6 +87,51 @@ export default function MotionProvider() {
         });
       }
 
+      // ── Balance: scroll-pinned gradient + toggle ─────────────────────────
+      const balanceSection = document.querySelector<HTMLElement>('[data-section="balance"]');
+      const balanceInner = balanceSection?.querySelector<HTMLElement>("[data-balance-inner]");
+      const balanceSlider = balanceSection?.querySelector<HTMLElement>("[data-balance-slider]");
+      const balanceText1 = balanceSection?.querySelector<HTMLElement>("[data-balance-text-1]");
+      const balanceText2 = balanceSection?.querySelector<HTMLElement>("[data-balance-text-2]");
+
+      if (balanceSection && balanceInner && balanceSlider && balanceText1 && balanceText2) {
+        // Second text starts hidden
+        gsap.set(balanceText2, { autoAlpha: 0, y: 24 });
+
+        const balanceTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: balanceSection,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            pin: false,
+          },
+        });
+
+        // Phase 1 (0–40%): Hold on first text
+        // Phase 2 (40–60%): Transition — gradient shifts, toggle slides, text cross-fades
+        // Phase 3 (60–100%): Hold on second text
+
+        balanceTl
+          // Fade out first text
+          .to(balanceText1, { autoAlpha: 0, y: -20, duration: 0.15 }, 0.35)
+          // Background transition to dark
+          .to(balanceInner, { backgroundColor: "#2e3231", duration: 0.2 }, 0.35)
+          // Text color transition (heading + body + toggle label go light)
+          .to(balanceInner, { color: "#ffffff", duration: 0.2 }, 0.35)
+          // Toggle slider moves right
+          .to(balanceSlider, { x: 20, duration: 0.15 }, 0.38)
+          // Toggle background brightens
+          .to(
+            balanceSection.querySelector<HTMLElement>("[data-balance-toggle] > div") ??
+              balanceSlider.parentElement!,
+            { backgroundColor: "rgba(127, 166, 155, 0.35)", duration: 0.15 },
+            0.38,
+          )
+          // Fade in second text
+          .to(balanceText2, { autoAlpha: 1, y: 0, duration: 0.15 }, 0.45);
+      }
+
       // ── General parallax: [data-parallax-speed] ──────────────────────────
       // Any element can opt in with data-parallax-speed="0.15".
       // Positive values move the element upward slower than scroll (depth).
@@ -132,51 +177,88 @@ export default function MotionProvider() {
       // ── Process: sticky step-by-step replacement ─────────────────────────
       // The .process section has height = N * 100vh (via CSS var --step-count).
       // The .inner is position: sticky so it stays fixed.
-      // Steps are absolutely stacked; GSAP scrubs them in/out one at a time.
+      // Steps + big numbers are absolutely stacked; GSAP scrubs them in/out.
       const processSection = document.querySelector<HTMLElement>('[data-section="process"]');
       const processSteps = processSection
         ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-step]"))
         : [];
+      const processNums = processSection
+        ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-num]"))
+        : [];
 
       if (processSection && processSteps.length > 1) {
-        // All steps except the first start hidden below
+        // All steps + numbers except the first start hidden
         gsap.set(processSteps.slice(1), { autoAlpha: 0, y: 48 });
+        gsap.set(processNums.slice(1), { autoAlpha: 0, y: 40 });
 
         const total = processSteps.length;
 
         processSteps.forEach((step, i) => {
           if (i === 0) return;
-          const prev = processSteps[i - 1];
+          const prevStep = processSteps[i - 1];
+          const prevNum = processNums[i - 1];
+          const currNum = processNums[i];
 
-          // Each transition uses 1/total of the section's scroll height
-          const startPct = ((i - 1) / (total - 1)) * 80; // 0%–80%
+          // Each transition occupies an equal slice of 0–80% scroll range
+          const startPct = ((i - 1) / (total - 1)) * 80;
           const endPct = startPct + 80 / (total - 1);
+          const midPct = startPct + (endPct - startPct) * 0.35;
 
-          // Fade out previous
-          gsap.to(prev, {
+          // Fade out previous step
+          gsap.to(prevStep, {
             autoAlpha: 0,
             y: -36,
             ease: "power1.in",
             scrollTrigger: {
               trigger: processSection,
               start: `${startPct}% top`,
-              end: `${startPct + (endPct - startPct) * 0.45}% top`,
+              end: `${midPct}% top`,
               scrub: 1,
             },
           });
 
-          // Fade in current
+          // Fade out previous number
+          if (prevNum) {
+            gsap.to(prevNum, {
+              autoAlpha: 0,
+              y: -30,
+              ease: "power1.in",
+              scrollTrigger: {
+                trigger: processSection,
+                start: `${startPct}% top`,
+                end: `${midPct}% top`,
+                scrub: 1,
+              },
+            });
+          }
+
+          // Fade in current step
           gsap.to(step, {
             autoAlpha: 1,
             y: 0,
             ease: "power2.out",
             scrollTrigger: {
               trigger: processSection,
-              start: `${startPct + (endPct - startPct) * 0.25}% top`,
+              start: `${midPct - 5}% top`,
               end: `${endPct - 2}% top`,
               scrub: 1,
             },
           });
+
+          // Fade in current number
+          if (currNum) {
+            gsap.to(currNum, {
+              autoAlpha: 1,
+              y: 0,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: processSection,
+                start: `${midPct - 5}% top`,
+                end: `${endPct - 2}% top`,
+                scrub: 1,
+              },
+            });
+          }
         });
       }
     });

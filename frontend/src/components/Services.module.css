@@ -1,11 +1,13 @@
 .services {
   background: var(--dark);
   overflow: hidden;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
 }
 
 .card {
@@ -15,41 +17,33 @@
   display: flex;
   align-items: flex-end;
   cursor: pointer;
+  background: var(--dark-mid);
+  transition: background 0.35s;
 }
 
-.cardImage {
+.card:hover {
+  background: #475250;
+}
+
+/* ── Trigram watermark ──────────────────────────────────── */
+.trigram {
   position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.6s ease;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 55%;
+  height: auto;
+  color: var(--sage);
+  opacity: 0.12;
+  transition: opacity 0.4s;
+  pointer-events: none;
 }
 
-.card:hover .cardImage {
-  transform: scale(1.06);
+.card:hover .trigram {
+  opacity: 0.22;
 }
 
-.cardOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72) 0%,
-    rgba(0, 0, 0, 0.15) 50%,
-    transparent 100%
-  );
-  transition: background 0.4s;
-}
-
-.card:hover .cardOverlay {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.3) 60%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-}
-
+/* ── Card content ───────────────────────────────────────── */
 .cardContent {
   position: relative;
   z-index: 1;
