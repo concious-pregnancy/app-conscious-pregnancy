@@ -1,0 +1,117 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "terraform/**"
+
+concurrency:
+  group: terraform-plan-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: us-east-2
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Select default workspace
+        working-directory: terraform
+        run: terraform workspace select default
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: terraform
+        run: terraform plan -var-file=production.tfvars -no-color
+        continue-on-error: true
+
+      - name: Post plan to PR
+        uses: actions/github-script@v7
+        env:
+          PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
+          PLAN_STDERR: ${{ steps.plan.outputs.stderr }}
+          PLAN_OUTCOME: ${{ steps.plan.outcome }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const planOutput = process.env.PLAN_OUTPUT || '';
+            const planStderr = process.env.PLAN_STDERR || '';
+            const planOutcome = process.env.PLAN_OUTCOME;
+
+            const maxLength = 60000;
+            const truncatedPlan = planOutput.length > maxLength
+              ? planOutput.substring(0, maxLength) + '\n\n... (truncated due to length)'
+              : planOutput;
+
+            const icon = planOutcome === 'success' ? '✅' : '❌';
+
+            let body = `### Terraform Plan ${icon}\n\n`;
+            body += `**Workspace:** \`default\`\n`;
+            body += `**Result:** \`${planOutcome}\`\n\n`;
+
+            if (truncatedPlan) {
+              body += `<details><summary>Show Plan Output</summary>\n\n`;
+              body += `\`\`\`\n${truncatedPlan}\n\`\`\`\n\n`;
+              body += `</details>\n\n`;
+            }
+
+            if (planStderr) {
+              body += `<details><summary>Show Errors</summary>\n\n`;
+              body += `\`\`\`\n${planStderr}\n\`\`\`\n\n`;
+              body += `</details>\n\n`;
+            }
+
+            body += `*Triggered by @${context.actor} on commit \`${context.sha.substring(0, 7)}\`*`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const marker = '### Terraform Plan';
+            const existing = comments.find(c => c.body?.startsWith(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
+
+      - name: Fail if plan failed
+        if: steps.plan.outcome == 'failure'
+        run: exit 1

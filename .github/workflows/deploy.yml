@@ -1,0 +1,118 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: conscious-pregnancy
+  AWS_REGION: us-east-2
+  ASSET_PREFIX: ""
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push frontend image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --target runner \
+            --build-arg ASSET_PREFIX=$ASSET_PREFIX \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            --tag $ECR_REGISTRY/${{ env.PROJECT_NAME }}-frontend:$IMAGE_TAG \
+            --tag $ECR_REGISTRY/${{ env.PROJECT_NAME }}-frontend:latest \
+            --push \
+            ./frontend
+
+      - name: Extract static assets (export target)
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --target export \
+            --build-arg ASSET_PREFIX=$ASSET_PREFIX \
+            --cache-from type=gha \
+            --output type=local,dest=./frontend-assets \
+            ./frontend
+
+      - name: Upload static assets to S3
+        env:
+          S3_BUCKET_NAME: ${{ env.PROJECT_NAME }}-static-assets
+        run: |
+          if [ -d "./frontend-assets/assets/.next/static" ]; then
+            echo "Uploading _next/static to S3..."
+            aws s3 sync ./frontend-assets/assets/.next/static/ s3://$S3_BUCKET_NAME/_next/static/ \
+              --cache-control "public, max-age=31536000, immutable" \
+              --region $AWS_REGION
+            echo "Uploaded _next/static to S3"
+          else
+            echo "Directory ./frontend-assets/assets/.next/static not found"
+            exit 1
+          fi
+
+          if [ -d "./frontend-assets/assets/public" ]; then
+            echo "Uploading public assets to S3..."
+            aws s3 sync ./frontend-assets/assets/public/ s3://$S3_BUCKET_NAME/ \
+              --cache-control "public, max-age=31536000, immutable" \
+              --exclude "*.html" \
+              --region $AWS_REGION
+            echo "Uploaded public assets to S3"
+          fi
+
+          echo "S3 upload completed"
+
+      - name: Deploy to ECS
+        env:
+          ECS_CLUSTER: ${{ env.PROJECT_NAME }}
+          ECS_SERVICE: ${{ env.PROJECT_NAME }}-frontend
+        run: |
+          aws ecs update-service \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
+            --force-new-deployment \
+            --region $AWS_REGION
+
+          echo "Deployment triggered for $ECS_SERVICE"
+
+          echo "Waiting for service to stabilize..."
+          aws ecs wait services-stable \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE \
+            --region $AWS_REGION
+
+          echo "Deployment completed successfully!"
+
+      - name: Build summary
+        run: |
+          echo "Build completed successfully!"
+          echo "Frontend image: ${{ env.PROJECT_NAME }}-frontend:${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Deployed to ECS cluster: ${{ env.PROJECT_NAME }}"

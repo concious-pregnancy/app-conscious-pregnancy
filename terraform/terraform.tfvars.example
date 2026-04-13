@@ -1,0 +1,29 @@
+# =============================================================================
+# Terraform Variables Example
+# =============================================================================
+# Copy this file to terraform.tfvars and fill in your actual values.
+# NEVER commit terraform.tfvars to version control.
+# =============================================================================
+
+# General
+aws_region   = "us-east-2"
+project_name = "conscious-pregnancy"
+environment  = "production"
+
+# ECS
+image_tag         = "latest"
+ecs_cpu           = 512
+ecs_memory        = 1024
+ecs_desired_count = 1
+ecs_min_count     = 1
+ecs_max_count     = 4
+
+# Domain / HTTPS (root domain; cert covers *.domain and apex)
+domain_name = "" # e.g. "consciouspregnancy.care"
+
+# CloudFront
+cloudfront_price_class = "PriceClass_100"
+cdn_allowed_origins    = [] # e.g. ["https://consciouspregnancy.care"]
+
+# GitHub Actions (CI/CD)
+github_repository = "dfp-side-hustle/cowork-concsious-pregnancy"
