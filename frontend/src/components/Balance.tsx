@@ -15,17 +15,6 @@ export default function Balance() {
 
           {/* First text set (visible at start) */}
           <div className={styles.textBlock} data-balance-text-1>
-            <p className={styles.label}>The Reframe</p>
-            <h2 className={styles.heading}>Pregnancy prep is more than a checklist.</h2>
-            <p className={styles.body}>
-              Most preconception advice stops at take your folic acid, track your cycle, check your
-              fertility. But you carry your history: your genetics, your gut health, your immune
-              patterns, the generations before you.
-            </p>
-          </div>
-
-          {/* Second text set (fades in as gradient shifts) */}
-          <div className={styles.textBlock} data-balance-text-2>
             <h2 className={styles.heading}>
               The health and vitality you bring into conception is the very first gift you give your
               child.
@@ -39,6 +28,17 @@ export default function Balance() {
               <span className="btn-dot" />
               Start Your Journey Together
             </a>
+          </div>
+
+          {/* Second text set (fades in as gradient shifts) */}
+          <div className={styles.textBlock} data-balance-text-2>
+            <p className={styles.label}>The Reframe</p>
+            <h2 className={styles.heading}>Pregnancy prep is more than a checklist.</h2>
+            <p className={styles.body}>
+              Most preconception advice stops at take your folic acid, track your cycle, check your
+              fertility. But you carry your history: your genetics, your gut health, your immune
+              patterns, the generations before you.
+            </p>
           </div>
         </div>
       </div>
