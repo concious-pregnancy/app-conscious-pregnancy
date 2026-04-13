@@ -4,6 +4,7 @@ export default function Hero() {
   return (
     <section data-section="hero" className={styles.hero}>
       <div className={styles.background} data-hero-primary data-parallax-speed="0.25" />
+      <div className={styles.tint} />
       <div className={styles.overlay} />
 
       <div className={styles.inner}>

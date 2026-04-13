@@ -1,7 +1,18 @@
 .quote {
+  position: relative;
   padding: var(--s16) var(--pad-x);
+  padding-top: calc(var(--s16) + clamp(120px, 18vw, 220px));
   background: var(--dark);
   color: var(--white);
+}
+
+.curve {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(120px, 18vw, 220px);
+  display: block;
 }
 
 .inner {

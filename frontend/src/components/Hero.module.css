@@ -11,13 +11,21 @@
 
 .background {
   position: absolute;
-  inset: 0;
+  inset: -20px;
   background-image: url("/headshots/DSC04448.JPG");
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
   will-change: transform;
   transform-origin: center top;
+  filter: blur(6px) saturate(1.1);
+}
+
+/* Aqua tint layer over the blurred background */
+.tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(127, 166, 155, 0.12);
 }
 
 .overlay {

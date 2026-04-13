@@ -9,10 +9,11 @@
   align-items: center;
 }
 
-.reverse .imageWrap {
+.reverse .imageStack {
   order: -1;
 }
 
+/* ── Text ───────────────────────────────────────────────── */
 .label {
   font-family: var(--font-mono);
   font-size: 0.63rem;
@@ -45,10 +46,32 @@
   font-size: 0.72rem !important;
 }
 
-.imageWrap {
-  border-radius: 12px;
+/* ── Two-photo stack ────────────────────────────────────── */
+.imageStack {
+  position: relative;
+  /* Allow front image to overflow */
+  padding-bottom: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.imageWrapBack {
   overflow: hidden;
   will-change: transform;
+  position: relative;
+  z-index: 1;
+}
+
+.imageWrapFront {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 48%;
+  z-index: 2;
+  overflow: hidden;
+  will-change: transform;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.12),
+    0 0 0 4px var(--white);
 }
 
 .image {
@@ -61,6 +84,30 @@
   transform-origin: center center;
 }
 
+.imageWrapBack .image {
+  aspect-ratio: 4 / 5;
+}
+
+.imageWrapFront .image {
+  aspect-ratio: 3 / 4;
+}
+
+/* ── Tablet ─────────────────────────────────────────────── */
+@media (min-width: 810px) and (max-width: 1199px) {
+  .layout {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  .imageStack {
+    padding-bottom: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .imageWrapFront {
+    width: 44%;
+  }
+}
+
+/* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 809px) {
   .layout {
     grid-template-columns: 1fr;
@@ -69,7 +116,12 @@
   .reverse {
     direction: ltr;
   }
-  .imageWrap {
+  .imageStack {
     order: -1;
+    padding-bottom: 2rem;
+    padding-right: 1.5rem;
+  }
+  .imageWrapFront {
+    width: 42%;
   }
 }

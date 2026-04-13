@@ -4,15 +4,18 @@
 }
 
 .inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 8vw, 8rem);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.left {
-  position: sticky;
-  top: var(--s8);
+/* ── Decorative icon ────────────────────────────────────── */
+.icon {
+  width: 56px;
+  height: 56px;
+  color: var(--sage);
+  margin-bottom: var(--s4);
 }
 
 .label {
@@ -40,60 +43,8 @@
   font-size: 0.72rem !important;
 }
 
-/* ── Right: modalities list ─────────────────────────── */
-.right {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-}
-
-.modality {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-  padding: var(--s4) 0;
-  border-top: 1px solid var(--border);
-}
-
-.modality:last-child {
-  border-bottom: 1px solid var(--border);
-}
-
-.modalityNum {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  color: var(--sage);
-  padding-top: 0.35rem;
-  flex-shrink: 0;
-  width: 2rem;
-}
-
-.modalityName {
-  font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--dark);
-  line-height: 1.1;
-  margin-bottom: 0.4rem;
-}
-
-.modalityDesc {
-  font-size: 0.875rem;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 34ch;
-}
-
 @media (max-width: 809px) {
-  .inner {
-    grid-template-columns: 1fr;
-  }
-
-  .left {
-    position: static;
+  .philosophy {
+    padding: var(--s8) var(--pad-x);
   }
 }
