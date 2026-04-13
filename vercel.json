@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "rootDirectory": "frontend",
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run build",
+  "outputDirectory": ".next"
+}
