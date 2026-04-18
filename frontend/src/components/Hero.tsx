@@ -118,9 +118,9 @@ export default function Hero() {
 
           <div className={styles.aside}>
             <p className={styles.sub}>
-              A whole-body, whole-partnership preparation for one of the most profound transitions
-              a person can make. We work with both of you, biochemically, energetically,
-              emotionally, in the window before conception.
+              A whole-body, whole-partnership preparation for one of the most profound transitions a
+              person can make. We work with both of you, biochemically, energetically, emotionally,
+              in the window before conception.
             </p>
 
             <div className={styles.ctaRow}>

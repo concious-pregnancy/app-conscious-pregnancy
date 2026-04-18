@@ -1,50 +1,83 @@
 .philosophy {
   background: var(--off-white);
-  padding: var(--s16) var(--pad-x);
-}
-
-.inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  color: var(--dark);
+  padding: 9rem var(--pad-x) 10rem;
+  position: relative;
   text-align: center;
 }
 
-/* ── Decorative icon ────────────────────────────────────── */
-.icon {
-  width: 56px;
-  height: 56px;
-  color: var(--sage);
-  margin-bottom: var(--s4);
+.inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
-.label {
+.icon {
+  color: var(--sage);
+  opacity: 0.9;
+}
+
+.eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.63rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--sage);
-  margin-bottom: var(--s4);
 }
 
-.heading {
-  font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 3.6vw, 3rem);
-  font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+.h2 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: rgba(46, 50, 49, 0.18);
+  max-width: 28ch;
+  text-wrap: balance;
+  margin: 0.5rem 0 1rem;
+}
+
+.word {
+  display: inline-block;
+  color: rgba(46, 50, 49, 0.18);
+  transition: color 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: color;
+}
+
+.word[data-is-lit="true"] {
   color: var(--dark);
-  max-width: 36ch;
-  margin-bottom: var(--s4);
 }
 
-.cta {
-  font-size: 0.72rem !important;
+.pill {
+  margin-top: 0.5rem;
 }
 
-@media (max-width: 809px) {
+.footnote {
+  position: absolute;
+  left: var(--pad-x);
+  bottom: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+@media (max-width: 700px) {
   .philosophy {
-    padding: var(--s8) var(--pad-x);
+    padding: 6rem var(--pad-x) 7rem;
+  }
+  .footnote {
+    position: static;
+    margin-top: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    color: var(--dark);
   }
 }

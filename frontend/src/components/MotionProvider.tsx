@@ -30,6 +30,18 @@ export default function MotionProvider() {
 
     const matchMedia = gsap.matchMedia();
 
+    // Raw scroll listeners we register manually (so we can clean up)
+    const rawListeners: Array<() => void> = [];
+    const onRaw = (fn: () => void) => {
+      window.addEventListener("scroll", fn, { passive: true });
+      window.addEventListener("resize", fn);
+      rawListeners.push(() => {
+        window.removeEventListener("scroll", fn);
+        window.removeEventListener("resize", fn);
+      });
+      fn();
+    };
+
     matchMedia.add("(min-width: 768px)", () => {
       // ── Scroll reveals: data-reveal ──────────────────────────────────────
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((node) => {
@@ -66,14 +78,11 @@ export default function MotionProvider() {
         });
       });
 
-      // ── Hero: true parallax (background moves slower than scroll) ────────
+      // ── Hero parallax ────────────────────────────────────────────────────
       const heroSection = document.querySelector<HTMLElement>('section[data-section="hero"]');
       const heroBackground = heroSection?.querySelector<HTMLElement>("[data-hero-primary]");
 
       if (heroSection && heroBackground) {
-        // Translate the background upward at ~30% of scroll speed.
-        // The background starts at scale(1.08) so edges are always hidden
-        // as it shifts up. Result: genuine depth, not just zoom.
         gsap.set(heroBackground, { scale: 1.08, transformOrigin: "center top" });
         gsap.to(heroBackground, {
           y: "-18%",
@@ -87,57 +96,8 @@ export default function MotionProvider() {
         });
       }
 
-      // ── Balance: scroll-pinned gradient + toggle ─────────────────────────
-      const balanceSection = document.querySelector<HTMLElement>('[data-section="balance"]');
-      const balanceInner = balanceSection?.querySelector<HTMLElement>("[data-balance-inner]");
-      const balanceSlider = balanceSection?.querySelector<HTMLElement>("[data-balance-slider]");
-      const balanceText1 = balanceSection?.querySelector<HTMLElement>("[data-balance-text-1]");
-      const balanceText2 = balanceSection?.querySelector<HTMLElement>("[data-balance-text-2]");
-
-      if (balanceSection && balanceInner && balanceSlider && balanceText1 && balanceText2) {
-        // Second text starts hidden
-        gsap.set(balanceText2, { autoAlpha: 0, y: 24 });
-
-        const balanceTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: balanceSection,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            pin: false,
-          },
-        });
-
-        // Phase 1 (0–40%): Hold on first text
-        // Phase 2 (40–60%): Transition — gradient shifts, toggle slides, text cross-fades
-        // Phase 3 (60–100%): Hold on second text
-
-        balanceTl
-          // Fade out first text
-          .to(balanceText1, { autoAlpha: 0, y: -20, duration: 0.15 }, 0.35)
-          // Background transition to dark
-          .to(balanceInner, { backgroundColor: "#2e3231", duration: 0.2 }, 0.35)
-          // Text color transition (heading + body + toggle label go light)
-          .to(balanceInner, { color: "#ffffff", duration: 0.2 }, 0.35)
-          // Toggle slider moves right
-          .to(balanceSlider, { x: 20, duration: 0.15 }, 0.38)
-          // Toggle background brightens
-          .to(
-            balanceSection.querySelector<HTMLElement>("[data-balance-toggle] > div") ??
-              balanceSlider.parentElement!,
-            { backgroundColor: "rgba(127, 166, 155, 0.35)", duration: 0.15 },
-            0.38,
-          )
-          // Fade in second text
-          .to(balanceText2, { autoAlpha: 1, y: 0, duration: 0.15 }, 0.45);
-      }
-
-      // ── General parallax: [data-parallax-speed] ──────────────────────────
-      // Any element can opt in with data-parallax-speed="0.15".
-      // Positive values move the element upward slower than scroll (depth).
-      // Use small values (0.05–0.25) for subtlety.
+      // ── General parallax ─────────────────────────────────────────────────
       gsap.utils.toArray<HTMLElement>("[data-parallax-speed]").forEach((el) => {
-        // Skip hero background — handled above
         if (el.hasAttribute("data-hero-primary")) return;
 
         const speed = parseFloat(el.dataset.parallaxSpeed ?? "0.15");
@@ -155,8 +115,7 @@ export default function MotionProvider() {
         });
       });
 
-      // ── Section image zoom: [data-zoom-scroll] ───────────────────────────
-      // Images that should subtly scale up as they come into view.
+      // ── Zoom on scroll ───────────────────────────────────────────────────
       gsap.utils.toArray<HTMLElement>("[data-zoom-scroll]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -173,98 +132,129 @@ export default function MotionProvider() {
           },
         );
       });
+    });
 
-      // ── Process: sticky step-by-step replacement ─────────────────────────
-      // The .process section has height = N * 100vh (via CSS var --step-count).
-      // The .inner is position: sticky so it stays fixed.
-      // Steps + big numbers are absolutely stacked; GSAP scrubs them in/out.
-      const processSection = document.querySelector<HTMLElement>('[data-section="process"]');
-      const processSteps = processSection
-        ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-step]"))
-        : [];
-      const processNums = processSection
-        ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-num]"))
-        : [];
+    // ── Balance: scroll-driven light/dark swap ─────────────────────────────
+    const balanceSection = document.querySelector<HTMLElement>('[data-section="balance"]');
+    const balanceStage = balanceSection?.querySelector<HTMLElement>("[data-balance-stage]");
+    const balancePanels = balanceSection
+      ? Array.from(balanceSection.querySelectorAll<HTMLElement>("[data-balance-panel]"))
+      : [];
+    const balanceToggle = balanceSection?.querySelector<HTMLElement>("[data-balance-toggle]");
 
-      if (processSection && processSteps.length > 1) {
-        // All steps + numbers except the first start hidden
-        gsap.set(processSteps.slice(1), { autoAlpha: 0, y: 48 });
-        gsap.set(processNums.slice(1), { autoAlpha: 0, y: 40 });
+    if (balanceSection && balanceStage && balancePanels.length > 0) {
+      let userLocked: "light" | "dark" | null = null;
+      let lockTimer: number | null = null;
 
-        const total = processSteps.length;
+      const setState = (state: "light" | "dark") => {
+        balanceStage.setAttribute("data-is-dark", state === "dark" ? "true" : "false");
+        balancePanels.forEach((p) => {
+          const active = p.getAttribute("data-balance-panel") === state;
+          p.setAttribute("data-is-active", active ? "true" : "false");
+        });
+      };
 
-        processSteps.forEach((step, i) => {
-          if (i === 0) return;
-          const prevStep = processSteps[i - 1];
-          const prevNum = processNums[i - 1];
-          const currNum = processNums[i];
+      setState("light");
 
-          // Each transition occupies an equal slice of 0–80% scroll range
-          const startPct = ((i - 1) / (total - 1)) * 80;
-          const endPct = startPct + 80 / (total - 1);
-          const midPct = startPct + (endPct - startPct) * 0.35;
+      const onBalanceScroll = () => {
+        if (userLocked) return;
+        const r = balanceSection.getBoundingClientRect();
+        const total = balanceSection.offsetHeight - window.innerHeight;
+        const scrolled = Math.max(0, Math.min(total, -r.top));
+        const progress = total > 0 ? scrolled / total : 0;
+        setState(progress > 0.5 ? "dark" : "light");
+      };
 
-          // Fade out previous step
-          gsap.to(prevStep, {
-            autoAlpha: 0,
-            y: -36,
-            ease: "power1.in",
-            scrollTrigger: {
-              trigger: processSection,
-              start: `${startPct}% top`,
-              end: `${midPct}% top`,
-              scrub: 1,
-            },
-          });
-
-          // Fade out previous number
-          if (prevNum) {
-            gsap.to(prevNum, {
-              autoAlpha: 0,
-              y: -30,
-              ease: "power1.in",
-              scrollTrigger: {
-                trigger: processSection,
-                start: `${startPct}% top`,
-                end: `${midPct}% top`,
-                scrub: 1,
-              },
-            });
-          }
-
-          // Fade in current step
-          gsap.to(step, {
-            autoAlpha: 1,
-            y: 0,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: processSection,
-              start: `${midPct - 5}% top`,
-              end: `${endPct - 2}% top`,
-              scrub: 1,
-            },
-          });
-
-          // Fade in current number
-          if (currNum) {
-            gsap.to(currNum, {
-              autoAlpha: 1,
-              y: 0,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: processSection,
-                start: `${midPct - 5}% top`,
-                end: `${endPct - 2}% top`,
-                scrub: 1,
-              },
-            });
-          }
+      if (balanceToggle) {
+        balanceToggle.addEventListener("click", () => {
+          const nextDark = balanceStage.getAttribute("data-is-dark") !== "true";
+          setState(nextDark ? "dark" : "light");
+          userLocked = nextDark ? "dark" : "light";
+          if (lockTimer) window.clearTimeout(lockTimer);
+          lockTimer = window.setTimeout(() => {
+            userLocked = null;
+            onBalanceScroll();
+          }, 2500);
         });
       }
-    });
+
+      onRaw(onBalanceScroll);
+    }
+
+    // ── Process: pinned scrubber for 4 steps ───────────────────────────────
+    const processTrack = document.querySelector<HTMLElement>('[data-section="process"]');
+    const processSlides = processTrack
+      ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-slide]"))
+      : [];
+    const processDots = processTrack
+      ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-progress] > span"))
+      : [];
+    const processPath = processTrack?.querySelector<SVGPathElement>("[data-process-curve]");
+
+    if (processTrack && processSlides.length > 0) {
+      let pathLen = 0;
+      if (processPath) {
+        pathLen = processPath.getTotalLength();
+        processPath.style.strokeDasharray = String(pathLen);
+        processPath.style.strokeDashoffset = String(pathLen);
+      }
+
+      const n = processSlides.length;
+      let current = -1;
+
+      const setActive = (i: number) => {
+        if (i === current) return;
+        current = i;
+        processSlides.forEach((s, idx) => {
+          s.setAttribute("data-is-active", idx === i ? "true" : "false");
+          s.setAttribute("data-is-exiting", idx < i ? "true" : "false");
+        });
+        processDots.forEach((d, idx) => {
+          d.setAttribute("data-is-on", idx === i ? "true" : "false");
+        });
+      };
+
+      const onProcessScroll = () => {
+        const r = processTrack.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const total = processTrack.offsetHeight - vh;
+        const scrolled = Math.max(0, Math.min(total, -r.top));
+        const p = total > 0 ? scrolled / total : 0;
+
+        const idx = Math.min(n - 1, Math.max(0, Math.floor(p * n * 0.999)));
+        setActive(idx);
+
+        if (processPath) {
+          processPath.style.strokeDashoffset = String(pathLen * (1 - p));
+        }
+      };
+
+      onRaw(onProcessScroll);
+    }
+
+    // ── Philosophy: word-by-word scroll reveal ─────────────────────────────
+    const philoWords = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-section="philosophy"] [data-philo-word]'),
+    );
+
+    if (philoWords.length > 0) {
+      const onPhiloScroll = () => {
+        const vh = window.innerHeight;
+        const topEdge = vh * 0.7;
+        const botEdge = vh * 0.25;
+        philoWords.forEach((s) => {
+          const r = s.getBoundingClientRect();
+          const mid = r.top + r.height / 2;
+          const p = (topEdge - mid) / (topEdge - botEdge);
+          s.setAttribute("data-is-lit", p >= 0.5 ? "true" : "false");
+        });
+      };
+      onRaw(onPhiloScroll);
+    }
 
     return () => {
       matchMedia.revert();
+      rawListeners.forEach((off) => off());
       window.cancelAnimationFrame(rafId);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((t) => t.kill());

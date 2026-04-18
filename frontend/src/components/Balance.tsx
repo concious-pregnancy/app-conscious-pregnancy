@@ -3,20 +3,25 @@ import styles from "./Balance.module.css";
 export default function Balance() {
   return (
     <section id="about" data-section="balance" className={styles.balance}>
-      <div className={styles.inner} data-balance-inner>
-        <div className={styles.content}>
-          {/* Toggle */}
-          <div className={styles.toggleWrap} data-balance-toggle>
-            <span className={styles.toggleLabel}>Balance</span>
-            <div className={styles.toggle}>
-              <div className={styles.toggleSlider} data-balance-slider />
-            </div>
-          </div>
+      <div className={styles.stage} data-balance-stage>
+        <div className={styles.arcs} aria-hidden="true">
+          <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+            <ellipse className={styles.arc} cx="200" cy="500" rx="720" ry="520" />
+            <ellipse className={styles.arc} cx="1400" cy="400" rx="680" ry="560" />
+          </svg>
+        </div>
 
-          {/* First text set (visible at start) */}
-          <div className={styles.textBlock} data-balance-text-1>
-            <p className={styles.label}>The Reframe</p>
-            <h2 className={styles.heading}>Pregnancy prep is more than a checklist.</h2>
+        <div className={styles.toggleWrap}>
+          <span className={styles.toggleLabel}>Balance</span>
+          <button className={styles.toggle} data-balance-toggle aria-label="Toggle balance state">
+            <span className={styles.toggleDot} data-balance-slider />
+          </button>
+        </div>
+
+        <div className={styles.panels}>
+          <div className={`${styles.panel} ${styles.panelLight}`} data-balance-panel="light">
+            <p className={styles.eyebrow}>The Reframe</p>
+            <h2 className={styles.h2}>Pregnancy prep is more than a checklist.</h2>
             <p className={styles.body}>
               Most preconception advice stops at take your folic acid, track your cycle, check your
               fertility. But you carry your history: your genetics, your gut health, your immune
@@ -24,9 +29,9 @@ export default function Balance() {
             </p>
           </div>
 
-          {/* Second text set (fades in as gradient shifts) */}
-          <div className={styles.textBlock} data-balance-text-2>
-            <h2 className={styles.heading}>
+          <div className={`${styles.panel} ${styles.panelDark}`} data-balance-panel="dark">
+            <p className={styles.eyebrow}>The Invitation</p>
+            <h2 className={styles.h2}>
               The health and vitality you bring into conception is the very first gift you give your
               child.
             </h2>
@@ -35,10 +40,12 @@ export default function Balance() {
               conception shapes the world your child enters. A body prepared. A relationship
               strengthened. A home made ready.
             </p>
-            <a href="#contact" className="btn btn-ghost-light">
-              <span className="btn-dot" />
-              Start Your Journey Together
-            </a>
+            <div className={styles.cta}>
+              <a href="#contact" className="btn btn-ghost-light">
+                Start Your Journey Together
+                <span className="btn-dot" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -43,11 +43,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(
-    180deg,
-    rgba(46, 50, 49, 0) 55%,
-    rgba(46, 50, 49, 0.55) 100%
-  );
+  background: linear-gradient(180deg, rgba(46, 50, 49, 0) 55%, rgba(46, 50, 49, 0.55) 100%);
 }
 
 .img {
