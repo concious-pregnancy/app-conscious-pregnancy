@@ -25,10 +25,11 @@ export default function Home() {
         <Services />
         <Philosophy />
         <Story
-          label="A different starting point."
+          label="A Different Starting Point."
           title="She came in thinking her hormones were fine."
           body="Standard bloodwork had flagged nothing. But a full functional panel told a different story: subclinical hypothyroidism, low vitamin D, and an MTHFR variant she had never heard of. Three months later, her numbers and her energy were both transformed."
-          image="/hero-pic.webp"
+          image="/hero/hero-eye.jpeg"
+          image2="/hero/hero-kimono.jpeg"
         />
         <Process />
         <CTA />

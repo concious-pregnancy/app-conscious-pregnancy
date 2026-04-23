@@ -1,127 +1,133 @@
 .story {
   background: var(--white);
+  color: var(--dark);
+  padding: 8rem var(--pad-x) 9rem;
 }
 
-.layout {
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 5rem;
   align-items: center;
 }
 
-.reverse .imageStack {
-  order: -1;
+.reverse {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+.reverse .copy {
+  order: 2;
+}
+.reverse .media {
+  order: 1;
 }
 
-/* ── Text ───────────────────────────────────────────────── */
-.label {
+.eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.63rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--sage);
-  margin-bottom: var(--s3);
+  margin-bottom: 2rem;
 }
 
-.title {
+.h2 {
   font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-weight: 400;
-  line-height: 1.05;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--dark);
-  margin-bottom: var(--s3);
+  max-width: 14ch;
+  text-wrap: balance;
+  margin-bottom: 1.75rem;
 }
 
 .body {
+  font-family: var(--font-sans);
   font-size: 1rem;
+  line-height: 1.65;
   color: var(--muted);
-  line-height: 1.7;
-  max-width: 46ch;
-  margin-bottom: var(--s4);
+  max-width: 45ch;
+  margin-bottom: 2.25rem;
 }
 
-.cta {
-  font-size: 0.72rem !important;
+.pill {
+  background: var(--sage);
+  color: var(--white);
+  border: none;
 }
 
-/* ── Two-photo stack ────────────────────────────────────── */
-.imageStack {
+.pill:hover {
+  background: var(--sage-dark);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.media {
   position: relative;
-  /* Allow front image to overflow */
-  padding-bottom: 2.5rem;
-  padding-right: 2.5rem;
+  height: 640px;
+  min-height: 520px;
 }
 
-.imageWrapBack {
-  overflow: hidden;
-  will-change: transform;
-  position: relative;
+.img {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 30px 60px -30px rgba(46, 50, 49, 0.25);
+}
+
+.back {
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 80%;
   z-index: 1;
 }
 
-.imageWrapFront {
-  position: absolute;
+.front {
   bottom: 0;
-  right: 0;
-  width: 48%;
+  left: 4%;
+  width: 46%;
+  height: 72%;
   z-index: 2;
-  overflow: hidden;
-  will-change: transform;
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.12),
-    0 0 0 4px var(--white);
 }
 
-.image {
-  width: 100%;
-  height: auto;
-  display: block;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  will-change: transform;
-  transform-origin: center center;
-}
-
-.imageWrapBack .image {
-  aspect-ratio: 4 / 5;
-}
-
-.imageWrapFront .image {
-  aspect-ratio: 3 / 4;
-}
-
-/* ── Tablet ─────────────────────────────────────────────── */
-@media (min-width: 810px) and (max-width: 1199px) {
-  .layout {
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 4vw, 3rem);
+@media (max-width: 1000px) {
+  .story {
+    padding: 5rem var(--pad-x);
   }
-  .imageStack {
-    padding-bottom: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  .imageWrapFront {
-    width: 44%;
-  }
-}
-
-/* ── Mobile ─────────────────────────────────────────────── */
-@media (max-width: 809px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
+  .inner,
   .reverse {
-    direction: ltr;
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
-  .imageStack {
-    order: -1;
-    padding-bottom: 2rem;
-    padding-right: 1.5rem;
+  .reverse .copy {
+    order: unset;
   }
-  .imageWrapFront {
-    width: 42%;
+  .reverse .media {
+    order: unset;
+  }
+  .h2 {
+    max-width: none;
+  }
+  .media {
+    height: 480px;
+  }
+}
+
+@media (max-width: 600px) {
+  .media {
+    height: 400px;
+  }
+  .back {
+    width: 62%;
+    height: 78%;
+  }
+  .front {
+    width: 52%;
+    height: 68%;
+    left: 0;
   }
 }

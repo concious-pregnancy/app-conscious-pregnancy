@@ -1,31 +1,165 @@
 import styles from "./Hero.module.css";
 
+const images = [
+  { key: "leaves", src: "/hero/hero-leaves.jpeg" },
+  { key: "water", src: "/hero/hero-water.jpeg" },
+  { key: "eye", src: "/hero/hero-eye.jpeg" },
+  { key: "flame", src: "/hero/hero-flame.jpeg" },
+] as const;
+
+const ACTIVE_IMAGE = "eye";
+
+const pillars = [
+  {
+    label: "Functional Medicine",
+    bars: (
+      <>
+        <rect x="0" y="1" width="34" height="2" />
+        <rect x="0" y="10" width="34" height="2" />
+        <rect x="0" y="19" width="34" height="2" />
+      </>
+    ),
+  },
+  {
+    label: "Chinese Medicine",
+    bars: (
+      <>
+        <rect x="0" y="1" width="14" height="2" />
+        <rect x="20" y="1" width="14" height="2" />
+        <rect x="0" y="10" width="34" height="2" />
+        <rect x="0" y="19" width="14" height="2" />
+        <rect x="20" y="19" width="14" height="2" />
+      </>
+    ),
+  },
+  {
+    label: "Somatic Therapy",
+    bars: (
+      <>
+        <rect x="0" y="1" width="34" height="2" />
+        <rect x="0" y="10" width="34" height="2" />
+        <rect x="0" y="19" width="14" height="2" />
+        <rect x="20" y="19" width="14" height="2" />
+      </>
+    ),
+  },
+  {
+    label: "Psychedelic Integration",
+    bars: (
+      <>
+        <rect x="0" y="1" width="14" height="2" />
+        <rect x="20" y="1" width="14" height="2" />
+        <rect x="0" y="10" width="14" height="2" />
+        <rect x="20" y="10" width="14" height="2" />
+        <rect x="0" y="19" width="34" height="2" />
+      </>
+    ),
+  },
+];
+
 export default function Hero() {
   return (
-    <section data-section="hero" className={styles.hero}>
-      <div className={styles.background} data-hero-primary data-parallax-speed="0.25" />
-      <div className={styles.tint} />
-      <div className={styles.overlay} />
-
-      <div className={styles.inner}>
-        <h1 data-reveal className={styles.heading}>
-          Before the Baby,
-          <br />
-          <em>There Is You.</em>
-        </h1>
-        <p data-reveal className={styles.sub}>
-          A whole-body, whole-partnership approach to preparing for one of the most profound
-          experiences of your life. What you bring into conception shapes the world your child
-          enters.
-        </p>
-        <a data-reveal href="#contact" className={`btn btn-ghost-light ${styles.cta}`}>
-          <span className="btn-dot" />
-          Start Your Journey Together
-        </a>
+    <section id="top" data-section="hero" className={styles.hero}>
+      <div className={styles.media} aria-hidden="true">
+        {images.map((img) => (
+          <div
+            key={img.key}
+            className={`${styles.img} ${img.key === ACTIVE_IMAGE ? styles.imgActive : ""}`}
+            style={{ backgroundImage: `url(${img.src})` }}
+            {...(img.key === ACTIVE_IMAGE ? { "data-hero-primary": "" } : {})}
+          />
+        ))}
       </div>
 
-      <div className={styles.scrollHint} aria-hidden="true">
-        <span />
+      <div className={styles.noise} aria-hidden="true" />
+
+      <div className={styles.orbit} aria-hidden="true">
+        <svg viewBox="-200 -200 400 400">
+          <ellipse
+            className={styles.strokeSoft}
+            cx="0"
+            cy="0"
+            rx="180"
+            ry="130"
+            transform="rotate(-12)"
+          />
+          <ellipse
+            className={styles.strokeSoft}
+            cx="0"
+            cy="0"
+            rx="120"
+            ry="175"
+            transform="rotate(28)"
+          />
+          <ellipse
+            className={styles.strokeAccent}
+            cx="0"
+            cy="0"
+            rx="155"
+            ry="110"
+            transform="rotate(62)"
+          />
+          <circle className={styles.node} cx="-155" cy="-18" r="2.4" />
+          <circle className={styles.node} cx="155" cy="18" r="2.4" />
+          <circle className={styles.node} cx="0" cy="0" r="1.6" style={{ opacity: 0.55 }} />
+        </svg>
+      </div>
+
+      <div className={styles.content}>
+        <p className={styles.eyebrow}>Preconception Care · Functional Medicine · TCM</p>
+
+        <div className={styles.headlineRow}>
+          <h1 className={styles.h1}>
+            <span className={styles.line1}>Before the Baby,</span>
+            <em className={styles.line2}>
+              There Is <span className={styles.you}>You.</span>
+            </em>
+          </h1>
+
+          <div className={styles.aside}>
+            <p className={styles.sub}>
+              A whole-body, whole-partnership preparation for one of the most profound transitions a
+              person can make. We work with both of you, biochemically, energetically, emotionally,
+              in the window before conception.
+            </p>
+
+            <div className={styles.ctaRow}>
+              <a href="#contact" className={`btn btn-primary ${styles.ctaBtn}`}>
+                Start the Journey
+                <span className="btn-dot" />
+              </a>
+              <a href="#about" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
+                The Approach
+                <span className="btn-dot" />
+              </a>
+            </div>
+
+            <div className={styles.asideMeta}>
+              <span>Dr.&nbsp;Ashley&nbsp;Alden · DACM · L.Ac.</span>
+              <span className={styles.rule} />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.foot}>
+          <span className={styles.footLabel}>Four lenses · one preparation</span>
+
+          <div className={styles.pillars}>
+            {pillars.map((p) => (
+              <span key={p.label} className={styles.pillar}>
+                <svg viewBox="0 0 34 22" width="28" height="18" aria-hidden="true">
+                  <g fill="currentColor">{p.bars}</g>
+                </svg>
+                {p.label}
+              </span>
+            ))}
+          </div>
+
+          <div className={styles.scrollCue}>
+            <span>Scroll</span>
+            <span className={styles.scrollBar} />
+          </div>
+        </div>
       </div>
     </section>
   );

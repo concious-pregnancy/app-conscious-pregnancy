@@ -11,7 +11,7 @@ interface StoryProps {
 }
 
 export default function Story({
-  label = "Real stories.",
+  label = "A Different Starting Point.",
   title,
   body,
   image,
@@ -19,48 +19,35 @@ export default function Story({
   imageAlt = "Conscious Pregnancy client story",
   reverse = false,
 }: StoryProps) {
-  const secondImage = image2 ?? image;
+  const backImage = image;
+  const frontImage = image2 ?? "/hero/hero-kimono.jpeg";
 
   return (
-    <section id="stories" data-section="story" className={`section ${styles.story}`}>
-      <div className={`container ${styles.layout} ${reverse ? styles.reverse : ""}`}>
-        <div className={styles.text}>
-          <p data-reveal className={styles.label}>
-            {label}
-          </p>
-          <h2 data-reveal className={styles.title}>
-            {title}
-          </h2>
-          <p data-reveal className={styles.body}>
-            {body}
-          </p>
-          <a data-reveal href="#contact" className={`btn btn-ghost ${styles.cta}`}>
-            <span className="btn-dot" />
+    <section id="stories" data-section="story" className={styles.story}>
+      <div className={`${styles.inner} ${reverse ? styles.reverse : ""}`}>
+        <div className={styles.copy}>
+          <p className={styles.eyebrow}>{label}</p>
+          <h2 className={styles.h2}>{title}</h2>
+          <p className={styles.body}>{body}</p>
+          <a href="#contact" className={`btn ${styles.pill}`}>
             Read Full Story
+            <span className="btn-dot" />
           </a>
         </div>
 
-        <div className={styles.imageStack}>
-          {/* Back image (larger) */}
-          <div className={styles.imageWrapBack} data-parallax-speed="0.1">
-            <img
-              src={image}
-              alt={imageAlt}
-              className={styles.image}
-              loading="lazy"
-              data-zoom-scroll
-            />
-          </div>
-          {/* Front image (smaller, offset) */}
-          <div className={styles.imageWrapFront} data-parallax-speed="0.18">
-            <img
-              src={secondImage}
-              alt={`${imageAlt} detail`}
-              className={styles.image}
-              loading="lazy"
-              data-zoom-scroll
-            />
-          </div>
+        <div className={styles.media} aria-hidden="true">
+          <div
+            className={`${styles.img} ${styles.back}`}
+            style={{ backgroundImage: `url(${backImage})` }}
+            role="img"
+            aria-label={imageAlt}
+          />
+          <div
+            className={`${styles.img} ${styles.front}`}
+            style={{ backgroundImage: `url(${frontImage})` }}
+            role="img"
+            aria-label={`${imageAlt} detail`}
+          />
         </div>
       </div>
     </section>
