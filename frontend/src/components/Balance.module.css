@@ -10,11 +10,77 @@
   text-align: center;
 }
 
+/* ── Toggle ──────────────────────────────────────────────────── */
+.toggle {
+  position: relative;
+  display: inline-flex;
+  background: rgba(46, 50, 49, 0.06);
+  border-radius: 100px;
+  padding: 4px;
+  margin-bottom: var(--s10);
+  gap: 0;
+}
+
+.toggleBtn {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 0.45rem 1.25rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.toggleBtnActive {
+  color: var(--dark);
+}
+
+.togglePill {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: var(--white);
+  border-radius: 100px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* ── Icon ────────────────────────────────────────────────────── */
 .icon {
   width: 56px;
   height: 56px;
   color: var(--sage);
   margin-bottom: var(--s4);
+}
+
+/* ── Slide content ───────────────────────────────────────────── */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeUp 0.45s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .label {
@@ -54,5 +120,10 @@
 @media (max-width: 809px) {
   .balance {
     padding: var(--s8) var(--pad-x);
+  }
+
+  .toggleBtn {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.9rem;
   }
 }
