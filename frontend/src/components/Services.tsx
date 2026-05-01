@@ -98,6 +98,8 @@ export default function Services() {
             <p className={styles.body}>{s.body}</p>
           </div>
         ))}
+      </div>
+
       <div className={styles.strip}>
         {extras.map((e) => (
           <div key={e.title} className={styles.stripItem}>
