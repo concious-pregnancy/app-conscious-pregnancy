@@ -181,33 +181,6 @@ export default function MotionProvider() {
       onRaw(onBalanceScroll);
     }
 
-    // ── Process: scroll-driven step rotation ─────────────────────────────
-    const onProcessScroll = () => {
-      const section = document.querySelector<HTMLElement>('[data-section="process"]');
-      if (!section) return;
-      const steps = Array.from(section.querySelectorAll<HTMLElement>("[data-process-step]"));
-      const nums = Array.from(section.querySelectorAll<HTMLElement>("[data-process-num]"));
-      if (steps.length === 0) return;
-
-      const r = section.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = section.offsetHeight - vh;
-      const scrolled = Math.max(0, Math.min(total, -r.top));
-      const p = total > 0 ? scrolled / total : 0;
-      const idx = Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length * 0.999)));
-
-      steps.forEach((s, i) => {
-        s.setAttribute("data-is-active", i === idx ? "true" : "false");
-        s.setAttribute("data-is-exiting", i < idx ? "true" : "false");
-      });
-      nums.forEach((n, i) => {
-        n.setAttribute("data-is-active", i === idx ? "true" : "false");
-      });
-    };
-
-    if (document.querySelector('[data-section="process"]')) {
-      onRaw(onProcessScroll);
-    }
 
     return () => {
       matchMedia.revert();

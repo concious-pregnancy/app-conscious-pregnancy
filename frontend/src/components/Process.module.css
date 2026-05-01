@@ -1,34 +1,21 @@
-/* ── Outer: provides scroll space for sticky effect ────────── */
 .process {
   background: var(--white);
-  height: calc(var(--step-count, 4) * 100vh);
+  padding: var(--s16) var(--pad-x);
 }
 
-/* ── Inner: sticky viewport-height panel ───────────────────── */
 .inner {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
+  max-width: var(--max-w);
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(3rem, 6vw, 6rem);
-  align-items: center;
-  padding: var(--s16) var(--pad-x);
-  max-width: var(--max-w);
-  margin: 0 auto;
+  align-items: start;
 }
 
 /* ── Left column ─────────────────────────────────────────── */
 .left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
-
-.leftTop {
-  margin-bottom: var(--s4);
+  position: sticky;
+  top: clamp(5rem, 10vw, 8rem);
 }
 
 .label {
@@ -51,72 +38,34 @@
   max-width: 36ch;
 }
 
-/* ── Large number stack ──────────────────────────────────── */
-.numTrack {
-  position: relative;
-  height: clamp(8rem, 20vw, 16rem);
-}
-
-.bigNum {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(8rem, 20vw, 16rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.06em;
-  color: var(--sage);
-  opacity: 0;
-  transform: translateY(40px);
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.bigNum[data-is-active="true"] {
-  opacity: 0.18;
-  transform: none;
-}
-
-/* ── Right column: step cards stack here ───────────────────── */
+/* ── Right column: all 4 steps ──────────────────────────── */
 .track {
-  position: relative;
-  height: 280px;
+  display: flex;
+  flex-direction: column;
 }
 
 .step {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  opacity: 0;
-  transform: translateY(48px);
-  transition:
-    opacity 0.65s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
-  pointer-events: none;
+  border-top: 1px solid rgba(46, 50, 49, 0.1);
+  padding: 2rem 0;
 }
 
-.step[data-is-active="true"] {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-.step[data-is-exiting="true"] {
-  opacity: 0;
-  transform: translateY(-36px);
+.stepNum {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  color: var(--sage);
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .stepTitle {
   font-family: var(--font-serif);
-  font-size: clamp(2.75rem, 5.5vw, 5.5rem);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.04em;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   color: var(--dark);
-  margin-bottom: var(--s3);
+  margin-bottom: 1rem;
 }
 
 .stepBody {
@@ -126,48 +75,18 @@
   max-width: 44ch;
 }
 
-/* ── Tablet ────────────────────────────────────────────────── */
-@media (min-width: 810px) and (max-width: 1199px) {
-  .inner {
-    gap: clamp(2rem, 4vw, 4rem);
-    padding: var(--s12) var(--pad-x);
-  }
-  .stepTitle {
-    font-size: clamp(2rem, 4.5vw, 3.5rem);
-  }
-}
-
-/* ── Mobile: revert to vertical stack ──────────────────────── */
+/* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 809px) {
   .process {
-    height: auto;
-  }
-
-  .inner {
-    position: static;
-    height: auto;
-    grid-template-columns: 1fr;
-    gap: 2rem;
     padding: var(--s8) var(--pad-x);
   }
 
-  .left {
-    height: auto;
-  }
-
-  .numTrack {
-    display: none;
-  }
-
-  .track {
-    position: static;
-    height: auto;
-    display: flex;
-    flex-direction: column;
+  .inner {
+    grid-template-columns: 1fr;
     gap: 2.5rem;
   }
 
-  .step {
+  .left {
     position: static;
   }
 }
