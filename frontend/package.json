@@ -28,6 +28,7 @@
     "extract:all": "playwright test e2e/extract.blueprint.spec.ts e2e/extract.styles.spec.ts e2e/extract.animations.spec.ts --project=chromium && PW_LOCAL=1 playwright test e2e/extract.screenshots.spec.ts --project=chromium"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "gsap": "^3.14.2",
     "lenis": "^1.3.21",
     "next": "^16.2.2",

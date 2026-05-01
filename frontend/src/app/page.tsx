@@ -5,10 +5,11 @@ import Services from "@/components/Services";
 import Philosophy from "@/components/Philosophy";
 import Story from "@/components/Story";
 import Process from "@/components/Process";
-import CTA from "@/components/CTA";
+import Ready from "@/components/Ready";
 import Pricing from "@/components/Pricing";
-import Credentials from "@/components/Credentials";
-import Quote from "@/components/Quote";
+import Approach from "@/components/Approach";
+import Listen from "@/components/Listen";
+import RealStories from "@/components/RealStories";
 import Journal from "@/components/Journal";
 import Stats from "@/components/Stats";
 import FAQ from "@/components/FAQ";
@@ -32,17 +33,11 @@ export default function Home() {
           image2="/hero/hero-kimono.jpeg"
         />
         <Process />
-        <CTA />
+        <Ready />
         <Pricing />
-        <Credentials />
-        <Quote />
-        <Story
-          label="Both partners, one program."
-          title="They came in together and prepared together."
-          body="When both partners went through functional labs, the results surprised them. His sperm morphology and her cortisol patterns were both contributing. Addressing both sides of the equation gave them a foundation neither had expected to build."
-          image="/hero-pic.webp"
-          reverse
-        />
+        <Approach />
+        <Listen />
+        <RealStories />
         <Journal />
         <Stats />
         <FAQ />
