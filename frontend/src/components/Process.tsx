@@ -44,8 +44,8 @@ export default function Process() {
           </div>
           {/* Large animated number display */}
           <div className={styles.numTrack}>
-            {steps.map((s) => (
-              <span key={s.num} className={styles.bigNum} data-process-num>
+            {steps.map((s, i) => (
+              <span key={s.num} className={styles.bigNum} data-process-num data-is-active={i === 0 ? "true" : "false"}>
                 {s.num}
               </span>
             ))}
@@ -53,8 +53,8 @@ export default function Process() {
         </div>
 
         <div className={styles.track}>
-          {steps.map((s) => (
-            <div key={s.num} className={styles.step} data-process-step>
+          {steps.map((s, i) => (
+            <div key={s.num} className={styles.step} data-process-step data-is-active={i === 0 ? "true" : "false"} data-is-exiting="false">
               <h3 className={styles.stepTitle}>{s.title}</h3>
               <p className={styles.stepBody}>{s.body}</p>
             </div>

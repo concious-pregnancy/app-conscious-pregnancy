@@ -181,83 +181,32 @@ export default function MotionProvider() {
       onRaw(onBalanceScroll);
     }
 
-    // ── Process: sticky step-by-step replacement ─────────────────────────
-    const processSection = document.querySelector<HTMLElement>('[data-section="process"]');
-    const processSteps = processSection
-      ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-step]"))
-      : [];
-    const processNums = processSection
-      ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-num]"))
-      : [];
+    // ── Process: scroll-driven step rotation ─────────────────────────────
+    const onProcessScroll = () => {
+      const section = document.querySelector<HTMLElement>('[data-section="process"]');
+      if (!section) return;
+      const steps = Array.from(section.querySelectorAll<HTMLElement>("[data-process-step]"));
+      const nums = Array.from(section.querySelectorAll<HTMLElement>("[data-process-num]"));
+      if (steps.length === 0) return;
 
-    if (processSection && processSteps.length > 1) {
-      gsap.set(processSteps.slice(1), { autoAlpha: 0, y: 48 });
-      gsap.set(processNums.slice(1), { autoAlpha: 0, y: 40 });
+      const r = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = section.offsetHeight - vh;
+      const scrolled = Math.max(0, Math.min(total, -r.top));
+      const p = total > 0 ? scrolled / total : 0;
+      const idx = Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length * 0.999)));
 
-      const total = processSteps.length;
-
-      processSteps.forEach((step, i) => {
-        if (i === 0) return;
-        const prevStep = processSteps[i - 1];
-        const prevNum = processNums[i - 1];
-        const currNum = processNums[i];
-
-        const startPct = ((i - 1) / (total - 1)) * 80;
-        const endPct = startPct + 80 / (total - 1);
-        const midPct = startPct + (endPct - startPct) * 0.35;
-
-        gsap.to(prevStep, {
-          autoAlpha: 0,
-          y: -36,
-          ease: "power1.in",
-          scrollTrigger: {
-            trigger: processSection,
-            start: `${startPct}% top`,
-            end: `${midPct}% top`,
-            scrub: 1,
-          },
-        });
-
-        if (prevNum) {
-          gsap.to(prevNum, {
-            autoAlpha: 0,
-            y: -30,
-            ease: "power1.in",
-            scrollTrigger: {
-              trigger: processSection,
-              start: `${startPct}% top`,
-              end: `${midPct}% top`,
-              scrub: 1,
-            },
-          });
-        }
-
-        gsap.to(step, {
-          autoAlpha: 1,
-          y: 0,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: processSection,
-            start: `${midPct - 5}% top`,
-            end: `${endPct - 2}% top`,
-            scrub: 1,
-          },
-        });
-
-        if (currNum) {
-          gsap.to(currNum, {
-            autoAlpha: 1,
-            y: 0,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: processSection,
-              start: `${midPct - 5}% top`,
-              end: `${endPct - 2}% top`,
-              scrub: 1,
-            },
-          });
-        }
+      steps.forEach((s, i) => {
+        s.setAttribute("data-is-active", i === idx ? "true" : "false");
+        s.setAttribute("data-is-exiting", i < idx ? "true" : "false");
       });
+      nums.forEach((n, i) => {
+        n.setAttribute("data-is-active", i === idx ? "true" : "false");
+      });
+    };
+
+    if (document.querySelector('[data-section="process"]')) {
+      onRaw(onProcessScroll);
     }
 
     return () => {
