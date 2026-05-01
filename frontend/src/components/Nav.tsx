@@ -7,6 +7,7 @@ const links = [
   { href: "#about", label: "Pregnancy Prep" },
   { href: "#services", label: "Modalities" },
   { href: "#process", label: "How It Works" },
+  { href: "#credentials", label: "Dr. Alden" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -36,8 +37,6 @@ export default function Nav() {
           </li>
         ))}
       </ul>
-
-      <span className={styles.byline}>Dr. Alden</span>
 
       <a href="#contact" className={`btn btn-primary ${styles.cta}`}>
         <span className="btn-dot" />
