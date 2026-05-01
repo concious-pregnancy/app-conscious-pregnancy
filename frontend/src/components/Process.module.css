@@ -1,272 +1,147 @@
-/* ── Intro ─────────────────────────────────────────────── */
-.intro {
-  background: var(--off-white);
-  color: var(--dark);
-  padding: 10rem var(--pad-x) 6rem;
+/* ── Outer: provides scroll space for sticky effect ────────── */
+.process {
+  background: var(--white);
+  height: calc(var(--step-count, 4) * 100vh);
 }
 
-.introInner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 4rem;
-  align-items: end;
-}
-
-.introLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.introEyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--sage);
-}
-
-.introEyebrow::before {
-  content: "—";
-  margin-right: 0.5rem;
-}
-
-.introDisplay {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(3.5rem, 7vw, 6rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--dark);
-}
-
-.introDisplay em {
-  font-style: italic;
-  color: var(--sage);
-}
-
-.introLede {
-  font-family: var(--font-sans);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--muted);
-  max-width: 52ch;
-  padding-bottom: 0.75rem;
-}
-
-.introRule {
-  width: 48px;
-  height: 1px;
-  background: var(--sage);
-  opacity: 0.6;
-  margin-top: 0.5rem;
-}
-
-/* ── Pinned track ─────────────────────────────────────── */
-.track {
-  background: var(--off-white);
-  color: var(--dark);
-  position: relative;
-  /* 4 steps × 100vh of scroll track each */
-  height: 400vh;
-}
-
-.stage {
+/* ── Inner: sticky viewport-height panel ───────────────────── */
+.inner {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
   align-items: center;
+  padding: var(--s16) var(--pad-x);
+  max-width: var(--max-w);
+  margin: 0 auto;
 }
 
-.slide {
+/* ── Left column ─────────────────────────────────────────── */
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.leftTop {
+  margin-bottom: var(--s4);
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: var(--s2);
+}
+
+.intro {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  max-width: 36ch;
+}
+
+/* ── Large number stack ──────────────────────────────────── */
+.numTrack {
+  position: relative;
+  height: clamp(8rem, 20vw, 16rem);
+}
+
+.bigNum {
   position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  align-items: center;
-  padding: 0 var(--pad-x);
-  max-width: 1400px;
-  margin: 0 auto;
+  top: 0;
+  left: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(8rem, 20vw, 16rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--sage);
+  opacity: 0.18;
+}
+
+/* ── Right column: step cards stack here ───────────────────── */
+.track {
+  position: relative;
+  height: 280px;
+}
+
+.step {
+  position: absolute;
+  top: 0;
   left: 0;
   right: 0;
-  transform: none;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s linear;
-}
-
-.slide[data-is-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.text {
-  max-width: 44ch;
-  transform: translateY(60px);
-  opacity: 0;
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.slide[data-is-active="true"] .text {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .text {
-  transform: translateY(-40px);
-  opacity: 0;
-}
-
-.num {
-  justify-self: end;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(160px, 20vw, 320px);
-  line-height: 0.95;
-  letter-spacing: -0.08em;
-  color: var(--sage);
-  transform: translateY(80px);
-  opacity: 0;
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-  user-select: none;
-}
-
-.slide[data-is-active="true"] .num {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .num {
-  transform: translateY(-80px);
-  opacity: 0;
 }
 
 .stepTitle {
   font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 5.5vw, 5.5rem);
   font-weight: 400;
-  font-size: clamp(2.2rem, 3.6vw, 3rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--sage);
-  margin-bottom: 1.5rem;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: var(--dark);
+  margin-bottom: var(--s3);
 }
 
 .stepBody {
-  font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.7;
   color: var(--muted);
+  line-height: 1.7;
+  max-width: 44ch;
 }
 
-/* Flowing sage curve behind the stack */
-.curve {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.curve svg {
-  position: sticky;
-  top: 0;
-  display: block;
-  width: 100%;
-  height: 100vh;
-  overflow: visible;
-}
-
-.curve path {
-  fill: none;
-  stroke: var(--sage);
-  stroke-width: 1;
-  stroke-opacity: 0.3;
-  stroke-linecap: round;
-}
-
-/* Progress dots (bottom center of stage) */
-.progress {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.6rem;
-  z-index: 3;
-}
-
-.progress span {
-  width: 24px;
-  height: 1px;
-  background: var(--sage);
-  opacity: 0.25;
-  transition: opacity 0.4s;
-}
-
-.progress span[data-is-on="true"] {
-  opacity: 1;
-}
-
-@media (max-width: 810px) {
-  .intro {
-    padding: 6rem var(--pad-x) 3rem;
+/* ── Tablet ────────────────────────────────────────────────── */
+@media (min-width: 810px) and (max-width: 1199px) {
+  .inner {
+    gap: clamp(2rem, 4vw, 4rem);
+    padding: var(--s12) var(--pad-x);
   }
-  .introInner {
+  .stepTitle {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+  }
+}
+
+/* ── Mobile: revert to vertical stack ──────────────────────── */
+@media (max-width: 809px) {
+  .process {
+    height: auto;
+  }
+
+  .inner {
+    position: static;
+    height: auto;
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: var(--s8) var(--pad-x);
   }
-  .track {
-    height: auto;
-  }
-  .stage {
-    position: static;
-    height: auto;
-    display: block;
-  }
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
-    padding: 3rem var(--pad-x);
-    grid-template-columns: 1fr;
-  }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
-  }
-  .num {
-    justify-self: start;
-    order: -1;
-    font-size: 120px;
-    line-height: 0.85;
-    margin-bottom: 0.5rem;
-  }
-  .progress {
-    display: none;
-  }
-  .curve {
-    display: none;
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
+  .left {
+    height: auto;
   }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
+
+  .numTrack {
+    display: none;
+  }
+
+  .track {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .step {
+    position: static;
   }
 }
