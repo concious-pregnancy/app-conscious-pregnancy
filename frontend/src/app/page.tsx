@@ -23,6 +23,7 @@ export default function Home() {
         <Hero />
         <Balance />
         <Services />
+        <Process />
         <Philosophy />
         <Story
           label="A different starting point."
@@ -30,7 +31,6 @@ export default function Home() {
           body="Standard bloodwork had flagged nothing. But a full functional panel told a different story: subclinical hypothyroidism, low vitamin D, and an MTHFR variant she had never heard of. Three months later, her numbers and her energy were both transformed."
           image="/hero-pic.webp"
         />
-        <Process />
         <CTA />
         <Pricing />
         <Credentials />
