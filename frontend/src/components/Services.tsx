@@ -30,7 +30,7 @@ const services = [
     trigram: "☷", // Earth — grounding, body, holding
   },
   {
-    title: "Pre-Conception Healing & Integration",
+    title: "Pre-Conception Healing",
     body: "For those ready to go deeper, this work offers a pathway to profound clearing of patterns, beliefs, and emotional or ancestral material before you conceive.",
     image: "/hero/hero-leaves.jpeg",
     trigram: "☲", // Fire — transformation, insight
