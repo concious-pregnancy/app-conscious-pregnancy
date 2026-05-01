@@ -24,7 +24,13 @@ export default function Nav() {
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
       <a href="#" className={styles.logo}>
-        <span className={styles.logoTrigram}>☰</span>
+        <svg className={styles.logoTrigram} viewBox="0 0 34 22" width="22" height="15" aria-hidden="true" fill="currentColor">
+          <rect x="0" y="1" width="14" height="2" />
+          <rect x="20" y="1" width="14" height="2" />
+          <rect x="0" y="10" width="14" height="2" />
+          <rect x="20" y="10" width="14" height="2" />
+          <rect x="0" y="19" width="34" height="2" />
+        </svg>
         conscious&mdash;pregnancy
       </a>
 

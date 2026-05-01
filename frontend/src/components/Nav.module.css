@@ -29,11 +29,11 @@
 }
 
 .logoTrigram {
-  font-size: 1rem;
-  line-height: 1;
-  color: var(--sage);
+  display: inline-block;
+  color: var(--sage-light);
+  flex-shrink: 0;
   position: relative;
-  top: 0.05em;
+  top: 0.1em;
 }
 
 .links {
