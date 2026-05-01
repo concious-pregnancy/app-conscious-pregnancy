@@ -24,6 +24,7 @@ export default function Home() {
         <Balance />
         <Services />
         <Process />
+        <Credentials />
         <Philosophy />
         <Story
           label="A different starting point."
@@ -33,7 +34,6 @@ export default function Home() {
         />
         <CTA />
         <Pricing />
-        <Credentials />
         <Quote />
         <Story
           label="Both partners, one program."
