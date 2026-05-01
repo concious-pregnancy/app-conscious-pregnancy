@@ -181,6 +181,84 @@ export default function MotionProvider() {
       onRaw(onBalanceScroll);
     }
 
+    // ── Process: sticky step-by-step replacement ─────────────────────────
+    const processSection = document.querySelector<HTMLElement>('[data-section="process"]');
+    const processSteps = processSection
+      ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-step]"))
+      : [];
+    const processNums = processSection
+      ? Array.from(processSection.querySelectorAll<HTMLElement>("[data-process-num]"))
+      : [];
+
+    if (processSection && processSteps.length > 1) {
+      gsap.set(processSteps.slice(1), { autoAlpha: 0, y: 48 });
+      gsap.set(processNums.slice(1), { autoAlpha: 0, y: 40 });
+
+      const total = processSteps.length;
+
+      processSteps.forEach((step, i) => {
+        if (i === 0) return;
+        const prevStep = processSteps[i - 1];
+        const prevNum = processNums[i - 1];
+        const currNum = processNums[i];
+
+        const startPct = ((i - 1) / (total - 1)) * 80;
+        const endPct = startPct + 80 / (total - 1);
+        const midPct = startPct + (endPct - startPct) * 0.35;
+
+        gsap.to(prevStep, {
+          autoAlpha: 0,
+          y: -36,
+          ease: "power1.in",
+          scrollTrigger: {
+            trigger: processSection,
+            start: `${startPct}% top`,
+            end: `${midPct}% top`,
+            scrub: 1,
+          },
+        });
+
+        if (prevNum) {
+          gsap.to(prevNum, {
+            autoAlpha: 0,
+            y: -30,
+            ease: "power1.in",
+            scrollTrigger: {
+              trigger: processSection,
+              start: `${startPct}% top`,
+              end: `${midPct}% top`,
+              scrub: 1,
+            },
+          });
+        }
+
+        gsap.to(step, {
+          autoAlpha: 1,
+          y: 0,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: processSection,
+            start: `${midPct - 5}% top`,
+            end: `${endPct - 2}% top`,
+            scrub: 1,
+          },
+        });
+
+        if (currNum) {
+          gsap.to(currNum, {
+            autoAlpha: 1,
+            y: 0,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: processSection,
+              start: `${midPct - 5}% top`,
+              end: `${endPct - 2}% top`,
+              scrub: 1,
+            },
+          });
+        }
+      });
+    }
 
     return () => {
       matchMedia.revert();

@@ -25,22 +25,36 @@ const steps = [
 
 export default function Process() {
   return (
-    <section id="process" data-section="process" className={styles.process}>
-      <div className={styles.inner}>
+    <section
+      id="process"
+      data-section="process"
+      className={styles.process}
+      style={{ "--step-count": steps.length } as React.CSSProperties}
+    >
+      <div className={styles.inner} data-process-inner>
         <div className={styles.left}>
-          <h2 data-reveal className={styles.label}>
-            How It Works
-          </h2>
-          <p data-reveal className={styles.intro}>
-            The 90-day preconception window is not a countdown. It is the most meaningful
-            investment you can make before conception.
-          </p>
+          <div className={styles.leftTop}>
+            <h2 data-reveal className={styles.label}>
+              How It Works
+            </h2>
+            <p data-reveal className={styles.intro}>
+              The 90-day preconception window is not a countdown. It is the most meaningful
+              investment you can make before conception.
+            </p>
+          </div>
+          {/* Large animated number display */}
+          <div className={styles.numTrack}>
+            {steps.map((s) => (
+              <span key={s.num} className={styles.bigNum} data-process-num>
+                {s.num}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className={styles.track}>
           {steps.map((s) => (
-            <div key={s.num} className={styles.step} data-reveal>
-              <span className={styles.stepNum}>{s.num}</span>
+            <div key={s.num} className={styles.step} data-process-step>
               <h3 className={styles.stepTitle}>{s.title}</h3>
               <p className={styles.stepBody}>{s.body}</p>
             </div>
