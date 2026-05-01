@@ -10,6 +10,7 @@ const services = [
     ),
     body: "Comprehensive functional lab work: hormones at pregnancy-specific reference ranges, micronutrient status, toxin burden, immune function, gut health, and genetic markers.",
     image: "/hero/hero-water.jpeg",
+    trigram: "☵", // Water — deep analysis, flow
   },
   {
     title: (
@@ -20,16 +21,19 @@ const services = [
     ),
     body: "TCM has mapped the body's energetic landscape for thousands of years. We use this wisdom to identify where energy is blocked, depleted, or out of balance.",
     image: "/hero/hero-flame.jpeg",
+    trigram: "☰", // Heaven — ancient wisdom, elevation
   },
   {
     title: "Somatic Healing Therapy",
     body: "The body holds memory. Stress, trauma, and unprocessed emotion live in the tissues, and they can shape the environment your baby develops in.",
     image: "/hero/hero-eye.jpeg",
+    trigram: "☷", // Earth — grounding, body, holding
   },
   {
     title: "Psychedelic Integration",
     body: "For those ready to go deeper, psychedelic integration offers a pathway to profound clearing of patterns, beliefs, and emotional or ancestral material.",
     image: "/hero/hero-leaves.jpeg",
+    trigram: "☲", // Fire — transformation, insight
   },
 ];
 
@@ -58,7 +62,7 @@ export default function Services() {
               <div className={styles.cardInner}>
                 <h3 className={styles.cardTitle}>{s.title}</h3>
                 <div className={styles.cardFoot}>
-                  <span className={styles.trigram}>☰</span>
+                  <span className={styles.trigram}>{s.trigram}</span>
                   <a href="#contact">Read More</a>
                 </div>
               </div>
