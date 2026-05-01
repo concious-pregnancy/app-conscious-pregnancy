@@ -205,6 +205,69 @@
   padding: 0 0.25rem;
 }
 
+/* ── Secondary strip ─────────────────────────────────────────── */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: var(--s12);
+  border-top: 1px solid rgba(46, 50, 49, 0.1);
+}
+
+.stripItem {
+  padding: 2rem 1.5rem 2rem 0;
+  border-right: 1px solid rgba(46, 50, 49, 0.1);
+  padding-right: 1.5rem;
+}
+
+.stripItem:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.stripItem:not(:first-child) {
+  padding-left: 1.5rem;
+}
+
+.stripTrigram {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--sage);
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.stripTitle {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dark);
+  margin-bottom: 0.6rem;
+}
+
+.stripBody {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+@media (max-width: 1100px) {
+  .strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .stripItem:nth-child(3) {
+    border-right: none;
+    padding-right: 0;
+  }
+  .stripItem:nth-child(4) {
+    padding-left: 0;
+    border-right: 1px solid rgba(46, 50, 49, 0.1);
+  }
+}
+
 @media (max-width: 1100px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);

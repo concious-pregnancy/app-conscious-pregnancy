@@ -37,6 +37,34 @@ const services = [
   },
 ];
 
+const extras = [
+  {
+    trigram: "☶",
+    title: "Comprehensive Lab Work",
+    body: "Advanced panels that go beyond standard bloodwork: methylation, full thyroid, toxin burden, and reproductive hormones for both partners.",
+  },
+  {
+    trigram: "☴",
+    title: "Nutritional Biochemistry",
+    body: "A personalized nutrition plan built around your labs and physiology, not a one-size protocol. From preconception through postpartum.",
+  },
+  {
+    trigram: "☱",
+    title: "Medical-Grade Supplementation",
+    body: "Evidence-backed protocols, third-party tested, specific to your biology. You will understand why every piece is in your plan.",
+  },
+  {
+    trigram: "☳",
+    title: "Functional Lifestyle Strategies",
+    body: "Sleep, toxic load reduction, movement, and circadian rhythm — the daily rhythms that make everything else in your care plan more effective.",
+  },
+  {
+    trigram: "☷",
+    title: "Community Resources",
+    body: "Your full care ecosystem, built with intention: midwives, doulas, lactation, pelvic floor PT, and pediatric referrals aligned with your values.",
+  },
+];
+
 export default function Services() {
   return (
     <section id="services" data-section="services" className={styles.services}>
@@ -68,6 +96,14 @@ export default function Services() {
               </div>
             </article>
             <p className={styles.body}>{s.body}</p>
+          </div>
+        ))}
+      <div className={styles.strip}>
+        {extras.map((e) => (
+          <div key={e.title} className={styles.stripItem}>
+            <span className={styles.stripTrigram}>{e.trigram}</span>
+            <h4 className={styles.stripTitle}>{e.title}</h4>
+            <p className={styles.stripBody}>{e.body}</p>
           </div>
         ))}
       </div>
