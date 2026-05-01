@@ -1,0 +1,154 @@
+.story {
+  background: var(--white);
+  color: var(--dark);
+  position: relative;
+  /* tall outer container drives the scroll-tied tweens */
+  height: 250vh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pad-x);
+}
+
+.inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 5rem;
+  align-items: center;
+}
+
+.copy {
+  transform-origin: 0% 30%;
+  will-change: transform, filter, opacity;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 2rem;
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--dark);
+  max-width: 14ch;
+  text-wrap: balance;
+  margin-bottom: 1.75rem;
+  transform-origin: 0% 30%;
+  will-change: transform, filter, opacity;
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 45ch;
+  margin-bottom: 2.25rem;
+  will-change: opacity;
+}
+
+.pill {
+  background: var(--sage);
+  color: var(--white);
+  border: none;
+  will-change: opacity;
+}
+
+.pill:hover {
+  background: var(--sage-dark);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.media {
+  position: relative;
+  height: 78vh;
+  min-height: 520px;
+}
+
+.img {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+}
+
+.back {
+  top: 0;
+  right: 0;
+  width: 64%;
+  height: 88%;
+  background-image: url("/hero/stories-back.jpg");
+  z-index: 1;
+}
+
+.front {
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 76%;
+  background-image: url("/hero/stories-front.jpg");
+  z-index: 2;
+  box-shadow: 0 40px 80px -30px rgba(46, 50, 49, 0.35);
+}
+
+@media (max-width: 1000px) {
+  .story {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    height: auto;
+    padding: 5rem var(--pad-x);
+  }
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .h2 {
+    max-width: none;
+  }
+  .media {
+    height: 480px;
+  }
+  .copy,
+  .h2,
+  .body,
+  .pill {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .media {
+    height: 400px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h2,
+  .body,
+  .pill {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}

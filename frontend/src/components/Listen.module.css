@@ -1,0 +1,106 @@
+.listen {
+  position: relative;
+  height: 200vh;
+  background: var(--off-white);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--off-white);
+}
+
+.imageWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Top edge: starts as a tall arc, flattens to horizontal as scroll progresses.
+     --arc is driven from JS: 0 = arced, 1 = flat. */
+  --arc: 0;
+  border-top-left-radius: 50% calc(40vh * (1 - var(--arc)));
+  border-top-right-radius: 50% calc(40vh * (1 - var(--arc)));
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 30, 28, 0) 30%, rgba(20, 30, 28, 0.55) 100%);
+  pointer-events: none;
+}
+
+.curve {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.curve svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.curve path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 clamp(2rem, 6vw, 6rem) clamp(3rem, 7vh, 6rem);
+  z-index: 4;
+  color: var(--white);
+}
+
+.quote {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  max-width: 22ch;
+  text-indent: -0.4em;
+  margin-bottom: 1rem;
+}
+
+.attr {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.attr::before {
+  content: "— ";
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 900px) {
+  .listen {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    height: 80vh;
+  }
+  .imageWrap {
+    border-radius: 0 !important;
+  }
+}

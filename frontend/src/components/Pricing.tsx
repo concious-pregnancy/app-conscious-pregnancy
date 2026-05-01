@@ -1,105 +1,146 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./Pricing.module.css";
 
-const tiers = [
+type Plan = "single" | "plan";
+
+interface Tier {
+  name: string;
+  desc: string;
+  priceSingle: string;
+  pricePlan: string;
+  noteSingle?: string;
+  notePlan?: string;
+  features: string[];
+  ctaLabel: string;
+  featured?: boolean;
+}
+
+const tiers: Tier[] = [
   {
-    name: "Her Preparation",
-    price: "Discovery",
-    period: "call first",
-    desc: "For women preparing solo. Functional labs, acupuncture, somatic healing, and nutritional protocol across a 90-day preconception window.",
+    name: "Foundations",
+    desc: "Six weeks. A starting point for couples who want a clear, evidence-based look at where they are.",
+    priceSingle: "$X,XXX",
+    pricePlan: "$X,XXX",
+    notePlan: "3 monthly installments",
     features: [
-      "Full functional lab panel",
-      "Weekly acupuncture",
-      "Somatic healing sessions",
-      "Personalized supplement protocol",
-      "Ongoing check-ins",
+      "Initial functional lab panel",
+      "4 acupuncture sessions",
+      "Personalized nutritional protocol",
+      "Two follow-up consultations",
     ],
-    featured: false,
+    ctaLabel: "Begin Here",
   },
   {
-    name: "Both of You",
-    price: "Discovery",
-    period: "call first",
-    desc: "The full program for both partners. Paternal factors account for half of fertility challenges. Preparing together produces better outcomes than preparing alone.",
+    name: "Prepping the Palace",
+    desc: "Twelve weeks. The canonical program, both partners, all four lenses, weekly contact.",
+    priceSingle: "$X,XXX",
+    pricePlan: "$X,XXX",
+    notePlan: "3 monthly installments",
     features: [
-      "Individual lab work for both",
-      "Joint and individual sessions",
-      "Partner nutrition protocol",
-      "Stress and lifestyle optimization",
-      "Full 90-day support",
+      "Full functional panel for both partners",
+      "TCM diagnostics + weekly acupuncture",
+      "Somatic healing sessions",
+      "Weekly check-ins and protocol review",
+      "Couples integration practices",
     ],
+    ctaLabel: "Begin Together",
     featured: true,
   },
   {
-    name: "Integration Add-on",
-    price: "Inquire",
-    period: "for details",
-    desc: "Psychedelic integration support for those who have done plant medicine work and want to process it in the context of preconception or postpartum.",
+    name: "The Full Arc",
+    desc: "Twelve weeks preconception, then ongoing care through the first trimester. Includes deeper inherited-material work.",
+    priceSingle: "$X,XXX",
+    pricePlan: "$X,XXX",
+    notePlan: "3 monthly installments",
     features: [
-      "Preconception or postpartum only",
-      "Integration sessions",
-      "Somatic support included",
-      "No prior experience required",
+      "Everything in Prepping the Palace",
+      "Psychedelic integration sessions",
+      "Continued care through first trimester",
+      "Birth-readiness somatic protocol",
+      "Priority scheduling",
     ],
-    featured: false,
+    ctaLabel: "Begin the Full Arc",
   },
 ];
 
 export default function Pricing() {
+  const [plan, setPlan] = useState<Plan>("single");
+
   return (
-    <section id="pricing" data-section="pricing" className={`section ${styles.pricing}`}>
-      <div className="container">
-        <div className={styles.header}>
-          <p data-reveal className="section-label">
-            The Program
-          </p>
-          <h2 data-reveal className={styles.heading}>
-            This is not just
-            <br />
-            her journey.
+    <section id="pricing" data-section="pricing" className={styles.pricing}>
+      <div className={styles.head}>
+        <div>
+          <p className={styles.eyebrow}>Programs</p>
+          <h2 className={styles.h2}>
+            A pace that <em>fits the work.</em>
           </h2>
         </div>
+        <p className={styles.sub}>
+          Three programs of increasing depth. All begin with a discovery call. Choose a single
+          intensive payment, or split it across three months.
+        </p>
+      </div>
 
-        <div className={styles.cards}>
-          {tiers.map((t) => (
-            <div
-              key={t.name}
-              className={`${styles.card} ${t.featured ? styles.featured : ""}`}
-              data-stagger
+      <div className={styles.toggleRow}>
+        <div className={styles.toggle} role="tablist" aria-label="Pricing plan">
+          <button
+            type="button"
+            className={plan === "single" ? styles.toggleOn : ""}
+            onClick={() => setPlan("single")}
+            role="tab"
+            aria-selected={plan === "single"}
+          >
+            Single Intensive
+          </button>
+          <button
+            type="button"
+            className={plan === "plan" ? styles.toggleOn : ""}
+            onClick={() => setPlan("plan")}
+            role="tab"
+            aria-selected={plan === "plan"}
+          >
+            Payment Plan
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.grid}>
+        {tiers.map((tier) => {
+          const price = plan === "single" ? tier.priceSingle : tier.pricePlan;
+          const note = plan === "single" ? (tier.noteSingle ?? "") : (tier.notePlan ?? "");
+          return (
+            <article
+              key={tier.name}
+              className={`${styles.tier} ${tier.featured ? styles.tierFeat : ""}`}
             >
-              <div className={styles.cardTop}>
-                <p className={styles.tierName}>{t.name}</p>
-                <div className={styles.priceRow}>
-                  <span className={styles.price}>{t.price}</span>
-                  <span className={styles.period}>{t.period}</span>
-                </div>
-                <p className={styles.desc}>{t.desc}</p>
+              {tier.featured && <span className={styles.flag}>Recommended</span>}
+              <h3 className={styles.tierName}>{tier.name}</h3>
+              <p className={styles.tierDesc}>{tier.desc}</p>
+              <div className={styles.tierPrice}>
+                <span className={styles.amt}>{price}</span>
+                <span className={styles.unit}>total</span>
               </div>
+              <p className={styles.priceNote}>{note || " "}</p>
+              <hr className={styles.line} />
               <ul className={styles.features}>
-                {t.features.map((f) => (
-                  <li key={f} className={styles.feature}>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path
-                        d="M2 7l3.5 3.5L12 3"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    {f}
-                  </li>
+                {tier.features.map((f) => (
+                  <li key={f}>{f}</li>
                 ))}
               </ul>
-              <a
-                href="#contact"
-                className={`btn ${t.featured ? "btn-primary" : "btn-ghost"} ${styles.cardCta}`}
-              >
-                <span className="btn-dot" />
-                Get Started
-              </a>
-            </div>
-          ))}
-        </div>
+              <div className={styles.cta}>
+                <a
+                  href="#contact"
+                  className={`btn ${tier.featured ? "" : "btn-ghost"} ${styles.tierBtn}`}
+                >
+                  {tier.ctaLabel}
+                  <span className="btn-dot" />
+                </a>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

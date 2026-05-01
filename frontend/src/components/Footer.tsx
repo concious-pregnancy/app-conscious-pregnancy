@@ -1,113 +1,102 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./Footer.module.css";
 
-const sitemapGroups = [
+const cols = [
   {
-    title: "Sitemap",
+    title: "Practice",
     links: [
-      { label: "Home", href: "#" },
-      { label: "The Reframe", href: "#about" },
-      { label: "Modalities", href: "#services" },
-      { label: "How It Works", href: "#process" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Approach", href: "#approach-intro" },
+      { label: "Services", href: "#services" },
+      { label: "Programs", href: "#pricing" },
+      { label: "Process", href: "#process" },
     ],
   },
   {
-    title: "Resources",
+    title: "Connect",
     links: [
-      { label: "Journal", href: "#journal" },
+      { label: "Discovery Call", href: "#contact" },
+      { label: "Patient Portal", href: "#" },
       { label: "Contact", href: "#contact" },
+      { label: "Instagram", href: "#" },
     ],
   },
   {
-    title: "Legal",
+    title: "About",
     links: [
+      { label: "Dr. Ashley Alden", href: "#" },
+      { label: "Golden Life Wellness", href: "#" },
+      { label: "Press", href: "#" },
       { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
     ],
   },
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+
   return (
-    <footer className={styles.footer}>
-      <div className="container">
-        <div className={styles.newsletter}>
-          <h2 data-reveal className={styles.nlTitle}>
-            Stay in the
-            <br />
-            Know.
-          </h2>
-          <p data-reveal className={styles.nlBody}>
-            Occasional notes on preconception nutrition, functional medicine, TCM, and what the
-            research actually says about preparing your body and your partnership for what comes
-            next.
-          </p>
-          <form className={styles.nlForm} onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="Your email address"
-              className={styles.nlInput}
-              aria-label="Email for newsletter"
-            />
-            <button type="submit" className={`btn btn-primary ${styles.nlBtn}`}>
-              <span className="btn-dot" />
-              Subscribe
-            </button>
-          </form>
-          <p className={styles.nlDisclaimer}>
-            By signing up to receive emails from Conscious Pregnancy, you agree to our Privacy
-            Policy.
-          </p>
-        </div>
-
-        <div className={styles.columns}>
-          {sitemapGroups.map((g) => (
-            <div key={g.title} className={styles.column}>
-              <p className={styles.columnTitle}>{g.title}</p>
-              <nav className={styles.columnNav}>
-                {g.links.map((l) => (
-                  <a key={l.label} href={l.href}>
-                    {l.label}
-                  </a>
-                ))}
-              </nav>
+    <footer id="footer" data-section="footer" className={styles.footer}>
+      <div className={styles.bg} aria-hidden="true" />
+      <div className={styles.veil} aria-hidden="true" />
+      <div className={styles.inner}>
+        <div className={styles.top}>
+          <div>
+            <h2 className={styles.display}>
+              Begin where you <em>actually are.</em>
+            </h2>
+            <p className={styles.sub}>
+              A monthly note from Dr. Alden, slow reading on conscious conception, the body, and the
+              work between knowing and changing.
+            </p>
+            <form
+              className={styles.form}
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <input
+                type="email"
+                placeholder="your email address"
+                aria-label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button type="submit">
+                Subscribe <span className={styles.arrow}>&rarr;</span>
+              </button>
+            </form>
+            <p className={styles.fineprint}>
+              By signing up you agree to our <a href="#">Privacy Policy</a>.
+            </p>
+          </div>
+          <div>
+            <div className={styles.sitemap}>Sitemap</div>
+            <div className={styles.cols}>
+              {cols.map((col) => (
+                <div key={col.title} className={styles.col}>
+                  <h4>{col.title}</h4>
+                  <ul>
+                    {col.links.map((link) => (
+                      <li key={link.label}>
+                        <a href={link.href}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-
-        <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} Conscious Pregnancy. All rights reserved.</p>
-          <div className={styles.social}>
-            <a href="#" aria-label="Instagram">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="5" />
-                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
-                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
-            </a>
+        <div className={styles.bot}>
+          <div className={styles.mark}>
+            conscious <em>pregnancy</em>
+          </div>
+          <div className={styles.meta}>
+            <span>
+              &copy; 2026 Conscious Pregnancy. A Golden Life Wellness practice. Venice, CA.
+            </span>
           </div>
         </div>
       </div>
