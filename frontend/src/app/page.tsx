@@ -21,8 +21,8 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Balance />
         <Services />
+        <Balance />
         <Philosophy />
         <Story
           label="A different starting point."
