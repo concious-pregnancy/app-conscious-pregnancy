@@ -18,7 +18,7 @@
   background-repeat: no-repeat;
   will-change: transform;
   transform-origin: center top;
-  filter: blur(6px) saturate(1.1);
+  filter: none;
 }
 
 /* Aqua tint layer over the blurred background */
@@ -71,31 +71,89 @@
   font-size: 0.75rem !important;
 }
 
-.scrollHint {
+.foot {
   position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.25rem var(--pad-x);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.scrollHint span {
+.footLabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+  white-space: nowrap;
+}
+
+.pillars {
+  display: flex;
+  gap: 2.3rem;
+  justify-self: center;
+  flex-wrap: wrap;
+}
+
+.pillar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pillar svg {
+  flex-shrink: 0;
+  opacity: 0.85;
+  color: var(--sage-light, #7fa69b);
+}
+
+.scrollCue {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.scrollBar {
   display: block;
   width: 1px;
-  height: 42px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent);
-  animation: scrollPulse 2.2s ease-in-out infinite;
+  height: 26px;
+  background: linear-gradient(to bottom, rgba(127, 166, 155, 0.8), transparent);
+  animation: barPulse 2.4s ease-in-out infinite;
+  transform-origin: top;
 }
 
-@keyframes scrollPulse {
+@keyframes barPulse {
   0%,
   100% {
     opacity: 0.3;
-    transform: scaleY(1);
+    transform: scaleY(0.7);
   }
   50% {
-    opacity: 0.7;
-    transform: scaleY(1.15);
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 809px) {
+  .foot {
+    display: none;
   }
 }
 

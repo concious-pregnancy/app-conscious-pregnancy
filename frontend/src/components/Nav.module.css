@@ -14,14 +14,27 @@
 }
 
 .logo {
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
   font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: lowercase;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
   color: var(--white);
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   transition: color 0.3s;
+}
+
+.logoDot {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  line-height: 1;
+  color: var(--sage-light, #7fa69b);
+  position: relative;
+  top: 0.05em;
 }
 
 .links {
@@ -41,6 +54,19 @@
 
 .links a:hover {
   color: var(--white);
+}
+
+.byline {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.scrolled .byline {
+  color: var(--muted);
 }
 
 .cta {
@@ -120,6 +146,10 @@
     padding: 0.75rem 0;
     display: block;
     border-bottom: 1px solid var(--border);
+  }
+
+  .byline {
+    display: none;
   }
 
   .cta {

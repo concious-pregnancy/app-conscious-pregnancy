@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import styles from "./Nav.module.css";
 
 const links = [
-  { href: "#about", label: "The Reframe" },
+  { href: "#about", label: "Pregnancy Prep" },
   { href: "#services", label: "Modalities" },
   { href: "#process", label: "How It Works" },
   { href: "#faq", label: "FAQ" },
@@ -23,7 +23,8 @@ export default function Nav() {
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
       <a href="#" className={styles.logo}>
-        Conscious Pregnancy
+        <span className={styles.logoDot}>•</span>
+        conscious&mdash;pregnancy
       </a>
 
       <ul className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}>
@@ -35,6 +36,8 @@ export default function Nav() {
           </li>
         ))}
       </ul>
+
+      <span className={styles.byline}>Dr. Alden</span>
 
       <a href="#contact" className={`btn btn-primary ${styles.cta}`}>
         <span className="btn-dot" />

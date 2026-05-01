@@ -24,8 +24,61 @@ export default function Hero() {
         </a>
       </div>
 
-      <div className={styles.scrollHint} aria-hidden="true">
-        <span />
+      <div className={styles.foot} aria-hidden="true">
+        <span className={styles.footLabel}>Four lenses · one preparation</span>
+
+        <div className={styles.pillars}>
+          <span className={styles.pillar}>
+            <svg viewBox="0 0 34 22" width="28" height="18" aria-hidden="true">
+              <g fill="currentColor">
+                <rect x="0" y="1" width="34" height="2" />
+                <rect x="0" y="10" width="34" height="2" />
+                <rect x="0" y="19" width="34" height="2" />
+              </g>
+            </svg>
+            Functional Medicine
+          </span>
+          <span className={styles.pillar}>
+            <svg viewBox="0 0 34 22" width="28" height="18" aria-hidden="true">
+              <g fill="currentColor">
+                <rect x="0" y="1" width="14" height="2" />
+                <rect x="20" y="1" width="14" height="2" />
+                <rect x="0" y="10" width="34" height="2" />
+                <rect x="0" y="19" width="14" height="2" />
+                <rect x="20" y="19" width="14" height="2" />
+              </g>
+            </svg>
+            Eastern Medicine
+          </span>
+          <span className={styles.pillar}>
+            <svg viewBox="0 0 34 22" width="28" height="18" aria-hidden="true">
+              <g fill="currentColor">
+                <rect x="0" y="1" width="34" height="2" />
+                <rect x="0" y="10" width="34" height="2" />
+                <rect x="0" y="19" width="14" height="2" />
+                <rect x="20" y="19" width="14" height="2" />
+              </g>
+            </svg>
+            Somatic Therapy
+          </span>
+          <span className={styles.pillar}>
+            <svg viewBox="0 0 34 22" width="28" height="18" aria-hidden="true">
+              <g fill="currentColor">
+                <rect x="0" y="1" width="14" height="2" />
+                <rect x="20" y="1" width="14" height="2" />
+                <rect x="0" y="10" width="14" height="2" />
+                <rect x="20" y="10" width="14" height="2" />
+                <rect x="0" y="19" width="34" height="2" />
+              </g>
+            </svg>
+            Psychedelic Integration
+          </span>
+        </div>
+
+        <div className={styles.scrollCue}>
+          <span>Scroll</span>
+          <span className={styles.scrollBar} />
+        </div>
       </div>
     </section>
   );
