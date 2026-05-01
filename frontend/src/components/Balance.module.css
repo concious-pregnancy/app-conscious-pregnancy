@@ -66,6 +66,16 @@
   overflow: visible;
 }
 
+.icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  color: var(--sage-light);
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+  pointer-events: none;
+}
+
 .arc {
   fill: none;
   stroke: rgba(168, 197, 190, 0.14);

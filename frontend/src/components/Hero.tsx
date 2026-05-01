@@ -5,9 +5,10 @@ const images = [
   { key: "water", src: "/hero/hero-water.jpeg" },
   { key: "eye", src: "/hero/hero-eye.jpeg" },
   { key: "flame", src: "/hero/hero-flame.jpeg" },
+  { key: "kimono", src: "/hero/hero-kimono.jpeg" },
 ] as const;
 
-const ACTIVE_IMAGE = "eye";
+const ACTIVE_IMAGE = "kimono";
 
 const pillars = [
   {
@@ -21,7 +22,7 @@ const pillars = [
     ),
   },
   {
-    label: "Chinese Medicine",
+    label: "Eastern Medicine",
     bars: (
       <>
         <rect x="0" y="1" width="14" height="2" />
@@ -44,7 +45,7 @@ const pillars = [
     ),
   },
   {
-    label: "Psychedelic Integration",
+    label: "Pre-Conception Healing & Integration",
     bars: (
       <>
         <rect x="0" y="1" width="14" height="2" />
@@ -73,38 +74,6 @@ export default function Hero() {
 
       <div className={styles.noise} aria-hidden="true" />
 
-      <div className={styles.orbit} aria-hidden="true">
-        <svg viewBox="-200 -200 400 400">
-          <ellipse
-            className={styles.strokeSoft}
-            cx="0"
-            cy="0"
-            rx="180"
-            ry="130"
-            transform="rotate(-12)"
-          />
-          <ellipse
-            className={styles.strokeSoft}
-            cx="0"
-            cy="0"
-            rx="120"
-            ry="175"
-            transform="rotate(28)"
-          />
-          <ellipse
-            className={styles.strokeAccent}
-            cx="0"
-            cy="0"
-            rx="155"
-            ry="110"
-            transform="rotate(62)"
-          />
-          <circle className={styles.node} cx="-155" cy="-18" r="2.4" />
-          <circle className={styles.node} cx="155" cy="18" r="2.4" />
-          <circle className={styles.node} cx="0" cy="0" r="1.6" style={{ opacity: 0.55 }} />
-        </svg>
-      </div>
-
       <div className={styles.content}>
         <p className={styles.eyebrow}>Preconception Care · Functional Medicine · TCM</p>
 
@@ -118,9 +87,9 @@ export default function Hero() {
 
           <div className={styles.aside}>
             <p className={styles.sub}>
-              A whole-body, whole-partnership preparation for one of the most profound transitions a
-              person can make. We work with both of you, biochemically, energetically, emotionally,
-              in the window before conception.
+              A whole-body, whole-partnership approach to preparing for one of the most profound
+              experiences of your life. What you bring into conception shapes the world your child
+              enters.
             </p>
 
             <div className={styles.ctaRow}>
@@ -153,11 +122,6 @@ export default function Hero() {
                 {p.label}
               </span>
             ))}
-          </div>
-
-          <div className={styles.scrollCue}>
-            <span>Scroll</span>
-            <span className={styles.scrollBar} />
           </div>
         </div>
       </div>

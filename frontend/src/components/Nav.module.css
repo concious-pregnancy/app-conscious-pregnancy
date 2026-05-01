@@ -14,14 +14,26 @@
 }
 
 .logo {
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
   font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: lowercase;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
   color: var(--white);
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   transition: color 0.3s;
+}
+
+.logoTrigram {
+  display: inline-block;
+  color: var(--sage-light);
+  flex-shrink: 0;
+  position: relative;
+  top: 0.1em;
 }
 
 .links {
