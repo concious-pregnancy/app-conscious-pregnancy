@@ -71,7 +71,7 @@ export default function Hero() {
                 <rect x="0" y="19" width="34" height="2" />
               </g>
             </svg>
-            Pre-Conception Healing
+            Pre-Conception Healing & Integration
           </span>
         </div>
 
