@@ -30,8 +30,8 @@ const services = [
     trigram: "☷", // Earth — grounding, body, holding
   },
   {
-    title: "Psychedelic Integration",
-    body: "For those ready to go deeper, psychedelic integration offers a pathway to profound clearing of patterns, beliefs, and emotional or ancestral material.",
+    title: "Pre-Conception Healing & Integration",
+    body: "For those ready to go deeper, this work offers a pathway to profound clearing of patterns, beliefs, and emotional or ancestral material before you conceive.",
     image: "/hero/hero-leaves.jpeg",
     trigram: "☲", // Fire — transformation, insight
   },
