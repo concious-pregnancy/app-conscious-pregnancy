@@ -58,7 +58,7 @@ export default function Services() {
               <div className={styles.cardInner}>
                 <h3 className={styles.cardTitle}>{s.title}</h3>
                 <div className={styles.cardFoot}>
-                  <span className={styles.dotMark} />
+                  <span className={styles.trigram}>☰</span>
                   <a href="#contact">Read More</a>
                 </div>
               </div>

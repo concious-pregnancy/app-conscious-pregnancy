@@ -166,11 +166,11 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-.dotMark {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--sage-light);
+.trigram {
+  font-size: 0.85rem;
+  color: var(--sage-light);
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .cardFoot a {
