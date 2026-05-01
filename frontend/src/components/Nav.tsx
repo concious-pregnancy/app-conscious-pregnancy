@@ -24,7 +24,7 @@ export default function Nav() {
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
       <a href="#" className={styles.logo}>
-        <span className={styles.logoDot}>•</span>
+        <span className={styles.logoTrigram}>☰</span>
         conscious&mdash;pregnancy
       </a>
 

@@ -28,11 +28,10 @@
   transition: color 0.3s;
 }
 
-.logoDot {
-  font-family: var(--font-sans);
-  font-size: 0.55rem;
+.logoTrigram {
+  font-size: 1rem;
   line-height: 1;
-  color: var(--sage-light, #7fa69b);
+  color: var(--sage);
   position: relative;
   top: 0.05em;
 }
