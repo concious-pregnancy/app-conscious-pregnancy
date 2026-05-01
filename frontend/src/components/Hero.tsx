@@ -71,7 +71,7 @@ export default function Hero() {
                 <rect x="0" y="19" width="34" height="2" />
               </g>
             </svg>
-            Psychedelic Integration
+            Pre-Conception Healing
           </span>
         </div>
 
