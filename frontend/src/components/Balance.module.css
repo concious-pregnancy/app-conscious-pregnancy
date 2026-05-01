@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: var(--s10);
+  margin-bottom: var(--s16);
 }
 
 .toggleLabel {
