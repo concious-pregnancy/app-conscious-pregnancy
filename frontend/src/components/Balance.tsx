@@ -39,7 +39,7 @@ export default function Balance() {
           </div>
 
           <div className={`${styles.panel} ${styles.panelDark}`} data-balance-panel="dark">
-            <p className={styles.eyebrow}>The Reframe</p>
+            <p className={styles.eyebrow}>Prepping the Palace</p>
             <h2 className={styles.h2}>Pregnancy prep is more than a checklist.</h2>
             <p className={styles.body}>
               Most preconception advice stops at take your folic acid, track your cycle, check your

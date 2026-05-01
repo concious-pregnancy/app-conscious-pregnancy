@@ -16,7 +16,7 @@
 }
 
 .stage[data-is-dark="true"] {
-  background: var(--dark);
+  background: var(--sage-light);
 }
 
 .stage::after {
@@ -55,7 +55,7 @@
 
 .arc {
   fill: none;
-  stroke: rgba(168, 197, 190, 0.14);
+  stroke: rgba(46, 50, 49, 0.1);
   stroke-width: 1;
 }
 
@@ -109,10 +109,10 @@
   color: var(--muted);
 }
 .panelDark .h2 {
-  color: var(--white);
+  color: var(--dark);
 }
 .panelDark .body {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--muted);
 }
 
 .eyebrow {
@@ -177,7 +177,7 @@
 }
 
 .stage[data-is-dark="true"] .toggleLabel {
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--dark);
 }
 
 .toggle {
@@ -208,8 +208,8 @@
 }
 
 .stage[data-is-dark="true"] .toggle {
-  background: var(--sage);
-  border-color: var(--sage);
+  background: var(--sage-dark);
+  border-color: var(--sage-dark);
 }
 
 .stage[data-is-dark="true"] .toggleDot {
