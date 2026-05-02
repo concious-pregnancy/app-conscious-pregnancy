@@ -28,10 +28,18 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("3. Services")
-                .child(S.documentTypeList("service").title("Services")),
-              S.listItem()
-                .title("3b. Service Extras")
-                .child(S.documentTypeList("serviceExtra").title("Service Extras")),
+                .child(
+                  S.list()
+                    .title("Services")
+                    .items([
+                      S.listItem()
+                        .title("Service Cards")
+                        .child(S.documentTypeList("service").title("Service Cards")),
+                      S.listItem()
+                        .title("Service Extras")
+                        .child(S.documentTypeList("serviceExtra").title("Service Extras")),
+                    ]),
+                ),
               S.listItem()
                 .title("4. Process Steps")
                 .child(
