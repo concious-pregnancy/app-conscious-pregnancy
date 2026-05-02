@@ -7,26 +7,54 @@
 }
 
 :root {
-  /* Design tokens for Conscious Pregnancy */
+  /* ── Color: neutrals ───────────────────────────────────── */
   --white: #ffffff;
   --off-white: #fafafa;
+  --paper: #f5f3ee;
   --dark: #2e3231;
   --dark-mid: #3d4443;
   --muted: #535956;
+
+  /* ── Color: sage (structural accent) ───────────────────── */
   --sage: #7fa69b;
   --sage-dark: #5d8278;
   --sage-light: #a8c5be;
+  --teal-deep: #4a7e76;
+  --teal-deeper: #3d6e68;
+
+  /* ── Color: gold (warm differentiator) ─────────────────── */
+  --gold: #c8a060;
+  --gold-light: #e3c896;
+  --gold-deep: #9a7a44;
+
+  /* ── Color: borders & overlays ─────────────────────────── */
   --border: rgba(46, 50, 49, 0.12);
+  --border-strong: rgba(46, 50, 49, 0.2);
   --border-light: rgba(255, 255, 255, 0.12);
+  --veil: rgba(46, 50, 49, 0.55);
 
-  --font-serif: var(--font-crimson), Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-mono), "Courier New", monospace;
+  /* ── Type: families (--font-crimson/inter/mono injected by next/font) */
+  --font-serif: var(--font-crimson), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 
-  --max-w: 1200px;
-  --pad-x: clamp(1.5rem, 6vw, 5rem);
+  /* ── Layout ───────────────────────────────────────────── */
+  --max-w: 1400px;
+  --pad-x: clamp(24px, 5vw, 80px);
+  --nav-h: 84px;
 
-  /* Spacing scale */
+  /* ── Spacing scale (4px base) ─────────────────────────── */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-24: 96px;
+  --s-32: 128px;
+
+  /* Legacy rem-based scale (kept for existing components) */
   --s1: 0.5rem;
   --s2: 1rem;
   --s3: 1.5rem;
@@ -35,6 +63,26 @@
   --s8: 4rem;
   --s12: 6rem;
   --s16: 8rem;
+
+  /* ── Radii ────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* ── Elevation ────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(46, 50, 49, 0.06);
+  --shadow-md: 0 8px 24px -10px rgba(46, 50, 49, 0.12);
+  --shadow-lg: 0 20px 50px -20px rgba(46, 50, 49, 0.15);
+  --shadow-xl: 0 30px 80px -30px rgba(46, 50, 49, 0.25);
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 200ms;
+  --dur-mid: 350ms;
+  --dur-slow: 1100ms;
 }
 
 html {
@@ -67,7 +115,7 @@ button {
   background: none;
 }
 
-/* ── Utility ─────────────────────────────────────────────── */
+/* ── Layout utility ──────────────────────────────────────── */
 .container {
   width: 100%;
   max-width: var(--max-w);
@@ -78,20 +126,130 @@ button {
 }
 
 .section {
-  padding: var(--s12) var(--pad-x);
+  padding: var(--s-24) var(--pad-x);
 }
 
+/* ── Type utility classes ────────────────────────────────── */
+
+/* Hero display — Crimson Text, very large, italic accent line */
+.t-display {
+  font-family: var(--font-serif);
+  font-size: clamp(3.4rem, 8.4vw, 8.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+}
+.t-display em {
+  font-style: italic;
+  color: var(--sage-light);
+}
+
+/* Section serif heading */
+.t-h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+.t-h1 em {
+  font-style: italic;
+  color: var(--sage-dark);
+}
+
+/* Utility / service section heading — Inter */
+.t-h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+/* Card title */
+.t-h3 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+
+/* Body */
+.t-body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 46ch;
+}
+.t-body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* Pull quote */
+.t-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--dark);
+}
+
+/* Eyebrow / mono label */
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+.t-label-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.t-label-eyebrow::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* Logo wordmark */
+.t-logo {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Italic accent helpers */
+.t-italic-sage {
+  font-style: italic;
+  color: var(--sage);
+}
+.t-italic-gold {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* ── Legacy type utilities (kept for existing components) ─── */
 .section-label {
   font-family: var(--font-mono);
   font-size: 0.63rem;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--sage);
   margin-bottom: var(--s2);
 }
 
-/* Crimson Text serif heading — large brand sections */
 .section-title {
   font-family: var(--font-serif);
   font-size: clamp(2.75rem, 6vw, 5rem);
@@ -107,7 +265,6 @@ button {
   color: var(--sage-dark);
 }
 
-/* Inter heading — functional/utility sections */
 .section-title-sans {
   font-family: var(--font-sans);
   font-size: clamp(2rem, 4vw, 3rem);
@@ -118,7 +275,6 @@ button {
   margin-bottom: var(--s3);
 }
 
-/* Decorative large display number/word in sage */
 .display-sage {
   font-family: var(--font-serif);
   font-size: clamp(5rem, 12vw, 9.5rem);
@@ -140,18 +296,18 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  /* Asymmetric: extra right padding for the dot indicator (ClearPath pattern) */
   padding: 0.75rem 2.75rem 0.75rem 1.25rem;
-  border-radius: 999px;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   transition:
-    background 0.25s,
-    color 0.25s,
-    transform 0.2s,
-    border-color 0.25s;
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
   white-space: nowrap;
 }
 
@@ -168,7 +324,7 @@ button {
 .btn-ghost {
   background: transparent;
   color: var(--dark);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
 }
 
 .btn-ghost:hover {
@@ -179,25 +335,25 @@ button {
 .btn-ghost-light {
   background: transparent;
   color: var(--white);
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 .btn-ghost-light:hover {
-  border-color: var(--sage-light);
-  color: var(--sage-light);
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* ── Dot indicator (ClearPath animated dot) ──────────────── */
+/* ── Dot indicator ───────────────────────────────────────── */
 .btn-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: currentColor;
-  opacity: 0.6;
+  opacity: 0.85;
   flex-shrink: 0;
 }
 
-/* ── Dark surface ────────────────────────────────────────── */
+/* ── Surface helpers ─────────────────────────────────────── */
 .surface-dark {
   background: var(--dark);
   color: var(--white);
@@ -208,7 +364,12 @@ button {
   color: var(--dark);
 }
 
-/* ── Noise overlay (ClearPath texture) ───────────────────── */
+.surface-paper {
+  background: var(--paper);
+  color: var(--dark);
+}
+
+/* ── Noise overlay (fractalNoise texture on dark surfaces) ── */
 .noise-overlay {
   position: relative;
 }
@@ -219,6 +380,7 @@ button {
   inset: 0;
   pointer-events: none;
   opacity: 0.035;
+  mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px;
@@ -227,7 +389,7 @@ button {
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 809px) {
   .section {
-    padding: var(--s8) var(--pad-x);
+    padding: var(--s-16) var(--pad-x);
   }
   .hide-mobile {
     display: none !important;
@@ -243,5 +405,13 @@ button {
 @media (min-width: 1200px) {
   .hide-desktop {
     display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
