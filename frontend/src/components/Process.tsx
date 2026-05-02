@@ -43,10 +43,9 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Two-column scroll: left steps scroll naturally, right number panel is sticky */}
       <div className={styles.track} data-section="process">
         <div className={styles.inner}>
-          {/* Left: each step occupies ~100vh of natural scroll */}
+          {/* Left: naturally scrolling step text */}
           <div className={styles.steps}>
             {steps.map((s, i) => (
               <div key={s.num} className={styles.step} data-process-step={i}>
@@ -56,14 +55,21 @@ export default function Process() {
             ))}
           </div>
 
-          {/* Right: sticky 100vh panel — each full number ("01"…"04") slides
-              a full viewport height in/out via GSAP yPercent: ±100 */}
+          {/* Right: sticky panel — "0" is completely static, only the digit slides.
+              numPanel is overflow:hidden and 100vh tall; digits travel y:±100vh
+              so they enter from below the viewport and exit above it. */}
           <div className={styles.numPanel}>
-            {steps.map((s, i) => (
-              <div key={s.num} className={styles.numItem} data-process-numitem={i}>
-                <span className={styles.numDisplay}>{s.num}</span>
+            <div className={styles.numContent}>
+              <span className={styles.numZero}>0</span>
+              {/* Slot is overflow:visible so digits escape and numPanel clips them */}
+              <div className={styles.numSlot}>
+                {steps.map((s, i) => (
+                  <span key={s.num} className={styles.numDigit} data-process-digit={i}>
+                    {i + 1}
+                  </span>
+                ))}
               </div>
-            ))}
+            </div>
 
             <div className={styles.progress} data-process-progress>
               {steps.map((s, i) => (

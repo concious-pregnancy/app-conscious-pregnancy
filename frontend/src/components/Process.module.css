@@ -80,6 +80,10 @@
 }
 
 /* ── Left: naturally-scrolling steps ─────────────────── */
+.steps {
+  /* natural block flow, no special positioning needed */
+}
+
 .step {
   min-height: 100vh;
   display: flex;
@@ -107,7 +111,10 @@
 }
 
 /* ── Right: sticky 100vh panel ───────────────────────── */
-/* overflow:hidden clips numbers as they travel a full viewport height */
+/* overflow:hidden is the clip boundary — digits travel ±100vh
+   and are clipped here, not inside a smaller inner container.
+   ::before/::after create colour-matched fade zones at top/bottom
+   so digits dissolve before hitting the hard clip edge. */
 .numPanel {
   position: sticky;
   top: 0;
@@ -115,27 +122,68 @@
   overflow: hidden;
 }
 
-/* Each full number ("01"–"04") fills the panel and is centred.
-   GSAP translates yPercent ±100 = one full viewport height of travel,
-   so the number enters from below the screen and exits above it. */
-.numItem {
+.numPanel::before,
+.numPanel::after {
+  content: "";
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  height: 28%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.numPanel::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--off-white) 0%, transparent 100%);
+}
+
+.numPanel::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--off-white) 0%, transparent 100%);
+}
+
+/* Flex row: static "0" + the animated digit slot, centred vertically */
+.numContent {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  will-change: transform, opacity;
-}
-
-.numDisplay {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  /* +25% over the previous size that felt right */
+  /* Font properties on the parent so em units resolve consistently */
+  font-family: var(--font-inter), var(--font-sans);
+  font-weight: 500;
   font-size: clamp(190px, 23vw, 350px);
   line-height: 0.88;
   letter-spacing: -0.04em;
   color: var(--sage);
   user-select: none;
+}
+
+/* "0" never moves */
+.numZero {
+  flex-shrink: 0;
+}
+
+/* Slot that holds the animated digits.
+   overflow:visible lets digits escape upward/downward so numPanel clips them.
+   Width/height sized to one digit character. */
+.numSlot {
+  position: relative;
+  flex-shrink: 0;
+  overflow: visible;
+  /* ~0.6em wide for a single digit; height matches the visible glyph cap */
+  width: 0.6em;
+  height: 0.9em;
+}
+
+/* Each digit is absolutely stacked inside the slot.
+   GSAP sets y: '100vh' for off-screen-below, y: '-100vh' for off-screen-above,
+   y: 0 for the active digit. numPanel's overflow:hidden does the clipping. */
+.numDigit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform, opacity;
 }
 
 /* Progress dots */
@@ -189,11 +237,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .numItem {
+  .numDigit {
     opacity: 1 !important;
     transform: none !important;
   }
-  .numItem:not([data-process-numitem="0"]) {
+  .numDigit:not([data-process-digit="0"]) {
     display: none;
   }
 }

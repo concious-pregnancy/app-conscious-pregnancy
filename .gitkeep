@@ -1,0 +1,10 @@
+This directory holds the app, which lives in its own git repo.
+Clone it here:
+
+  gh repo clone dfp-side-hustle/app-conscious-pregnance app
+  git clone git@github.com:dfp-side-hustle/app-conscious-pregnance.git app
+  git clone https://github.com/dfp-side-hustle/app-conscious-pregnance.git app
+
+Once cloned, app/ becomes the working tree of the app repo. This .gitkeep
+file is the only thing under app/ tracked by the cowork meta repo; the
+.gitignore ignores everything else (see app/* + !app/.gitkeep pattern).
