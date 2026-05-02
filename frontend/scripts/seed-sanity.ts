@@ -224,7 +224,7 @@ async function seed() {
   const mutations = allDocs.map((doc) => ({ create: doc as any }));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const result = await client.mutate(mutations) as any;
+  const result = (await client.mutate(mutations)) as any;
   console.log(`Created ${result.results.length} documents.`);
   console.log("Done.");
 }

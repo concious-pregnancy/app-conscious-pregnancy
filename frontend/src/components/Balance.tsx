@@ -1,6 +1,32 @@
 import styles from "./Balance.module.css";
 
-export default function Balance() {
+type BalanceContent = {
+  invitationEyebrow?: string;
+  invitationHeading?: string;
+  invitationBody?: string;
+  palaceEyebrow?: string;
+  palaceHeading?: string;
+  palaceBody?: string;
+  palaceCtaLabel?: string;
+} | null;
+
+export default function Balance({ content }: { content?: BalanceContent }) {
+  const invitationEyebrow = content?.invitationEyebrow ?? "The Invitation";
+  const invitationHeading =
+    content?.invitationHeading ??
+    "The health and vitality you bring into conception is the very first gift you give your child.";
+  const invitationBody =
+    content?.invitationBody ??
+    "Conscious Pregnancy starts here: with the understanding that what you bring into conception shapes the world your child enters. A body prepared. A relationship strengthened. A home made ready.";
+  const palaceEyebrow = content?.palaceEyebrow ?? "Prepping the Palace";
+  const palaceHeading =
+    content?.palaceHeading ??
+    "Both partners. One window. The most important preparation you will ever make.";
+  const palaceBody =
+    content?.palaceBody ??
+    "In TCM, the palace is prepared before the new life takes up residence. The 90-day preconception window is that preparation. What you bring into conception, physically, emotionally, energetically, becomes the very first environment your child knows.";
+  const palaceCtaLabel = content?.palaceCtaLabel ?? "Start Your Journey Together";
+
   return (
     <section id="about" data-section="balance" className={styles.balance}>
       <div className={styles.stage} data-balance-stage>
@@ -40,16 +66,9 @@ export default function Balance() {
                 fill="none"
               />
             </svg>
-            <p className={styles.eyebrow}>The Invitation</p>
-            <h2 className={styles.h2}>
-              The health and vitality you bring into conception is the very first gift you give your
-              child.
-            </h2>
-            <p className={styles.body}>
-              Conscious Pregnancy starts here: with the understanding that what you bring into
-              conception shapes the world your child enters. A body prepared. A relationship
-              strengthened. A home made ready.
-            </p>
+            <p className={styles.eyebrow}>{invitationEyebrow}</p>
+            <h2 className={styles.h2}>{invitationHeading}</h2>
+            <p className={styles.body}>{invitationBody}</p>
           </div>
 
           <div className={`${styles.panel} ${styles.panelDark}`} data-balance-panel="dark">
@@ -73,18 +92,12 @@ export default function Balance() {
                 fill="none"
               />
             </svg>
-            <p className={styles.eyebrow}>Prepping the Palace</p>
-            <h2 className={styles.h2}>
-              Both partners. One window. The most important preparation you will ever make.
-            </h2>
-            <p className={styles.body}>
-              In TCM, the palace is prepared before the new life takes up residence. The 90-day
-              preconception window is that preparation. What you bring into conception, physically,
-              emotionally, energetically, becomes the very first environment your child knows.
-            </p>
+            <p className={styles.eyebrow}>{palaceEyebrow}</p>
+            <h2 className={styles.h2}>{palaceHeading}</h2>
+            <p className={styles.body}>{palaceBody}</p>
             <div className={styles.cta}>
               <a href="#contact" className="btn btn-ghost-light">
-                Start Your Journey Together
+                {palaceCtaLabel}
                 <span className="btn-dot" />
               </a>
             </div>

@@ -47,3 +47,47 @@ export const testimonialQuery = groq`*[_type == "testimonial"][0] {
   body,
   ctaLabel
 }`;
+
+export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
+  eyebrow,
+  headlineLine1,
+  headlineLine2,
+  subheading,
+  primaryCtaLabel,
+  secondaryCtaLabel,
+  credentials,
+  footLabel
+}`;
+
+export const balanceSectionQuery = groq`*[_type == "balanceSection"][0] {
+  invitationEyebrow,
+  invitationHeading,
+  invitationBody,
+  palaceEyebrow,
+  palaceHeading,
+  palaceBody,
+  palaceCtaLabel
+}`;
+
+export const listenSectionQuery = groq`*[_type == "listenSection"][0] {
+  quote,
+  attribution
+}`;
+
+export const statsSectionQuery = groq`*[_type == "statsSection"][0] {
+  intro,
+  stats[] { value, label }
+}`;
+
+export const processSectionQuery = groq`*[_type == "processSection"][0] {
+  lede,
+  steps[] { title, body }
+}`;
+
+export const credentialsSectionQuery = groq`*[_type == "credentialsSection"][0] {
+  label,
+  title,
+  body,
+  body2,
+  ctaLabel
+}`;

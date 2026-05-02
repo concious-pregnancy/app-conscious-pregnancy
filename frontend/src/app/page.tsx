@@ -24,46 +24,78 @@ import {
   serviceExtrasQuery,
   journalArticlesQuery,
   testimonialQuery,
+  heroSectionQuery,
+  balanceSectionQuery,
+  listenSectionQuery,
+  statsSectionQuery,
+  processSectionQuery,
+  credentialsSectionQuery,
 } from "@/lib/sanity/queries";
 
 export default async function Home() {
   const fetchOpts = { cache: "no-store" } as const;
-  const [faqs, pricingTiers, services, serviceExtras, journalArticles, testimonial] =
-    await Promise.all([
-      client.fetch(faqsQuery, {}, fetchOpts),
-      client.fetch(pricingTiersQuery, {}, fetchOpts),
-      client.fetch(servicesQuery, {}, fetchOpts),
-      client.fetch(serviceExtrasQuery, {}, fetchOpts),
-      client.fetch(journalArticlesQuery, {}, fetchOpts),
-      client.fetch(testimonialQuery, {}, fetchOpts),
-    ]);
+  const [
+    faqs,
+    pricingTiers,
+    services,
+    serviceExtras,
+    journalArticles,
+    testimonial,
+    heroContent,
+    balanceContent,
+    listenContent,
+    statsContent,
+    processContent,
+    credentialsContent,
+  ] = await Promise.all([
+    client.fetch(faqsQuery, {}, fetchOpts),
+    client.fetch(pricingTiersQuery, {}, fetchOpts),
+    client.fetch(servicesQuery, {}, fetchOpts),
+    client.fetch(serviceExtrasQuery, {}, fetchOpts),
+    client.fetch(journalArticlesQuery, {}, fetchOpts),
+    client.fetch(testimonialQuery, {}, fetchOpts),
+    client.fetch(heroSectionQuery, {}, fetchOpts),
+    client.fetch(balanceSectionQuery, {}, fetchOpts),
+    client.fetch(listenSectionQuery, {}, fetchOpts),
+    client.fetch(statsSectionQuery, {}, fetchOpts),
+    client.fetch(processSectionQuery, {}, fetchOpts),
+    client.fetch(credentialsSectionQuery, {}, fetchOpts),
+  ]);
 
   return (
     <>
       <Nav />
       <main>
-        <Hero />
-        <Balance />
+        <Hero content={heroContent} />
+        <Balance content={balanceContent} />
         <Services services={services} extras={serviceExtras} />
         {!FLAGS.OMIT_SECTIONS.philosophy && <Philosophy />}
-        <Process />
+        <Process content={processContent} />
         <Story
           id="credentials"
-          label="Support Grounded in Experience"
-          title="Eastern and Western medicine, one practice, one purpose."
-          body="Dr. Ashley Alden holds a Doctorate in Acupuncture and Chinese Medicine (DACM) and a Master of Traditional Oriental Medicine (MTOM). She is a licensed acupuncturist (L.Ac.) with specialized training in functional medicine, somatic healing, and psychedelic integration for preconception and postpartum care."
-          body2="Her practice brings together functional lab analysis, acupuncture, nervous system regulation, and trauma-informed bodywork into a single, integrated model. The result is care that addresses root causes rather than isolated symptoms, preparing the whole person for conception, pregnancy, and beyond."
-          ctaLabel="Learn More About Ashley"
+          label={credentialsContent?.label ?? "Support Grounded in Experience"}
+          title={
+            credentialsContent?.title ?? "Eastern and Western medicine, one practice, one purpose."
+          }
+          body={
+            credentialsContent?.body ??
+            "Dr. Ashley Alden holds a Doctorate in Acupuncture and Chinese Medicine (DACM) and a Master of Traditional Oriental Medicine (MTOM). She is a licensed acupuncturist (L.Ac.) with specialized training in functional medicine, somatic healing, and psychedelic integration for preconception and postpartum care."
+          }
+          body2={
+            credentialsContent?.body2 ??
+            "Her practice brings together functional lab analysis, acupuncture, nervous system regulation, and trauma-informed bodywork into a single, integrated model. The result is care that addresses root causes rather than isolated symptoms, preparing the whole person for conception, pregnancy, and beyond."
+          }
+          ctaLabel={credentialsContent?.ctaLabel ?? "Learn More About Ashley"}
           image="/hero/hero-eye.jpeg"
           image2="/hero/hero-kimono.jpeg"
         />
         <Ready />
         <Pricing tiers={pricingTiers} />
         {!FLAGS.OMIT_SECTIONS.approach && <Approach />}
-        <Listen />
+        <Listen content={listenContent} />
         {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
         <Journal articles={journalArticles} />
-        {!FLAGS.OMIT_SECTIONS.stats && <Stats />}
+        {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
         <FAQ items={faqs} />
         <Contact />
       </main>

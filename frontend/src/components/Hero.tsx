@@ -59,7 +59,29 @@ const pillars = [
   },
 ];
 
-export default function Hero() {
+type HeroContent = {
+  eyebrow?: string;
+  headlineLine1?: string;
+  headlineLine2?: string;
+  subheading?: string;
+  primaryCtaLabel?: string;
+  secondaryCtaLabel?: string;
+  credentials?: string;
+  footLabel?: string;
+} | null;
+
+export default function Hero({ content }: { content?: HeroContent }) {
+  const eyebrow = content?.eyebrow ?? "Preconception Care · Functional Medicine · TCM";
+  const line1 = content?.headlineLine1 ?? "Before the Baby,";
+  const line2 = content?.headlineLine2 ?? "There Is You.";
+  const subheading =
+    content?.subheading ??
+    "A whole-body, whole-partnership approach to preparing for one of the most profound experiences of your life. What you bring into conception shapes the world your child enters.";
+  const primaryCta = content?.primaryCtaLabel ?? "Start the Journey";
+  const secondaryCta = content?.secondaryCtaLabel ?? "The Approach";
+  const credentials = content?.credentials ?? "Dr. Ashley Alden · DACM · L.Ac.";
+  const footLabel = content?.footLabel ?? "Four lenses · one preparation";
+
   return (
     <section id="top" data-section="hero" className={styles.hero}>
       <div className={styles.media} data-hero-media aria-hidden="true">
@@ -76,43 +98,46 @@ export default function Hero() {
       <div className={styles.noise} aria-hidden="true" />
 
       <div className={styles.content}>
-        <p className={styles.eyebrow}>Preconception Care · Functional Medicine · TCM</p>
+        <p className={styles.eyebrow}>{eyebrow}</p>
 
         <div className={styles.headlineRow}>
           <h1 className={styles.h1}>
-            <span className={styles.line1}>Before the Baby,</span>
+            <span className={styles.line1}>{line1}</span>
             <em className={styles.line2}>
-              There Is <span className={styles.you}>You.</span>
+              {line2.includes("You.") ? (
+                <>
+                  {line2.replace("You.", "")}
+                  <span className={styles.you}>You.</span>
+                </>
+              ) : (
+                line2
+              )}
             </em>
           </h1>
 
           <div className={styles.aside}>
-            <p className={styles.sub}>
-              A whole-body, whole-partnership approach to preparing for one of the most profound
-              experiences of your life. What you bring into conception shapes the world your child
-              enters.
-            </p>
+            <p className={styles.sub}>{subheading}</p>
 
             <div className={styles.ctaRow}>
               <a href="#contact" className={`btn btn-primary ${styles.ctaBtn}`}>
-                Start the Journey
+                {primaryCta}
                 <span className="btn-dot" />
               </a>
               <a href="#about" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
-                The Approach
+                {secondaryCta}
                 <span className="btn-dot" />
               </a>
             </div>
 
             <div className={styles.asideMeta}>
-              <span>Dr.&nbsp;Ashley&nbsp;Alden · DACM · L.Ac.</span>
+              <span>{credentials}</span>
               <span className={styles.rule} />
             </div>
           </div>
         </div>
 
         <div className={styles.foot}>
-          <span className={styles.footLabel}>Four lenses · one preparation</span>
+          <span className={styles.footLabel}>{footLabel}</span>
 
           <div className={styles.pillars}>
             {pillars.map((p) => (
