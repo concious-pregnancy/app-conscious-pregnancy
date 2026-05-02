@@ -6,12 +6,12 @@
 
 /* ── Header ───────────────────────────────────────────────────── */
 .head {
-  max-width: 1200px;
+  max-width: 720px;
   margin: 0 auto 4rem;
-  text-align: left;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25rem;
 }
 
