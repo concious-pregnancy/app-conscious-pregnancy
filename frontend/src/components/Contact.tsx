@@ -33,7 +33,7 @@ export default function Contact() {
             <p className={styles.trustLine}>Trusted by 80+ clients</p>
             <p className={styles.trustContact}>
               Prefer to chat first?{" "}
-              <a href="mailto:hello@consciouspregnancy.com" className={styles.trustLink}>
+              <a href="mailto:hello@consciouspregnancy.care" className={styles.trustLink}>
                 Send us an email
               </a>{" "}
               or connect with us on social.
