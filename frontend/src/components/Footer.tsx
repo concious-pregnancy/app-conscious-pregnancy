@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "./Footer.module.css";
 
-const cols = [
+const sitemap = [
   [
     { label: "Approach", href: "#about" },
     { label: "Services", href: "#services" },
@@ -60,21 +60,17 @@ export default function Footer() {
               By signing up you agree to our <a href="#">Privacy Policy</a>.
             </p>
           </div>
-          <div>
-            <div className={styles.sitemap}>Sitemap</div>
-            <div className={styles.cols}>
-              {cols.map((col, i) => (
-                <div key={i} className={styles.col}>
-                  <ul>
-                    {col.map((link) => (
-                      <li key={link.label}>
-                        <a href={link.href}>{link.label}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+
+          <div className={styles.sitemap}>
+            {sitemap.map((col, i) => (
+              <ul key={i} className={styles.sitemapCol}>
+                {col.map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            ))}
           </div>
         </div>
         <div className={styles.bot}>

@@ -84,18 +84,30 @@ export default function Hero({ content }: { content?: HeroContent }) {
 
   return (
     <section id="top" data-section="hero" className={styles.hero}>
-      <div className={styles.media} data-hero-media aria-hidden="true">
-        {images.map((img) => (
-          <div
-            key={img.key}
-            className={`${styles.img} ${img.key === ACTIVE_IMAGE ? styles.imgActive : ""}`}
-            style={{ backgroundImage: `url(${img.src})` }}
-            {...(img.key === ACTIVE_IMAGE ? { "data-hero-primary": "" } : {})}
-          />
-        ))}
+      {/* Teal backdrop — sticky, never masked. Persists when photo fades. */}
+      <div className={styles.tealShell} aria-hidden="true">
+        <div className={styles.tealSticky}>
+          <div className={styles.tealBg} />
+        </div>
       </div>
 
-      <div className={styles.noise} aria-hidden="true" />
+      {/* Photo layer — sticky and masked. Fades during Balance scroll
+          to reveal the teal beneath. */}
+      <div className={styles.mediaShell} aria-hidden="true">
+        <div className={styles.mediaSticky} data-hero-media>
+          <div className={styles.media}>
+            {images.map((img) => (
+              <div
+                key={img.key}
+                className={`${styles.img} ${img.key === ACTIVE_IMAGE ? styles.imgActive : ""}`}
+                style={{ backgroundImage: `url(${img.src})` }}
+                {...(img.key === ACTIVE_IMAGE ? { "data-hero-primary": "" } : {})}
+              />
+            ))}
+          </div>
+          <div className={styles.noise} />
+        </div>
+      </div>
 
       <div className={styles.content}>
         <p className={styles.eyebrow}>{eyebrow}</p>
