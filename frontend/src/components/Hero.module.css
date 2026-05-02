@@ -12,7 +12,7 @@
 
 /* ── Photo layer ───────────────────────────────────────────── */
 .media {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 0;
 }
