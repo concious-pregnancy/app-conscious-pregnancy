@@ -12,8 +12,7 @@ const whereOptions = [
 
 export default function Contact() {
   return (
-    <section id="contact" data-section="contact" className={`${styles.contact} noise-overlay`}>
-      <div className={styles.bg} />
+    <section id="contact" data-section="contact" className={styles.contact}>
       <div className={`container ${styles.inner}`}>
         <div className={styles.left}>
           <p data-reveal className={styles.label}>
@@ -29,13 +28,26 @@ export default function Contact() {
             We will talk through where you are, what you want to optimize, and whether this program
             is the right fit.
           </p>
+
+          <div className={styles.trust}>
+            <p className={styles.trustLine}>Trusted by 80+ clients</p>
+            <p className={styles.trustContact}>
+              Prefer to chat first?{" "}
+              <a href="mailto:hello@consciouspregnancy.com" className={styles.trustLink}>
+                Send us an email
+              </a>{" "}
+              or connect with us on social.
+            </p>
+          </div>
         </div>
 
         <form className={styles.form} onSubmit={(e) => e.preventDefault()} data-reveal>
+          <p className={styles.formHeading}>Tell us about you.</p>
+
           <div className={styles.row}>
             <div className={styles.field}>
               <label htmlFor="firstName" className={styles.fieldLabel}>
-                First name
+                First Name
               </label>
               <input
                 type="text"
@@ -47,7 +59,7 @@ export default function Contact() {
             </div>
             <div className={styles.field}>
               <label htmlFor="lastName" className={styles.fieldLabel}>
-                Last name
+                Last Name
               </label>
               <input
                 type="text"
@@ -74,7 +86,7 @@ export default function Contact() {
 
           <div className={styles.field}>
             <label htmlFor="phone" className={styles.fieldLabel}>
-              Phone (optional)
+              Phone Number
             </label>
             <input
               type="tel"
@@ -85,8 +97,8 @@ export default function Contact() {
             />
           </div>
 
-          <fieldset className={styles.field}>
-            <legend className={styles.fieldLabel}>Where are you in the process?</legend>
+          <fieldset className={styles.fieldset}>
+            <legend className={styles.formHeading}>Where are you in the process?</legend>
             <div className={styles.options}>
               {whereOptions.map((opt) => (
                 <label key={opt} className={styles.option}>
@@ -98,9 +110,7 @@ export default function Contact() {
           </fieldset>
 
           <div className={styles.field}>
-            <label htmlFor="message" className={styles.fieldLabel}>
-              Tell us about you
-            </label>
+            <p className={styles.formHeading}>Tell Us About You.</p>
             <textarea
               id="message"
               name="message"

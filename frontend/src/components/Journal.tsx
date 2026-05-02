@@ -20,19 +20,19 @@ const articles = [
     title: "Methylfolate vs. Folic Acid: Why the Difference Matters.",
     excerpt:
       "Up to 60% of people carry an MTHFR variant that limits their ability to convert synthetic folic acid into the active form the body can use. Here is what to take instead and why.",
-    image: "/hero-pic.webp",
+    image: "/journal/flower.jpg",
   },
   {
     title: "Your Microbiome Shapes Your Baby's Immune System.",
     excerpt:
       "The bacteria colonizing your gut and birth canal are the first organisms your baby encounters. What the research shows about maternal microbiome and infant health outcomes.",
-    image: "/hero-pic.webp",
+    image: "/journal/hand.jpg",
   },
   {
     title: "The 90-Day Window: Why Preconception Prep Starts Now.",
     excerpt:
       "Sperm take 74 days to mature. Egg quality is influenced by the environment it develops in months before ovulation. The foundation of your child's health is built before the pregnancy test.",
-    image: "/hero-pic.webp",
+    image: "/journal/wildflowers.jpg",
   },
 ];
 
@@ -41,14 +41,43 @@ export default function Journal() {
     <section id="journal" data-section="journal" className={`section ${styles.journal}`}>
       <div className="container">
         <div className={styles.header}>
-          <p data-reveal className="section-label">
-            Journal
+          <svg className={styles.lotusIcon} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <path
+              d="M20 34c0 0-10-6-10-14a10 10 0 0 1 10-10 10 10 0 0 1 10 10c0 8-10 14-10 14Z"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M20 10c0 0-6-6-13-4C4 8 4 15 8 19c3 3 7 4 12 3"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M20 10c0 0 6-6 13-4 3 2 3 9-1 13-3 3-7 4-12 3"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <p data-reveal className={styles.eyebrow}>
+            Our Journal
           </p>
           <h2 data-reveal className={styles.title}>
-            Evidence, not
-            <br />
-            <em>opinion.</em>
+            Evidence, not <em>opinion.</em>
           </h2>
+          <p data-reveal className={styles.sub}>
+            Reflections, research, and practical tools grounded in functional medicine and Chinese
+            medicine. Written for women who want to understand, not just follow.
+          </p>
+          <a href="#" className={`btn ${styles.browseBtn}`}>
+            Browse Insights
+            <span className="btn-dot" />
+          </a>
         </div>
 
         <div className={styles.grid}>
@@ -58,7 +87,6 @@ export default function Journal() {
             return (
               <article key={a.title} className={styles.card} data-stagger>
                 <div className={styles.cardImageWrap}>
-                  {/* Decorative outline blob */}
                   <svg
                     className={styles.blobOutline}
                     viewBox={blob.viewBox}
@@ -67,7 +95,6 @@ export default function Journal() {
                   >
                     <path d={blob.path} stroke="var(--sage)" strokeWidth="1" opacity="0.21" />
                   </svg>
-                  {/* Clip path definition */}
                   <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
                     <defs>
                       <clipPath id={clipId} clipPathUnits="objectBoundingBox">

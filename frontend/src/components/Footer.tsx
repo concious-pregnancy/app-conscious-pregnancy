@@ -4,33 +4,22 @@ import { useState } from "react";
 import styles from "./Footer.module.css";
 
 const cols = [
-  {
-    title: "Practice",
-    links: [
-      { label: "Approach", href: "#approach-intro" },
-      { label: "Services", href: "#services" },
-      { label: "Programs", href: "#pricing" },
-      { label: "Process", href: "#process" },
-    ],
-  },
-  {
-    title: "Connect",
-    links: [
-      { label: "Discovery Call", href: "#contact" },
-      { label: "Patient Portal", href: "#" },
-      { label: "Contact", href: "#contact" },
-      { label: "Instagram", href: "#" },
-    ],
-  },
-  {
-    title: "About",
-    links: [
-      { label: "Dr. Ashley Alden", href: "#" },
-      { label: "Golden Life Wellness", href: "#" },
-      { label: "Press", href: "#" },
-      { label: "Privacy Policy", href: "#" },
-    ],
-  },
+  [
+    { label: "Approach", href: "#about" },
+    { label: "Services", href: "#services" },
+    { label: "Programs", href: "#pricing" },
+    { label: "Process", href: "#process" },
+    { label: "Discovery Call", href: "#contact" },
+    { label: "Patient Portal", href: "#" },
+  ],
+  [
+    { label: "Contact", href: "#contact" },
+    { label: "Instagram", href: "#" },
+    { label: "Dr. Ashley Alden", href: "#credentials" },
+    { label: "Golden Life Wellness", href: "#" },
+    { label: "Press", href: "#" },
+    { label: "Privacy Policy", href: "#" },
+  ],
 ];
 
 export default function Footer() {
@@ -64,7 +53,7 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button type="submit">
-                Subscribe <span className={styles.arrow}>&rarr;</span>
+                Subscribe <span className={styles.arrow} />
               </button>
             </form>
             <p className={styles.fineprint}>
@@ -74,11 +63,10 @@ export default function Footer() {
           <div>
             <div className={styles.sitemap}>Sitemap</div>
             <div className={styles.cols}>
-              {cols.map((col) => (
-                <div key={col.title} className={styles.col}>
-                  <h4>{col.title}</h4>
+              {cols.map((col, i) => (
+                <div key={i} className={styles.col}>
                   <ul>
-                    {col.links.map((link) => (
+                    {col.map((link) => (
                       <li key={link.label}>
                         <a href={link.href}>{link.label}</a>
                       </li>

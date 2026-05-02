@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Balance from "@/components/Balance";
 import Services from "@/components/Services";
 import Philosophy from "@/components/Philosophy";
+import { FLAGS } from "@/flags";
 import Story from "@/components/Story";
 import Process from "@/components/Process";
 import Ready from "@/components/Ready";
@@ -24,22 +25,25 @@ export default function Home() {
         <Hero />
         <Balance />
         <Services />
-        <Philosophy />
+        {!FLAGS.OMIT_SECTIONS.philosophy && <Philosophy />}
+        <Process />
         <Story
-          label="A Different Starting Point."
-          title="She came in thinking her hormones were fine."
-          body="Standard bloodwork had flagged nothing. But a full functional panel told a different story: subclinical hypothyroidism, low vitamin D, and an MTHFR variant she had never heard of. Three months later, her numbers and her energy were both transformed."
+          id="credentials"
+          label="Support Grounded in Experience"
+          title="Eastern and Western medicine, one practice, one purpose."
+          body="Dr. Ashley Alden holds a Doctorate in Acupuncture and Chinese Medicine (DACM) and a Master of Traditional Oriental Medicine (MTOM). She is a licensed acupuncturist (L.Ac.) with specialized training in functional medicine, somatic healing, and psychedelic integration for preconception and postpartum care."
+          body2="Her practice brings together functional lab analysis, acupuncture, nervous system regulation, and trauma-informed bodywork into a single, integrated model. The result is care that addresses root causes rather than isolated symptoms, preparing the whole person for conception, pregnancy, and beyond."
+          ctaLabel="Learn More About Ashley"
           image="/hero/hero-eye.jpeg"
           image2="/hero/hero-kimono.jpeg"
         />
-        <Process />
         <Ready />
         <Pricing />
-        <Approach />
+        {!FLAGS.OMIT_SECTIONS.approach && <Approach />}
         <Listen />
-        <RealStories />
+        {!FLAGS.OMIT_SECTIONS.realStories && <RealStories />}
         <Journal />
-        <Stats />
+        {!FLAGS.OMIT_SECTIONS.stats && <Stats />}
         <FAQ />
         <Contact />
       </main>
