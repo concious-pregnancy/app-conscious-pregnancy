@@ -148,11 +148,12 @@
 }
 
 .h2 {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
-  line-height: 1.18;
-  letter-spacing: -0.03em;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   max-width: 22ch;
   margin-bottom: 1.75rem;
   text-wrap: balance;

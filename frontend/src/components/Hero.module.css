@@ -4,7 +4,7 @@
   width: 100%;
   overflow: hidden;
   isolation: isolate;
-  background: var(--dark);
+  background: var(--teal-deep);
   color: var(--white);
   --nav-h: 84px;
   --accent: var(--sage-light);
@@ -25,9 +25,9 @@
   background: radial-gradient(
     ellipse 60% 55% at 50% 50%,
     rgba(90, 130, 120, 0) 0%,
-    rgba(90, 130, 120, 0.12) 45%,
-    rgba(70, 110, 100, 0.55) 75%,
-    rgba(55, 90, 82, 0.82) 100%
+    rgba(90, 130, 120, 0.08) 45%,
+    rgba(70, 110, 100, 0.32) 75%,
+    rgba(55, 90, 82, 0.52) 100%
   );
 }
 
@@ -36,7 +36,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(180deg, rgba(46, 50, 49, 0) 55%, rgba(46, 50, 49, 0.55) 100%);
+  background: linear-gradient(180deg, rgba(74, 126, 118, 0) 30%, rgba(74, 126, 118, 1) 100%);
 }
 
 .img {
