@@ -133,7 +133,21 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
-@media (max-width: 809px) {
+/* Begin Your Journey CTA flips to white-on-dark over the footer so the
+   sage-on-sage blend disappears against the dark wave background. */
+.scrolled.overFooter .cta {
+  background: var(--white) !important;
+  color: var(--dark) !important;
+}
+
+.scrolled.overFooter .cta:hover {
+  background: var(--off-white) !important;
+}
+
+/* Tablet + phone: collapse to logo + hamburger. The 5-item desktop link
+   row + CTA doesn't fit until ~1100px wide, so iPad Mini (768) and most
+   tablets need the mobile pattern. */
+@media (max-width: 1000px) {
   .links {
     display: none;
     position: absolute;
@@ -165,5 +179,23 @@
 
   .menuBtn {
     display: block;
+  }
+}
+
+/* iPhone-only: stack the logo on top of the MENU button and center
+   them so the long brand text doesn't crowd the pill button at the
+   right edge. Tablet keeps the side-by-side row. */
+@media (max-width: 600px) {
+  .nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem var(--pad-x);
+  }
+  .logo {
+    margin-right: 0;
+  }
+  .menuBtn {
+    margin: 0;
   }
 }

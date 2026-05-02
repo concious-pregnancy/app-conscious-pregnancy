@@ -1,6 +1,13 @@
 .footer {
   position: relative;
-  background: #2e3231;
+  /* min-height keeps the footer at least one viewport tall so it fills
+     the screen when scrolled to page bottom and the nav-transparency
+     trigger fires reliably. svh matches the small viewport on iOS so
+     the footer doesn't get clipped under the URL bar at the bottom. */
+  min-height: 100svh;
+  /* Brighter teal base, closer to the ClearPath template. The wave bg
+     image sits over this and the veil tints it down. */
+  background: #2c5560;
   color: var(--off-white);
   overflow: hidden;
   isolation: isolate;
@@ -32,7 +39,9 @@
 .veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(46, 50, 49, 0.45) 0%, rgba(46, 50, 49, 0.72) 100%);
+  /* Lighter veil to keep the brighter teal base reading through the
+     wave image instead of muddying it down to dark gray. */
+  background: linear-gradient(to bottom, rgba(35, 65, 75, 0.25) 0%, rgba(35, 65, 75, 0.45) 100%);
   z-index: 0;
   pointer-events: none;
 }
@@ -50,6 +59,56 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 5rem;
   padding-bottom: 6rem;
+}
+
+/* Sitemap: two link columns next to the email signup on desktop, stacks
+   under it on tablet + mobile (handled in the responsive rules below). */
+.sitemap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-content: start;
+}
+
+.sitemapCol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Sitemap links: Inter sans-serif 18px weight 400, mixed case — verified
+   from ClearPath via artifacts/footer-fonts/fonts.json. Earlier these
+   were Crimson serif 24px which read as a different design language. */
+.sitemapCol a {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--off-white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.sitemapCol a:hover {
+  color: var(--white);
+}
+
+@media (max-width: 1000px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .sitemap {
+    gap: 1rem 2rem;
+  }
+  .sitemapCol a {
+    font-size: 1rem;
+  }
 }
 
 .display {
@@ -80,7 +139,7 @@
 .form {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid rgba(168, 197, 190, 0.55);
+  gap: 1rem;
   max-width: 30rem;
 }
 
@@ -88,6 +147,7 @@
   flex: 1;
   background: transparent;
   border: none;
+  border-bottom: 1px solid rgba(168, 197, 190, 0.55);
   outline: none;
   color: #ffffff;
   font-family: var(--font-sans);

@@ -121,6 +121,24 @@ export default function MotionProvider() {
             },
           );
 
+          // Thread reveal runs noticeably slower than the dome flatten.
+          // Trigger range = 125vh (vs 80vh for the dome) so the squiggle
+          // keeps drawing well past the section reaching viewport top.
+          gsap.fromTo(
+            listenWrap,
+            { "--thread": 0 },
+            {
+              "--thread": 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: listenSection,
+                start: "top 80%",
+                end: "top -45%",
+                scrub: true,
+              },
+            },
+          );
+
           // Subtle Ken Burns drift across full section
           const listenImage = listenSection.querySelector<HTMLElement>(`[data-listen-wrap] > div`);
           if (listenImage) {

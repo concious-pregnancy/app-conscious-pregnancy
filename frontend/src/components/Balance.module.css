@@ -146,12 +146,16 @@
 }
 
 .h2 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-style: italic;
-  font-size: clamp(2rem, 3.8vw, 3.2rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  /* ClearPath's Toggle heading is Inter (sans), 44px, weight 500,
+     letter-spacing -0.04em, line-height 1.2 — verified via Playwright
+     extraction (artifacts/toggle-fonts/fonts.json). Earlier we had
+     Crimson serif italic which is why the type didn't match. */
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-style: normal;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
   max-width: 22ch;
   margin-bottom: 1.75rem;
   text-wrap: balance;
@@ -234,6 +238,29 @@
 @media (max-width: 1000px) {
   .h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+}
+
+@media (max-width: 1000px) {
+  /* Center "Prepping the Palace" + Invitation copy on tablet + mobile so
+     the panel reads as a single centered unit rather than left-rag. */
+  .panel,
+  .panel .eyebrow,
+  .panel .h2,
+  .panel .body {
+    text-align: center;
+  }
+  .panel .h2,
+  .panel .body {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Icon above each panel sits as a block element by default which keeps
+     it pinned left. Auto margins + block display center it under the
+     centered eyebrow/headline. */
+  .panel .icon {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 

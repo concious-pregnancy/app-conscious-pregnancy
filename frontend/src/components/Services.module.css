@@ -309,11 +309,21 @@
 }
 
 @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
+  /* Five-item secondary strip: 2 per row, 5th cell spans the full row.
+     This block sits after the desktop + 1100px strip rules so it wins
+     in the cascade at iPhone widths. */
+  .strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem 1rem;
   }
-  .col:nth-child(n) .card {
-    margin-top: 0;
-    height: 380px;
+  .stripItem {
+    padding: 1.5rem 0 0 0 !important;
+    border-right: none !important;
+  }
+  .stripItem:not(:first-child) {
+    padding-left: 0 !important;
+  }
+  .stripItem:nth-child(5) {
+    grid-column: 1 / -1;
   }
 }

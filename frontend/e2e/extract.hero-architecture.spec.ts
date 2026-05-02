@@ -94,18 +94,14 @@ test("dump Framer template hero stack architecture", async ({ page }) => {
     { names: TARGET_NAMES, props: COMPUTED_PROPS },
   );
 
-  await writeFile(
-    path.join(OUT_DIR, "scroll-y-0.json"),
-    JSON.stringify(report, null, 2),
-    "utf-8",
-  );
+  await writeFile(path.join(OUT_DIR, "scroll-y-0.json"), JSON.stringify(report, null, 2), "utf-8");
 
   await page.screenshot({
     path: path.join(OUT_DIR, "scroll-y-0.png"),
     fullPage: false,
   });
 
-  const heights = (report.byName as Record<string, Array<{ rect: { height: number; top: number } }>>);
+  const heights = report.byName as Record<string, Array<{ rect: { height: number; top: number } }>>;
   const imageContainerH = heights["Image Container"]?.[0]?.rect.height ?? 0;
   const heroH = heights.Hero?.[0]?.rect.height ?? 0;
 
@@ -118,13 +114,18 @@ test("dump Framer template hero stack architecture", async ({ page }) => {
   ];
 
   for (const stop of stops) {
-    await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior }), stop.y);
+    await page.evaluate(
+      (y) => window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior }),
+      stop.y,
+    );
     await page.waitForTimeout(700);
 
     const stopReport = await page.evaluate(
       ({ names, props }) => {
         const out: Record<string, unknown> = {};
-        const allElements = Array.from(document.querySelectorAll<HTMLElement>("[data-framer-name]"));
+        const allElements = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-framer-name]"),
+        );
         for (const name of names) {
           const matches = allElements.filter((el) => el.dataset.framerName === name);
           out[name] = matches.map((el) => {

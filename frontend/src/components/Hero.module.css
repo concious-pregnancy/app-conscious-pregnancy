@@ -46,8 +46,12 @@
   height: 400vh;
   z-index: 1;
   pointer-events: none;
-  mask: linear-gradient(#000 25%, transparent 50%);
-  -webkit-mask: linear-gradient(#000 25%, transparent 50%);
+  /* Fade window 15%–45% of the 400vh shell = scrollY 60vh → 180vh.
+     Wider 120vh gradient softens the alpha slope so the photo doesn't
+     show a visible horizontal seam against the teal underneath; still
+     finishes before Balance is fully pinned (~scrollY 200vh). */
+  mask: linear-gradient(#000 15%, transparent 45%);
+  -webkit-mask: linear-gradient(#000 15%, transparent 45%);
 }
 
 .mediaSticky {
@@ -137,7 +141,11 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* Solid white + subtle dark shadow so the eyebrow stays legible
+     across the warm tones of the hero photo where the prior sage tint
+     was washing out into the background. */
+  color: var(--white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   padding-top: 0.8rem;
   opacity: 0;
   animation: heroRise 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s forwards;
@@ -349,6 +357,43 @@
   }
   .pillars {
     gap: 1.2rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  /* Pillar row: 2-column grid at tablet + phone widths. The four labels
+     are too long to fit one row from iPad-Mini-and-down. */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.2rem;
+    width: 100%;
+  }
+  .pillar {
+    white-space: normal;
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Stack the CTA buttons vertically — at iPhone width the side-by-side
+     row pushes "The Approach" off the right edge. */
+  .ctaRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ctaBtn {
+    justify-content: center;
+  }
+
+  /* Eyebrow + credentials lines wrap instead of overflowing. */
+  .eyebrow,
+  .asideMeta {
+    flex-wrap: wrap;
+  }
+
+  .pillar {
+    font-size: 0.6rem;
   }
 }
 

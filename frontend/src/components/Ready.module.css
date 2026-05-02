@@ -220,9 +220,22 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   .ready {
     padding: 6rem var(--pad-x) 7rem;
+    text-align: center;
+  }
+  .ready .inner {
+    place-items: center;
+    justify-items: center;
+  }
+  /* .left + .right are flex columns with align-items: flex-start at
+     desktop, which collapses each child to its content width and pins
+     it to the left. Override to center on tablet + mobile so the H2,
+     sub, pill, and avatars all read centered under each column. */
+  .left,
+  .right {
+    align-items: center;
   }
 }
 
