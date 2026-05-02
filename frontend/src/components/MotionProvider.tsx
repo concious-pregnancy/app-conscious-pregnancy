@@ -322,7 +322,7 @@ export default function MotionProvider() {
           gsap.to(processDigits[prev], {
             yPercent: forward ? -110 : 110,
             autoAlpha: 0,
-            duration: 0.45,
+            duration: 0.9,
             ease: "power2.inOut",
             overwrite: true,
           });
@@ -331,7 +331,7 @@ export default function MotionProvider() {
           gsap.fromTo(
             processDigits[i],
             { yPercent: forward ? 110 : -110, autoAlpha: 0 },
-            { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: "power2.inOut", overwrite: true },
+            { yPercent: 0, autoAlpha: 1, duration: 0.9, ease: "power2.inOut", overwrite: true },
           );
 
           processDots.forEach((d, idx) => {

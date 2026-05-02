@@ -50,7 +50,6 @@ export default function Process() {
           <div className={styles.steps}>
             {steps.map((s, i) => (
               <div key={s.num} className={styles.step} data-process-step={i}>
-                <span className={styles.stepEyebrow}>{s.num}</span>
                 <h3 className={styles.stepTitle}>{s.title}</h3>
                 <p className={styles.stepBody}>{s.body}</p>
               </div>

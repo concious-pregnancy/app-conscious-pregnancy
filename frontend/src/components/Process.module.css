@@ -93,15 +93,6 @@
   max-width: 46ch;
 }
 
-.stepEyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--sage);
-  margin-bottom: 1.5rem;
-}
-
 .stepTitle {
   font-family: var(--font-serif);
   font-weight: 400;
@@ -137,9 +128,9 @@
   align-items: flex-start;
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(160px, 20vw, 320px);
+  font-size: clamp(240px, 32vw, 520px);
   line-height: 0.88;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.03em;
   color: var(--sage);
   user-select: none;
 }
