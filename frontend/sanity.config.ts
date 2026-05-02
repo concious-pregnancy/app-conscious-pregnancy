@@ -7,6 +7,7 @@ export default defineConfig({
   projectId: "ih14cr70",
   dataset: "production",
   title: "Conscious Pregnancy",
+  basePath: "/studio",
   schema: {
     types: schemaTypes,
   },
