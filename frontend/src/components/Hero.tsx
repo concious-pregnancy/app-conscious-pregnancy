@@ -6,9 +6,10 @@ const images = [
   { key: "eye", src: "/hero/hero-eye.jpeg" },
   { key: "flame", src: "/hero/hero-flame.jpeg" },
   { key: "kimono", src: "/hero/hero-kimono.jpeg" },
+  { key: "golden", src: "/hero/hero-golden.jpg" },
 ] as const;
 
-const ACTIVE_IMAGE = "kimono";
+const ACTIVE_IMAGE = "golden";
 
 const pillars = [
   {

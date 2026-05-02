@@ -257,6 +257,7 @@
 .stripItem {
   padding: 2rem 1.5rem 2rem 0;
   border-right: 1px solid rgba(46, 50, 49, 0.1);
+  padding-right: 1.5rem;
 }
 
 .stripItem:last-child {
@@ -297,10 +298,22 @@
   .strip {
     grid-template-columns: repeat(3, 1fr);
   }
+  .stripItem:nth-child(3) {
+    border-right: none;
+    padding-right: 0;
+  }
+  .stripItem:nth-child(4) {
+    padding-left: 0;
+    border-right: 1px solid rgba(46, 50, 49, 0.1);
+  }
 }
 
 @media (max-width: 600px) {
-  .strip {
+  .grid {
     grid-template-columns: 1fr;
+  }
+  .col:nth-child(n) .card {
+    margin-top: 0;
+    height: 380px;
   }
 }

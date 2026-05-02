@@ -16,10 +16,10 @@
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: var(--dark);
+  background: #4a7e76;
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% 35%, rgba(168, 197, 190, 0.28) 0%, transparent 70%),
-    linear-gradient(180deg, #2a3633 0%, #1f2a27 100%);
+    radial-gradient(ellipse 90% 70% at 40% 40%, rgba(200, 225, 200, 0.22) 0%, transparent 65%),
+    linear-gradient(140deg, #3d6e68 0%, #4f8a80 45%, #5a9285 100%);
   transition:
     background 0.8s cubic-bezier(0.5, 0.05, 0.2, 1),
     background-image 0.8s cubic-bezier(0.5, 0.05, 0.2, 1);

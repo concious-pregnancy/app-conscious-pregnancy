@@ -116,26 +116,41 @@ export default function MotionProvider() {
           );
         });
 
-        // ── Listen: arc-flatten on scroll, scrubbed via ScrollTrigger ────
+        // ── Listen: arc-flatten + blur exit ──────────────────────────
         const listenSection = document.querySelector<HTMLElement>('[data-section="listen"]');
         const listenWrap = listenSection?.querySelector<HTMLElement>("[data-listen-wrap]");
         if (listenSection && listenWrap) {
-          // Animate the --arc CSS custom property from 0 (arched) to 1 (flat)
-          gsap.fromTo(
-            listenWrap,
-            { "--arc": 0 },
-            {
-              "--arc": 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: listenSection,
-                start: "top top",
-                end: "70% top",
-                scrub: 1,
-              },
+          // Phase 1: arc flattens from 0→1 as section scrolls into view.
+          // Direct style.setProperty avoids GSAP CSS-var interpolation quirks and scrub lag.
+          ScrollTrigger.create({
+            trigger: listenSection,
+            start: "top top",
+            end: "60% top",
+            scrub: true,
+            onUpdate: (self) => {
+              listenWrap.style.setProperty("--arc", String(self.progress));
             },
-          );
-          // Subtle Ken Burns drift on the image as it pins
+          });
+
+          // Phase 2: blur + fade edges as section exits viewport.
+          ScrollTrigger.create({
+            trigger: listenSection,
+            start: "60% top",
+            end: "bottom top",
+            scrub: true,
+            onUpdate: (self) => {
+              const blur = self.progress * 14;
+              const opacity = 1 - self.progress * 0.65;
+              listenWrap.style.filter = `blur(${blur}px)`;
+              listenWrap.style.opacity = String(opacity);
+            },
+            onLeaveBack: () => {
+              listenWrap.style.filter = "";
+              listenWrap.style.opacity = "";
+            },
+          });
+
+          // Subtle Ken Burns drift across full section
           const listenImage = listenSection.querySelector<HTMLElement>(`[data-listen-wrap] > div`);
           if (listenImage) {
             gsap.fromTo(
@@ -149,7 +164,7 @@ export default function MotionProvider() {
                   trigger: listenSection,
                   start: "top top",
                   end: "bottom top",
-                  scrub: 1,
+                  scrub: true,
                 },
               },
             );

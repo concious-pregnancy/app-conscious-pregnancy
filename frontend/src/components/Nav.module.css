@@ -108,6 +108,31 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
+/* Override scrolled styles when nav is over the dark footer */
+.scrolled.overFooter {
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.scrolled.overFooter .logo {
+  color: var(--white);
+}
+
+.scrolled.overFooter .links a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.scrolled.overFooter .links a:hover {
+  color: var(--white);
+}
+
+.scrolled.overFooter .menuBtn {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
 @media (max-width: 809px) {
   .links {
     display: none;

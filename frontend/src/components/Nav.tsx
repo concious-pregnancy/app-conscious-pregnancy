@@ -13,16 +13,26 @@ const links = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [overFooter, setOverFooter] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 60);
+      const footer = document.getElementById("footer");
+      if (footer) {
+        setOverFooter(y + 64 >= footer.offsetTop);
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
+    <nav
+      className={`${styles.nav} ${scrolled ? styles.scrolled : ""} ${overFooter ? styles.overFooter : ""}`}
+    >
       <a href="#" className={styles.logo}>
         <svg
           className={styles.logoTrigram}
