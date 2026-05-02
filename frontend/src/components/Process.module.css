@@ -119,7 +119,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  overflow: hidden;
+  /* No overflow:hidden here — digit clipping is handled by numDigitWrap */
 }
 
 /* "0X" display — "0" is static, digit slot clips the animated span */
@@ -128,11 +128,11 @@
   align-items: flex-start;
   font-family: var(--font-serif);
   font-weight: 400;
-  /* Size tuned so "0X" fills ~85% of the right column without overflowing */
-  font-size: clamp(180px, 22vw, 340px);
+  /* Size tuned so "0X" fills ~75% of the right column without overflowing */
+  font-size: clamp(150px, 18vw, 280px);
   line-height: 0.88;
-  /* Positive spacing pushes "0" and digit clearly apart */
-  letter-spacing: 0.1em;
+  /* Match ClearPath: -0.04em tight spacing */
+  letter-spacing: -0.04em;
   color: var(--sage);
   user-select: none;
 }
@@ -148,8 +148,8 @@
   overflow: hidden;
   /* 0.9em tracks the effective cap height at the current font-size */
   height: 0.9em;
-  /* Wide enough for the widest single numeral in the serif font */
-  width: 0.72em;
+  /* Wide enough for the widest numeral ("4","8","9") in the serif font */
+  width: 0.9em;
   flex-shrink: 0;
 }
 
