@@ -80,16 +80,12 @@
 }
 
 /* ── Left: naturally-scrolling steps ─────────────────── */
-.steps {
-  /* Normal block flow — height drives the scroll track length */
-}
-
 .step {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 0 4rem;
+  padding: 4rem 0;
   max-width: 46ch;
 }
 
@@ -110,56 +106,36 @@
   color: var(--muted);
 }
 
-/* ── Right: sticky number panel ──────────────────────── */
+/* ── Right: sticky 100vh panel ───────────────────────── */
+/* overflow:hidden clips numbers as they travel a full viewport height */
 .numPanel {
   position: sticky;
   top: 0;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  /* No overflow:hidden here — digit clipping is handled by numDigitWrap */
+  overflow: hidden;
 }
 
-/* "0X" display — "0" is static, digit slot clips the animated span */
-.numDisplay {
+/* Each full number ("01"–"04") fills the panel and is centred.
+   GSAP translates yPercent ±100 = one full viewport height of travel,
+   so the number enters from below the screen and exits above it. */
+.numItem {
+  position: absolute;
+  inset: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-end;
+  will-change: transform, opacity;
+}
+
+.numDisplay {
   font-family: var(--font-serif);
   font-weight: 400;
-  /* Size tuned so "0X" fills ~75% of the right column without overflowing */
-  font-size: clamp(150px, 18vw, 280px);
+  /* +25% over the previous size that felt right */
+  font-size: clamp(190px, 23vw, 350px);
   line-height: 0.88;
-  /* Match ClearPath: -0.04em tight spacing */
   letter-spacing: -0.04em;
   color: var(--sage);
   user-select: none;
-}
-
-.numPrefix {
-  /* inherits font from .numDisplay */
-}
-
-/* Clips the entering/exiting digits — must be position:relative so
-   overflow:hidden catches absolutely-positioned children translated outside */
-.numDigitWrap {
-  position: relative;
-  overflow: hidden;
-  /* 0.9em tracks the effective cap height at the current font-size */
-  height: 0.9em;
-  /* Wide enough for the widest numeral ("4","8","9") in the serif font */
-  width: 0.9em;
-  flex-shrink: 0;
-}
-
-/* All digits overlap at top-left; GSAP translates them in and out */
-.numDigit {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  will-change: transform, opacity;
 }
 
 /* Progress dots */
@@ -183,7 +159,7 @@
   opacity: 1;
 }
 
-/* ── Mobile: single-column stacked list ──────────────── */
+/* ── Mobile: stacked list, no sticky number ──────────── */
 @media (max-width: 810px) {
   .intro {
     padding: 6rem var(--pad-x) 3rem;
@@ -213,12 +189,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .numDigit {
+  .numItem {
     opacity: 1 !important;
     transform: none !important;
   }
-  /* Show only the first digit for reduced motion */
-  .numDigit:not([data-process-digit="0"]) {
+  .numItem:not([data-process-numitem="0"]) {
     display: none;
   }
 }

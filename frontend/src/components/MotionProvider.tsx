@@ -288,50 +288,47 @@ export default function MotionProvider() {
         }
       }
 
-      // ── Process: sticky digit animation, driven by ScrollTrigger + GSAP ──
-      // Left column steps scroll naturally. Right panel is CSS-sticky.
-      // Only the digit ("1"/"2"/"3"/"4") animates: outgoing slides up,
-      // incoming slides in from below (reversed when scrolling back up).
+      // ── Process: full-number viewport-height slide, ScrollTrigger + GSAP ──
+      // Left column steps scroll naturally. Right sticky panel shows "01"–"04"
+      // as full items that travel yPercent ±100 (= one full 100vh of travel),
+      // matching ClearPath: number enters from below screen, exits above it.
       const processTrack = document.querySelector<HTMLElement>('[data-section="process"]');
-      const processSteps = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-step]"))
-        : [];
-      const processDigits = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-digit]"))
+      const processNumItems = processTrack
+        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-numitem]"))
         : [];
       const processDots = processTrack
         ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-progress] > span"))
         : [];
 
-      if (processTrack && processDigits.length > 0) {
-        const n = processDigits.length;
+      if (processTrack && processNumItems.length > 0) {
+        const n = processNumItems.length;
 
-        // Initial state: digit 0 visible, rest waiting below
-        gsap.set(processDigits[0], { yPercent: 0, autoAlpha: 1 });
-        processDigits.slice(1).forEach((d) => gsap.set(d, { yPercent: 110, autoAlpha: 0 }));
+        // Initial state: numitem 0 centred, rest waiting one full viewport below
+        gsap.set(processNumItems[0], { yPercent: 0, autoAlpha: 1 });
+        processNumItems.slice(1).forEach((el) => gsap.set(el, { yPercent: 100, autoAlpha: 0 }));
 
         let current = 0;
 
-        const setDigit = (i: number) => {
+        const setNumber = (i: number) => {
           if (i === current) return;
           const prev = current;
           const forward = i > prev;
           current = i;
 
-          // Outgoing: slide up (forward) or slide down (backward)
-          gsap.to(processDigits[prev], {
-            yPercent: forward ? -110 : 110,
+          // Outgoing: slides a full viewport height up (or down when scrolling back)
+          gsap.to(processNumItems[prev], {
+            yPercent: forward ? -100 : 100,
             autoAlpha: 0,
-            duration: 1.8,
+            duration: 3.5,
             ease: "power2.inOut",
             overwrite: true,
           });
 
-          // Incoming: enter from below (forward) or from above (backward)
+          // Incoming: enters from one full viewport height below (or above)
           gsap.fromTo(
-            processDigits[i],
-            { yPercent: forward ? 110 : -110, autoAlpha: 0 },
-            { yPercent: 0, autoAlpha: 1, duration: 1.8, ease: "power2.inOut", overwrite: true },
+            processNumItems[i],
+            { yPercent: forward ? 100 : -100, autoAlpha: 0 },
+            { yPercent: 0, autoAlpha: 1, duration: 3.5, ease: "power2.inOut", overwrite: true },
           );
 
           processDots.forEach((d, idx) => {
@@ -339,20 +336,17 @@ export default function MotionProvider() {
           });
         };
 
-        // Use the steps container height as the scroll track (content-driven, not fixed height)
-        const stepsEl =
+        const stepsParent =
           processTrack.querySelector<HTMLElement>("[data-process-step]")?.parentElement;
         ScrollTrigger.create({
-          trigger: processSteps[0]?.parentElement ?? processTrack,
+          trigger: stepsParent ?? processTrack,
           start: "top top",
           end: "bottom bottom",
           onUpdate: (self) => {
             const idx = Math.min(n - 1, Math.max(0, Math.floor(self.progress * n * 0.999)));
-            setDigit(idx);
+            setNumber(idx);
           },
         });
-
-        void stepsEl; // suppress unused warning
       }
 
       // ── Philosophy: word-by-word reveal, driven by ScrollTrigger ───────

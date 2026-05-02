@@ -43,10 +43,10 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Two-column scroll: left steps scroll naturally, right digit stays sticky */}
+      {/* Two-column scroll: left steps scroll naturally, right number panel is sticky */}
       <div className={styles.track} data-section="process">
         <div className={styles.inner}>
-          {/* Left: each step gets ~100vh of scroll space */}
+          {/* Left: each step occupies ~100vh of natural scroll */}
           <div className={styles.steps}>
             {steps.map((s, i) => (
               <div key={s.num} className={styles.step} data-process-step={i}>
@@ -56,19 +56,14 @@ export default function Process() {
             ))}
           </div>
 
-          {/* Right: sticky number panel — "0" is static, digit slot animates */}
+          {/* Right: sticky 100vh panel — each full number ("01"…"04") slides
+              a full viewport height in/out via GSAP yPercent: ±100 */}
           <div className={styles.numPanel}>
-            <div className={styles.numDisplay}>
-              <span className={styles.numPrefix}>0</span>
-              {/* All digits stacked in one grid cell; GSAP moves them in/out */}
-              <div className={styles.numDigitWrap}>
-                {steps.map((s, i) => (
-                  <span key={s.num} className={styles.numDigit} data-process-digit={i}>
-                    {i + 1}
-                  </span>
-                ))}
+            {steps.map((s, i) => (
+              <div key={s.num} className={styles.numItem} data-process-numitem={i}>
+                <span className={styles.numDisplay}>{s.num}</span>
               </div>
-            </div>
+            ))}
 
             <div className={styles.progress} data-process-progress>
               {steps.map((s, i) => (
