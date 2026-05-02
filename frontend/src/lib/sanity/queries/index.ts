@@ -21,7 +21,7 @@ export const servicesQuery = groq`*[_type == "service"] | order(order asc) {
   title,
   titleLine2,
   body,
-  imagePath,
+  image,
   trigram
 }`;
 
@@ -71,7 +71,8 @@ export const balanceSectionQuery = groq`*[_type == "balanceSection"][0] {
 
 export const listenSectionQuery = groq`*[_type == "listenSection"][0] {
   quote,
-  attribution
+  attribution,
+  image
 }`;
 
 export const statsSectionQuery = groq`*[_type == "statsSection"][0] {
@@ -89,5 +90,7 @@ export const credentialsSectionQuery = groq`*[_type == "credentialsSection"][0] 
   title,
   body,
   body2,
-  ctaLabel
+  ctaLabel,
+  image,
+  image2
 }`;

@@ -17,6 +17,7 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { client } from "@/lib/sanity/client";
+import { urlFor } from "@/lib/sanity/image";
 import {
   faqsQuery,
   pricingTiersQuery,
@@ -86,8 +87,16 @@ export default async function Home() {
             "Her practice brings together functional lab analysis, acupuncture, nervous system regulation, and trauma-informed bodywork into a single, integrated model. The result is care that addresses root causes rather than isolated symptoms, preparing the whole person for conception, pregnancy, and beyond."
           }
           ctaLabel={credentialsContent?.ctaLabel ?? "Learn More About Ashley"}
-          image="/hero/hero-eye.jpeg"
-          image2="/hero/hero-kimono.jpeg"
+          image={
+            credentialsContent?.image?.asset
+              ? urlFor(credentialsContent.image).width(1200).url()
+              : "/hero/hero-eye.jpeg"
+          }
+          image2={
+            credentialsContent?.image2?.asset
+              ? urlFor(credentialsContent.image2).width(1200).url()
+              : "/hero/hero-kimono.jpeg"
+          }
         />
         <Ready />
         <Pricing tiers={pricingTiers} />

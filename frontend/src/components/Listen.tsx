@@ -1,8 +1,12 @@
+import { urlFor } from "@/lib/sanity/image";
 import styles from "./Listen.module.css";
+
+type SanityImage = { asset?: { _ref: string } };
 
 type ListenContent = {
   quote?: string;
   attribution?: string;
+  image?: SanityImage;
 } | null;
 
 export default function Listen({ content }: { content?: ListenContent }) {
@@ -11,6 +15,9 @@ export default function Listen({ content }: { content?: ListenContent }) {
     "The body is always speaking. Learning to listen is where the deepest healing begins.";
   const attribution =
     content?.attribution ?? "Dr. Ashley Alden, DACM · L.Ac. · Founder of Conscious Pregnancy";
+  const imgUrl = content?.image?.asset
+    ? urlFor(content.image).width(1600).url()
+    : "/hero/hero-water.jpeg";
 
   return (
     <section id="listen" data-section="listen" className={styles.listen}>
@@ -18,7 +25,7 @@ export default function Listen({ content }: { content?: ListenContent }) {
         <div className={styles.imageWrap} data-listen-wrap>
           <div
             className={styles.image}
-            style={{ backgroundImage: "url('/hero/hero-water.jpeg')" }}
+            style={{ backgroundImage: `url('${imgUrl}')` }}
             aria-hidden="true"
           />
           <div className={styles.curve} aria-hidden="true">

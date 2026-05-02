@@ -24,10 +24,10 @@ export const serviceType = defineType({
       rows: 3,
     }),
     defineField({
-      name: "imagePath",
-      title: "Image Path",
-      type: "string",
-      description: "Path to an image in the public folder, e.g. /hero/hero-water.jpeg",
+      name: "image",
+      title: "Card Image",
+      type: "image",
+      options: { hotspot: true },
     }),
     defineField({
       name: "trigram",
