@@ -78,12 +78,6 @@ export default function MotionProvider() {
             onUpdate: (self) => {
               heroMedia.style.opacity = String(1 - self.progress);
             },
-            onLeave: () => {
-              heroMedia.style.visibility = "hidden";
-            },
-            onEnterBack: () => {
-              heroMedia.style.visibility = "visible";
-            },
             onLeaveBack: () => {
               heroMedia.style.opacity = "1";
             },
