@@ -4,7 +4,7 @@
   width: 100%;
   overflow: hidden;
   isolation: isolate;
-  background: var(--teal-deeper);
+  background: var(--teal-deep);
   color: var(--white);
   --nav-h: 84px;
   --accent: var(--sage-light);
@@ -36,7 +36,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(180deg, rgba(61, 110, 104, 0) 30%, rgba(61, 110, 104, 0.96) 100%);
+  background: linear-gradient(180deg, rgba(74, 126, 118, 0) 30%, rgba(74, 126, 118, 1) 100%);
 }
 
 .img {
