@@ -64,25 +64,8 @@ export default function MotionProvider() {
           });
         });
 
-        // ── Hero image dissolve: fade photo layer as hero exits ─────────
-        // Uses onUpdate (not a tween) to bypass CSS transition conflicts on
-        // the .img children. Triggers on the hero section itself so the
-        // scroll math is anchored to a known position regardless of Lenis.
-        const heroSection = document.querySelector<HTMLElement>('section[data-section="hero"]');
-        const heroMedia = heroSection?.querySelector<HTMLElement>("[data-hero-media]");
-        if (heroSection && heroMedia) {
-          ScrollTrigger.create({
-            trigger: heroSection,
-            start: "top top",
-            end: "bottom top",
-            onUpdate: (self) => {
-              heroMedia.style.opacity = String(1 - self.progress);
-            },
-            onLeaveBack: () => {
-              heroMedia.style.opacity = "1";
-            },
-          });
-        }
+        // Hero photo dissolve is handled in CSS via the 400vh sticky shell
+        // with a linear-gradient mask in Hero.module.css. No JS opacity here.
 
         // ── General data-parallax-speed ──────────────────────────────────
         gsap.utils.toArray<HTMLElement>("[data-parallax-speed]").forEach((el) => {

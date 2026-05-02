@@ -2,19 +2,67 @@
   position: relative;
   min-height: 100svh;
   width: 100%;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--teal-deep);
+  overflow: visible;
   color: var(--white);
   --nav-h: 84px;
   --accent: var(--sage-light);
+}
+
+/* ── Two-layer sticky stack ─────────────────────────────────
+   tealShell: always-on teal backdrop, sticky 100vh, never masked.
+   mediaShell: photo + noise, sticky 100vh, masked so the photo
+   dissolves between scrollY=100vh and 200vh (i.e. as the Balance
+   section is scrolling over it). The tealShell remains, so what
+   the user sees behind a transparent Balance is solid teal-deep —
+   the same teal Balance switches to white from on toggle. */
+.tealShell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 400vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tealSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.tealBg {
+  position: absolute;
+  inset: 0;
+  background: var(--teal-deep);
+}
+
+.mediaShell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 400vh;
+  z-index: 1;
+  pointer-events: none;
+  mask: linear-gradient(#000 25%, transparent 50%);
+  -webkit-mask: linear-gradient(#000 25%, transparent 50%);
+}
+
+.mediaSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
 /* ── Photo layer ───────────────────────────────────────────── */
 .media {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
 }
 
 .media::before {
@@ -60,7 +108,7 @@
 .noise {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 2;
   pointer-events: none;
   opacity: 0.05;
   mix-blend-mode: overlay;
