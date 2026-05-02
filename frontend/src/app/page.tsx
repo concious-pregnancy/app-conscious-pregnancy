@@ -16,15 +16,35 @@ import Stats from "@/components/Stats";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import { client } from "@/lib/sanity/client";
+import {
+  faqsQuery,
+  pricingTiersQuery,
+  servicesQuery,
+  serviceExtrasQuery,
+  journalArticlesQuery,
+  testimonialQuery,
+} from "@/lib/sanity/queries";
 
-export default function Home() {
+export default async function Home() {
+  const fetchOpts = { cache: "no-store" } as const;
+  const [faqs, pricingTiers, services, serviceExtras, journalArticles, testimonial] =
+    await Promise.all([
+      client.fetch(faqsQuery, {}, fetchOpts),
+      client.fetch(pricingTiersQuery, {}, fetchOpts),
+      client.fetch(servicesQuery, {}, fetchOpts),
+      client.fetch(serviceExtrasQuery, {}, fetchOpts),
+      client.fetch(journalArticlesQuery, {}, fetchOpts),
+      client.fetch(testimonialQuery, {}, fetchOpts),
+    ]);
+
   return (
     <>
       <Nav />
       <main>
         <Hero />
         <Balance />
-        <Services />
+        <Services services={services} extras={serviceExtras} />
         {!FLAGS.OMIT_SECTIONS.philosophy && <Philosophy />}
         <Process />
         <Story
@@ -38,13 +58,13 @@ export default function Home() {
           image2="/hero/hero-kimono.jpeg"
         />
         <Ready />
-        <Pricing />
+        <Pricing tiers={pricingTiers} />
         {!FLAGS.OMIT_SECTIONS.approach && <Approach />}
         <Listen />
-        {!FLAGS.OMIT_SECTIONS.realStories && <RealStories />}
-        <Journal />
+        {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
+        <Journal articles={journalArticles} />
         {!FLAGS.OMIT_SECTIONS.stats && <Stats />}
-        <FAQ />
+        <FAQ items={faqs} />
         <Contact />
       </main>
       <Footer />

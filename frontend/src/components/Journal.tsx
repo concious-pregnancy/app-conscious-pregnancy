@@ -1,4 +1,13 @@
+import { urlFor } from "@/lib/sanity/image";
 import styles from "./Journal.module.css";
+
+type JournalArticle = {
+  _id: string;
+  title: string;
+  excerpt: string;
+  image?: { asset?: { _ref: string } };
+  slug?: { current: string };
+};
 
 const blobs = [
   {
@@ -15,28 +24,7 @@ const blobs = [
   },
 ];
 
-const articles = [
-  {
-    title: "Methylfolate vs. Folic Acid: Why the Difference Matters.",
-    excerpt:
-      "Up to 60% of people carry an MTHFR variant that limits their ability to convert synthetic folic acid into the active form the body can use. Here is what to take instead and why.",
-    image: "/journal/flower.jpg",
-  },
-  {
-    title: "Your Microbiome Shapes Your Baby's Immune System.",
-    excerpt:
-      "The bacteria colonizing your gut and birth canal are the first organisms your baby encounters. What the research shows about maternal microbiome and infant health outcomes.",
-    image: "/journal/hand.jpg",
-  },
-  {
-    title: "The 90-Day Window: Why Preconception Prep Starts Now.",
-    excerpt:
-      "Sperm take 74 days to mature. Egg quality is influenced by the environment it develops in months before ovulation. The foundation of your child's health is built before the pregnancy test.",
-    image: "/journal/wildflowers.jpg",
-  },
-];
-
-export default function Journal() {
+export default function Journal({ articles }: { articles: JournalArticle[] }) {
   return (
     <section id="journal" data-section="journal" className={`section ${styles.journal}`}>
       <div className="container">
@@ -84,8 +72,9 @@ export default function Journal() {
           {articles.map((a, i) => {
             const blob = blobs[i % blobs.length];
             const clipId = `blob-${i}`;
+            const imgSrc = a.image?.asset ? urlFor(a.image).width(600).url() : "";
             return (
-              <article key={a.title} className={styles.card} data-stagger>
+              <article key={a._id} className={styles.card} data-stagger>
                 <div className={styles.cardImageWrap}>
                   <svg
                     className={styles.blobOutline}
@@ -105,13 +94,15 @@ export default function Journal() {
                       </clipPath>
                     </defs>
                   </svg>
-                  <img
-                    src={a.image}
-                    alt=""
-                    className={styles.cardImage}
-                    loading="lazy"
-                    style={{ clipPath: `url(#${clipId})` }}
-                  />
+                  {imgSrc && (
+                    <img
+                      src={imgSrc}
+                      alt=""
+                      className={styles.cardImage}
+                      loading="lazy"
+                      style={{ clipPath: `url(#${clipId})` }}
+                    />
+                  )}
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardTitle}>{a.title}</h3>

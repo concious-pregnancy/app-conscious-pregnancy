@@ -62,7 +62,7 @@ const pillars = [
 export default function Hero() {
   return (
     <section id="top" data-section="hero" className={styles.hero}>
-      <div className={styles.media} aria-hidden="true">
+      <div className={styles.media} data-hero-media aria-hidden="true">
         {images.map((img) => (
           <div
             key={img.key}
