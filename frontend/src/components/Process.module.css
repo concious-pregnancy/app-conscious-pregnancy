@@ -128,9 +128,11 @@
   align-items: flex-start;
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(240px, 32vw, 520px);
+  /* Size tuned so "0X" fills ~85% of the right column without overflowing */
+  font-size: clamp(180px, 22vw, 340px);
   line-height: 0.88;
-  letter-spacing: -0.03em;
+  /* Positive spacing pushes "0" and digit clearly apart */
+  letter-spacing: 0.1em;
   color: var(--sage);
   user-select: none;
 }
