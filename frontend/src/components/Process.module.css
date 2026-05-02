@@ -64,90 +64,33 @@
   margin-top: 0.5rem;
 }
 
-/* ── Pinned track ─────────────────────────────────────── */
+/* ── Two-column scroll track ──────────────────────────── */
 .track {
   background: var(--off-white);
   color: var(--dark);
-  position: relative;
-  /* 4 steps × 100vh of scroll track each */
-  height: 400vh;
 }
 
-.stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.slide {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  align-items: center;
-  padding: 0 var(--pad-x);
+.inner {
   max-width: 1400px;
   margin: 0 auto;
-  left: 0;
-  right: 0;
-  transform: none;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s linear;
+  padding: 0 var(--pad-x);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: start;
 }
 
-.slide[data-is-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
+/* ── Left: naturally-scrolling steps ─────────────────── */
+.steps {
+  /* natural block flow, no special positioning needed */
 }
 
-.text {
-  max-width: 44ch;
-  transform: translateY(60px);
-  opacity: 0;
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.slide[data-is-active="true"] .text {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .text {
-  transform: translateY(-40px);
-  opacity: 0;
-}
-
-.num {
-  justify-self: end;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(160px, 20vw, 320px);
-  line-height: 0.95;
-  letter-spacing: -0.08em;
-  color: var(--sage);
-  transform: translateY(80px);
-  opacity: 0;
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-  user-select: none;
-}
-
-.slide[data-is-active="true"] .num {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .num {
-  transform: translateY(-80px);
-  opacity: 0;
+.step {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0;
+  max-width: 46ch;
 }
 
 .stepTitle {
@@ -167,40 +110,89 @@
   color: var(--muted);
 }
 
-/* Flowing sage curve behind the stack */
-.curve {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.curve svg {
+/* ── Right: sticky 100vh panel ───────────────────────── */
+/* overflow:hidden is the clip boundary — digits travel ±100vh
+   and are clipped here, not inside a smaller inner container.
+   ::before/::after create colour-matched fade zones at top/bottom
+   so digits dissolve before hitting the hard clip edge. */
+.numPanel {
   position: sticky;
   top: 0;
-  display: block;
-  width: 100%;
   height: 100vh;
+  overflow: hidden;
+}
+
+.numPanel::before,
+.numPanel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 28%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.numPanel::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--off-white) 0%, transparent 100%);
+}
+
+.numPanel::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--off-white) 0%, transparent 100%);
+}
+
+/* Flex row: static "0" + the animated digit slot, centred vertically */
+.numContent {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* Font properties on the parent so em units resolve consistently */
+  font-family: var(--font-inter), var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(190px, 23vw, 350px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--sage);
+  user-select: none;
+}
+
+/* "0" never moves */
+.numZero {
+  flex-shrink: 0;
+}
+
+/* Slot that holds the animated digits.
+   overflow:visible lets digits escape upward/downward so numPanel clips them.
+   Width/height sized to one digit character. */
+.numSlot {
+  position: relative;
+  flex-shrink: 0;
   overflow: visible;
+  /* ~0.6em wide for a single digit; height matches the visible glyph cap */
+  width: 0.6em;
+  height: 0.9em;
 }
 
-.curve path {
-  fill: none;
-  stroke: var(--sage);
-  stroke-width: 1;
-  stroke-opacity: 0.3;
-  stroke-linecap: round;
+/* Each digit is absolutely stacked inside the slot.
+   GSAP sets y: '100vh' for off-screen-below, y: '-100vh' for off-screen-above,
+   y: 0 for the active digit. numPanel's overflow:hidden does the clipping. */
+.numDigit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform, opacity;
 }
 
-/* Progress dots (bottom center of stage) */
+/* Progress dots */
 .progress {
   position: absolute;
   bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
   display: flex;
   gap: 0.6rem;
-  z-index: 3;
 }
 
 .progress span {
@@ -215,6 +207,7 @@
   opacity: 1;
 }
 
+/* ── Mobile: stacked list, no sticky number ──────────── */
 @media (max-width: 810px) {
   .intro {
     padding: 6rem var(--pad-x) 3rem;
@@ -223,50 +216,32 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  .track {
-    height: auto;
-  }
-  .stage {
-    position: static;
-    height: auto;
-    display: block;
-  }
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
-    padding: 3rem var(--pad-x);
+  .inner {
     grid-template-columns: 1fr;
+    padding: 0;
   }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
-  }
-  .num {
-    justify-self: start;
-    order: -1;
-    font-size: 120px;
-    line-height: 0.85;
-    margin-bottom: 0.5rem;
-  }
-  .progress {
+  .numPanel {
     display: none;
   }
-  .curve {
+  .step {
+    min-height: auto;
+    padding: 3rem var(--pad-x);
+    border-bottom: 1px solid rgba(46, 50, 49, 0.08);
+  }
+  .step:last-child {
+    border-bottom: none;
+  }
+  .progress {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
+  .numDigit {
+    opacity: 1 !important;
+    transform: none !important;
   }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
+  .numDigit:not([data-process-digit="0"]) {
+    display: none;
   }
 }

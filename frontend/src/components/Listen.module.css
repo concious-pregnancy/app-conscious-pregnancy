@@ -16,11 +16,11 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  /* Top edge: starts as a tall arc, flattens to horizontal as scroll progresses.
-     --arc is driven from JS: 0 = arced, 1 = flat. */
+  /* Top edge: dome arc, flattens to horizontal as scroll progresses.
+     --arc driven by JS: 0 = full dome, 1 = flat. */
   --arc: 0;
-  border-top-left-radius: 50% calc(40vh * (1 - var(--arc)));
-  border-top-right-radius: 50% calc(40vh * (1 - var(--arc)));
+  border-top-left-radius: 50% calc(35vh * (1 - var(--arc)));
+  border-top-right-radius: 50% calc(35vh * (1 - var(--arc)));
 }
 
 .image {

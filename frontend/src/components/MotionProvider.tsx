@@ -64,19 +64,28 @@ export default function MotionProvider() {
           });
         });
 
-        // ── Hero parallax ────────────────────────────────────────────────
+        // ── Hero image dissolve: fade photo layer as hero exits ─────────
+        // Uses onUpdate (not a tween) to bypass CSS transition conflicts on
+        // the .img children. Triggers on the hero section itself so the
+        // scroll math is anchored to a known position regardless of Lenis.
         const heroSection = document.querySelector<HTMLElement>('section[data-section="hero"]');
-        const heroBg = heroSection?.querySelector<HTMLElement>("[data-hero-primary]");
-        if (heroSection && heroBg) {
-          gsap.set(heroBg, { scale: 1.08, transformOrigin: "center top" });
-          gsap.to(heroBg, {
-            y: "-18%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: heroSection,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
+        const heroMedia = heroSection?.querySelector<HTMLElement>("[data-hero-media]");
+        if (heroSection && heroMedia) {
+          ScrollTrigger.create({
+            trigger: heroSection,
+            start: "top top",
+            end: "bottom top",
+            onUpdate: (self) => {
+              heroMedia.style.opacity = String(1 - self.progress);
+            },
+            onLeave: () => {
+              heroMedia.style.visibility = "hidden";
+            },
+            onEnterBack: () => {
+              heroMedia.style.visibility = "visible";
+            },
+            onLeaveBack: () => {
+              heroMedia.style.opacity = "1";
             },
           });
         }
@@ -116,39 +125,24 @@ export default function MotionProvider() {
           );
         });
 
-        // ── Listen: arc-flatten + blur exit ──────────────────────────
+        // ── Listen: dome arc flatten ──────────────────────────────────────
         const listenSection = document.querySelector<HTMLElement>('[data-section="listen"]');
         const listenWrap = listenSection?.querySelector<HTMLElement>("[data-listen-wrap]");
         if (listenSection && listenWrap) {
-          // Phase 1: arc flattens from 0→1 as section scrolls into view.
-          // Direct style.setProperty avoids GSAP CSS-var interpolation quirks and scrub lag.
-          ScrollTrigger.create({
-            trigger: listenSection,
-            start: "top top",
-            end: "60% top",
-            scrub: true,
-            onUpdate: (self) => {
-              listenWrap.style.setProperty("--arc", String(self.progress));
+          gsap.fromTo(
+            listenWrap,
+            { "--arc": 0 },
+            {
+              "--arc": 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: listenSection,
+                start: "top 80%",
+                end: "top top",
+                scrub: true,
+              },
             },
-          });
-
-          // Phase 2: blur + fade edges as section exits viewport.
-          ScrollTrigger.create({
-            trigger: listenSection,
-            start: "60% top",
-            end: "bottom top",
-            scrub: true,
-            onUpdate: (self) => {
-              const blur = self.progress * 14;
-              const opacity = 1 - self.progress * 0.65;
-              listenWrap.style.filter = `blur(${blur}px)`;
-              listenWrap.style.opacity = String(opacity);
-            },
-            onLeaveBack: () => {
-              listenWrap.style.filter = "";
-              listenWrap.style.opacity = "";
-            },
-          });
+          );
 
           // Subtle Ken Burns drift across full section
           const listenImage = listenSection.querySelector<HTMLElement>(`[data-listen-wrap] > div`);
@@ -288,48 +282,67 @@ export default function MotionProvider() {
         }
       }
 
-      // ── Process: pinned step scrubber, driven by ScrollTrigger ─────────
+      // ── Process: digit-only viewport-height slide, ScrollTrigger + GSAP ──
+      // Left column steps scroll naturally. Right sticky panel has a static "0"
+      // and an animated digit (1–4) that travels y: ±'100vh' (full viewport),
+      // clipped by numPanel (overflow:hidden, height:100vh).
       const processTrack = document.querySelector<HTMLElement>('[data-section="process"]');
-      const processSlides = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-slide]"))
+      const processDigits = processTrack
+        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-digit]"))
         : [];
       const processDots = processTrack
         ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-progress] > span"))
         : [];
-      const processPath = processTrack?.querySelector<SVGPathElement>("[data-process-curve]");
 
-      if (processTrack && processSlides.length > 0) {
-        let pathLen = 0;
-        if (processPath) {
-          pathLen = processPath.getTotalLength();
-          processPath.style.strokeDasharray = String(pathLen);
-          processPath.style.strokeDashoffset = String(pathLen);
-        }
+      if (processTrack && processDigits.length > 0) {
+        const n = processDigits.length;
 
-        const n = processSlides.length;
-        let current = -1;
-        const setActive = (i: number) => {
+        // Initial state: digit 0 centred, rest parked one full viewport below.
+        // Colour-matched gradient overlays on numPanel handle the visual fade —
+        // no JS opacity needed.
+        gsap.set(processDigits[0], { y: 0 });
+        processDigits.slice(1).forEach((el) => gsap.set(el, { y: "100vh" }));
+
+        let current = 0;
+
+        const setDigit = (i: number) => {
           if (i === current) return;
+          const prev = current;
+          const forward = i > prev;
           current = i;
-          processSlides.forEach((s, idx) => {
-            s.setAttribute("data-is-active", idx === i ? "true" : "false");
-            s.setAttribute("data-is-exiting", idx < i ? "true" : "false");
+
+          const dur = 0.57;
+
+          gsap.killTweensOf([processDigits[prev], processDigits[i]]);
+
+          // Outgoing: slides a full viewport height; overlay fades it near the edge
+          gsap.to(processDigits[prev], {
+            y: forward ? "-100vh" : "100vh",
+            duration: dur,
+            ease: "power3.out",
           });
+
+          // Incoming: enters from below (or above); overlay fades it in near the edge
+          gsap.fromTo(
+            processDigits[i],
+            { y: forward ? "100vh" : "-100vh" },
+            { y: 0, duration: dur, ease: "power3.out" },
+          );
+
           processDots.forEach((d, idx) => {
             d.setAttribute("data-is-on", idx === i ? "true" : "false");
           });
         };
 
+        const stepsParent =
+          processTrack.querySelector<HTMLElement>("[data-process-step]")?.parentElement;
         ScrollTrigger.create({
-          trigger: processTrack,
+          trigger: stepsParent ?? processTrack,
           start: "top top",
           end: "bottom bottom",
           onUpdate: (self) => {
             const idx = Math.min(n - 1, Math.max(0, Math.floor(self.progress * n * 0.999)));
-            setActive(idx);
-            if (processPath) {
-              processPath.style.strokeDashoffset = String(pathLen * (1 - self.progress));
-            }
+            setDigit(idx);
           },
         });
       }

@@ -33,8 +33,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${crimsonText.variable} ${inter.variable} ${fragmentMono.variable}`}>
+    <html
+      lang="en"
+      className={`${crimsonText.variable} ${inter.variable} ${fragmentMono.variable}`}
+    >
+      <body>
         <MotionProvider />
         {children}
       </body>

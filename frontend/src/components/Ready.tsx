@@ -42,23 +42,23 @@ export default function Ready() {
           <div className={styles.avatars} aria-hidden="true">
             <span
               className={styles.av}
-              style={{ backgroundImage: "linear-gradient(135deg, #cdd9d2, #a8c5be)" }}
+              style={{ backgroundImage: "url('/avatars/avatar-1.jpg')" }}
             />
             <span
               className={styles.av}
-              style={{ backgroundImage: "linear-gradient(135deg, #d8c8b6, #b39a7a)" }}
+              style={{ backgroundImage: "url('/avatars/avatar-2.jpg')" }}
             />
             <span
               className={styles.av}
-              style={{ backgroundImage: "linear-gradient(135deg, #c2b8a3, #8a7e69)" }}
+              style={{ backgroundImage: "url('/avatars/avatar-3.jpg')" }}
             />
             <span
               className={styles.av}
-              style={{ backgroundImage: "linear-gradient(135deg, #b9c9bf, #7fa69b)" }}
+              style={{ backgroundImage: "url('/avatars/avatar-4.jpg')" }}
             />
             <span
               className={styles.av}
-              style={{ backgroundImage: "linear-gradient(135deg, #e0d5c4, #c2a988)" }}
+              style={{ backgroundImage: "url('/avatars/avatar-5.jpg')" }}
             />
             <span className={`${styles.av} ${styles.avCount}`}>+81</span>
           </div>

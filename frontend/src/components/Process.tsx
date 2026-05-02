@@ -43,41 +43,39 @@ export default function Process() {
         </div>
       </section>
 
-      <div className={styles.track} data-section="process" data-step-count={steps.length}>
-        <div className={styles.stage}>
-          <div className={styles.curve} aria-hidden="true">
-            <svg viewBox="0 0 1200 1000" preserveAspectRatio="none">
-              <path
-                data-process-curve
-                d="M 900 0
-                   C 400 200, 1100 380, 500 520
-                   S 200 720, 800 860
-                   C 1100 960, 300 1000, 600 1000"
-              />
-            </svg>
-          </div>
-
-          {steps.map((s, i) => (
-            <div
-              key={s.num}
-              className={styles.slide}
-              data-process-slide
-              data-is-active={i === 0 ? "true" : "false"}
-              data-is-exiting="false"
-              data-step={i}
-            >
-              <div className={styles.text}>
+      <div className={styles.track} data-section="process">
+        <div className={styles.inner}>
+          {/* Left: naturally scrolling step text */}
+          <div className={styles.steps}>
+            {steps.map((s, i) => (
+              <div key={s.num} className={styles.step} data-process-step={i}>
                 <h3 className={styles.stepTitle}>{s.title}</h3>
                 <p className={styles.stepBody}>{s.body}</p>
               </div>
-              <div className={styles.num}>{s.num}</div>
-            </div>
-          ))}
-
-          <div className={styles.progress} data-process-progress>
-            {steps.map((s, i) => (
-              <span key={s.num} data-is-on={i === 0 ? "true" : "false"} />
             ))}
+          </div>
+
+          {/* Right: sticky panel — "0" is completely static, only the digit slides.
+              numPanel is overflow:hidden and 100vh tall; digits travel y:±100vh
+              so they enter from below the viewport and exit above it. */}
+          <div className={styles.numPanel}>
+            <div className={styles.numContent}>
+              <span className={styles.numZero}>0</span>
+              {/* Slot is overflow:visible so digits escape and numPanel clips them */}
+              <div className={styles.numSlot}>
+                {steps.map((s, i) => (
+                  <span key={s.num} className={styles.numDigit} data-process-digit={i}>
+                    {i + 1}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.progress} data-process-progress>
+              {steps.map((s, i) => (
+                <span key={s.num} data-is-on={i === 0 ? "true" : "false"} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
