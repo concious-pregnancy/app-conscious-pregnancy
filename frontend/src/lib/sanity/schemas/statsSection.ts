@@ -4,6 +4,9 @@ export const statsSectionType = defineType({
   name: "statsSection",
   title: "Stats Section",
   type: "document",
+  preview: {
+    prepare: () => ({ title: "Stats Section" }),
+  },
   fields: [
     defineField({ name: "intro", title: "Intro Text", type: "text", rows: 3 }),
     defineField({

@@ -4,6 +4,9 @@ export const processSectionType = defineType({
   name: "processSection",
   title: "Process Section",
   type: "document",
+  preview: {
+    prepare: () => ({ title: "Process Section" }),
+  },
   fields: [
     defineField({ name: "lede", title: "Intro Paragraph", type: "text", rows: 3 }),
     defineField({
