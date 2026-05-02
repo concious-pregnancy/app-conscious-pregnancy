@@ -12,26 +12,54 @@ const links = [
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+  const [lightBg, setLightBg] = useState(false);
   const [overFooter, setOverFooter] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    const stage = document.querySelector<HTMLElement>("[data-balance-stage]");
+
+    const syncLightBg = () => {
+      // Balance stage flips data-is-dark="true" when its panel transitions
+      // to the off-white background. Once that happens (or the user has
+      // scrolled past balance entirely), the page underneath the nav is
+      // light and the logo + links need to flip to teal-on-white.
+      if (!stage) {
+        setLightBg(window.scrollY > 60);
+        return;
+      }
+      const balanceLight = stage.getAttribute("data-is-dark") === "true";
+      const rect = stage.getBoundingClientRect();
+      const pastBalance = rect.bottom <= 0;
+      setLightBg(balanceLight || pastBalance);
+    };
+
     const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 60);
+      syncLightBg();
       const footer = document.getElementById("footer");
       if (footer) {
-        setOverFooter(y + 64 >= footer.offsetTop);
+        setOverFooter(window.scrollY + 64 >= footer.offsetTop);
       }
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    syncLightBg();
+
+    let observer: MutationObserver | null = null;
+    if (stage) {
+      observer = new MutationObserver(syncLightBg);
+      observer.observe(stage, { attributes: true, attributeFilter: ["data-is-dark"] });
+    }
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      observer?.disconnect();
+    };
   }, []);
 
   return (
     <nav
-      className={`${styles.nav} ${scrolled ? styles.scrolled : ""} ${overFooter ? styles.overFooter : ""}`}
+      className={`${styles.nav} ${lightBg ? styles.lightBg : ""} ${overFooter ? styles.overFooter : ""}`}
     >
       <a href="#" className={styles.logo}>
         <svg

@@ -84,64 +84,65 @@
   border-color: rgba(255, 255, 255, 0.35);
 }
 
-.scrolled {
+.lightBg {
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--border);
 }
 
-.scrolled .logo {
-  color: var(--dark);
+.lightBg .logo {
+  color: var(--sage);
 }
 
-.scrolled .links a {
+.lightBg .links a {
   color: var(--muted);
 }
 
-.scrolled .links a:hover {
+.lightBg .links a:hover {
   color: var(--dark);
 }
 
-.scrolled .menuBtn {
-  color: var(--dark);
+.lightBg .menuBtn {
+  color: var(--sage);
   border-color: var(--border);
   background: rgba(0, 0, 0, 0.03);
 }
 
-/* Override scrolled styles when nav is over the dark footer */
-.scrolled.overFooter {
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
-}
+/* Desktop only: override light-bg styles when nav is over the dark footer.
+   Tablet keeps the white nav over the footer (no flip animation). */
+@media (min-width: 1001px) {
+  .lightBg.overFooter {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
 
-.scrolled.overFooter .logo {
-  color: var(--white);
-}
+  .lightBg.overFooter .logo {
+    color: var(--white);
+  }
 
-.scrolled.overFooter .links a {
-  color: rgba(255, 255, 255, 0.7);
-}
+  .lightBg.overFooter .links a {
+    color: rgba(255, 255, 255, 0.7);
+  }
 
-.scrolled.overFooter .links a:hover {
-  color: var(--white);
-}
+  .lightBg.overFooter .links a:hover {
+    color: var(--white);
+  }
 
-.scrolled.overFooter .menuBtn {
-  color: var(--white);
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.06);
-}
+  .lightBg.overFooter .menuBtn {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+  }
 
-/* Begin Your Journey CTA flips to white-on-dark over the footer so the
-   sage-on-sage blend disappears against the dark wave background. */
-.scrolled.overFooter .cta {
-  background: var(--white) !important;
-  color: var(--dark) !important;
-}
+  .lightBg.overFooter .cta {
+    background: var(--white) !important;
+    color: var(--dark) !important;
+  }
 
-.scrolled.overFooter .cta:hover {
-  background: var(--off-white) !important;
+  .lightBg.overFooter .cta:hover {
+    background: var(--off-white) !important;
+  }
 }
 
 /* Tablet + phone: collapse to logo + hamburger. The 5-item desktop link
