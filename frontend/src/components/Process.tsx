@@ -43,41 +43,39 @@ export default function Process() {
         </div>
       </section>
 
-      <div className={styles.track} data-section="process" data-step-count={steps.length}>
-        <div className={styles.stage}>
-          <div className={styles.curve} aria-hidden="true">
-            <svg viewBox="0 0 1200 1000" preserveAspectRatio="none">
-              <path
-                data-process-curve
-                d="M 900 0
-                   C 400 200, 1100 380, 500 520
-                   S 200 720, 800 860
-                   C 1100 960, 300 1000, 600 1000"
-              />
-            </svg>
-          </div>
-
-          {steps.map((s, i) => (
-            <div
-              key={s.num}
-              className={styles.slide}
-              data-process-slide
-              data-is-active={i === 0 ? "true" : "false"}
-              data-is-exiting="false"
-              data-step={i}
-            >
-              <div className={styles.text}>
+      {/* Two-column scroll: left steps scroll naturally, right digit stays sticky */}
+      <div className={styles.track} data-section="process">
+        <div className={styles.inner}>
+          {/* Left: each step gets ~100vh of scroll space */}
+          <div className={styles.steps}>
+            {steps.map((s, i) => (
+              <div key={s.num} className={styles.step} data-process-step={i}>
+                <span className={styles.stepEyebrow}>{s.num}</span>
                 <h3 className={styles.stepTitle}>{s.title}</h3>
                 <p className={styles.stepBody}>{s.body}</p>
               </div>
-              <div className={styles.num}>{s.num}</div>
-            </div>
-          ))}
-
-          <div className={styles.progress} data-process-progress>
-            {steps.map((s, i) => (
-              <span key={s.num} data-is-on={i === 0 ? "true" : "false"} />
             ))}
+          </div>
+
+          {/* Right: sticky number panel — "0" is static, digit slot animates */}
+          <div className={styles.numPanel}>
+            <div className={styles.numDisplay}>
+              <span className={styles.numPrefix}>0</span>
+              {/* All digits stacked in one grid cell; GSAP moves them in/out */}
+              <div className={styles.numDigitWrap}>
+                {steps.map((s, i) => (
+                  <span key={s.num} className={styles.numDigit} data-process-digit={i}>
+                    {i + 1}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.progress} data-process-progress>
+              {steps.map((s, i) => (
+                <span key={s.num} data-is-on={i === 0 ? "true" : "false"} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

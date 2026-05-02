@@ -64,90 +64,42 @@
   margin-top: 0.5rem;
 }
 
-/* ── Pinned track ─────────────────────────────────────── */
+/* ── Two-column scroll track ──────────────────────────── */
 .track {
   background: var(--off-white);
   color: var(--dark);
-  position: relative;
-  /* 4 steps × 100vh of scroll track each */
-  height: 400vh;
 }
 
-.stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.slide {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  align-items: center;
-  padding: 0 var(--pad-x);
+.inner {
   max-width: 1400px;
   margin: 0 auto;
-  left: 0;
-  right: 0;
-  transform: none;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s linear;
+  padding: 0 var(--pad-x);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: start;
 }
 
-.slide[data-is-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
+/* ── Left: naturally-scrolling steps ─────────────────── */
+.steps {
+  /* Normal block flow — height drives the scroll track length */
 }
 
-.text {
-  max-width: 44ch;
-  transform: translateY(60px);
-  opacity: 0;
-  transition:
-    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+.step {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0 4rem;
+  max-width: 46ch;
 }
 
-.slide[data-is-active="true"] .text {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .text {
-  transform: translateY(-40px);
-  opacity: 0;
-}
-
-.num {
-  justify-self: end;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(160px, 20vw, 320px);
-  line-height: 0.95;
-  letter-spacing: -0.08em;
+.stepEyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--sage);
-  transform: translateY(80px);
-  opacity: 0;
-  transition:
-    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
-  user-select: none;
-}
-
-.slide[data-is-active="true"] .num {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.slide[data-is-exiting="true"] .num {
-  transform: translateY(-80px);
-  opacity: 0;
+  margin-bottom: 1.5rem;
 }
 
 .stepTitle {
@@ -167,40 +119,57 @@
   color: var(--muted);
 }
 
-/* Flowing sage curve behind the stack */
-.curve {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.curve svg {
+/* ── Right: sticky number panel ──────────────────────── */
+.numPanel {
   position: sticky;
   top: 0;
-  display: block;
-  width: 100%;
   height: 100vh;
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
-.curve path {
-  fill: none;
-  stroke: var(--sage);
-  stroke-width: 1;
-  stroke-opacity: 0.3;
-  stroke-linecap: round;
+/* "0X" display — "0" is static, digit slot clips the animated span */
+.numDisplay {
+  display: flex;
+  align-items: flex-start;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(160px, 20vw, 320px);
+  line-height: 0.88;
+  letter-spacing: -0.08em;
+  color: var(--sage);
+  user-select: none;
 }
 
-/* Progress dots (bottom center of stage) */
+.numPrefix {
+  /* inherits font from .numDisplay */
+}
+
+/* Clips the entering/exiting digits */
+.numDigitWrap {
+  display: grid;
+  overflow: hidden;
+  /* line-height * font-size gives the visible cap height; add a touch extra */
+  height: 0.92em;
+}
+
+/* All digits in the same grid cell — GSAP moves them vertically */
+.numDigit {
+  grid-area: 1 / 1;
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* Progress dots */
 .progress {
   position: absolute;
   bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
   display: flex;
   gap: 0.6rem;
-  z-index: 3;
 }
 
 .progress span {
@@ -215,6 +184,7 @@
   opacity: 1;
 }
 
+/* ── Mobile: single-column stacked list ──────────────── */
 @media (max-width: 810px) {
   .intro {
     padding: 6rem var(--pad-x) 3rem;
@@ -223,50 +193,33 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  .track {
-    height: auto;
-  }
-  .stage {
-    position: static;
-    height: auto;
-    display: block;
-  }
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
-    padding: 3rem var(--pad-x);
+  .inner {
     grid-template-columns: 1fr;
+    padding: 0;
   }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
-  }
-  .num {
-    justify-self: start;
-    order: -1;
-    font-size: 120px;
-    line-height: 0.85;
-    margin-bottom: 0.5rem;
-  }
-  .progress {
+  .numPanel {
     display: none;
   }
-  .curve {
+  .step {
+    min-height: auto;
+    padding: 3rem var(--pad-x);
+    border-bottom: 1px solid rgba(46, 50, 49, 0.08);
+  }
+  .step:last-child {
+    border-bottom: none;
+  }
+  .progress {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
+  .numDigit {
+    opacity: 1 !important;
+    transform: none !important;
   }
-  .text,
-  .num {
-    opacity: 1;
-    transform: none;
+  /* Show only the first digit for reduced motion */
+  .numDigit:not([data-process-digit="0"]) {
+    display: none;
   }
 }

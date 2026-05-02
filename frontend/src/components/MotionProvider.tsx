@@ -288,50 +288,71 @@ export default function MotionProvider() {
         }
       }
 
-      // ── Process: pinned step scrubber, driven by ScrollTrigger ─────────
+      // ── Process: sticky digit animation, driven by ScrollTrigger + GSAP ──
+      // Left column steps scroll naturally. Right panel is CSS-sticky.
+      // Only the digit ("1"/"2"/"3"/"4") animates: outgoing slides up,
+      // incoming slides in from below (reversed when scrolling back up).
       const processTrack = document.querySelector<HTMLElement>('[data-section="process"]');
-      const processSlides = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-slide]"))
+      const processSteps = processTrack
+        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-step]"))
+        : [];
+      const processDigits = processTrack
+        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-digit]"))
         : [];
       const processDots = processTrack
         ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-progress] > span"))
         : [];
-      const processPath = processTrack?.querySelector<SVGPathElement>("[data-process-curve]");
 
-      if (processTrack && processSlides.length > 0) {
-        let pathLen = 0;
-        if (processPath) {
-          pathLen = processPath.getTotalLength();
-          processPath.style.strokeDasharray = String(pathLen);
-          processPath.style.strokeDashoffset = String(pathLen);
-        }
+      if (processTrack && processDigits.length > 0) {
+        const n = processDigits.length;
 
-        const n = processSlides.length;
-        let current = -1;
-        const setActive = (i: number) => {
+        // Initial state: digit 0 visible, rest waiting below
+        gsap.set(processDigits[0], { yPercent: 0, autoAlpha: 1 });
+        processDigits.slice(1).forEach((d) => gsap.set(d, { yPercent: 110, autoAlpha: 0 }));
+
+        let current = 0;
+
+        const setDigit = (i: number) => {
           if (i === current) return;
+          const prev = current;
+          const forward = i > prev;
           current = i;
-          processSlides.forEach((s, idx) => {
-            s.setAttribute("data-is-active", idx === i ? "true" : "false");
-            s.setAttribute("data-is-exiting", idx < i ? "true" : "false");
+
+          // Outgoing: slide up (forward) or slide down (backward)
+          gsap.to(processDigits[prev], {
+            yPercent: forward ? -110 : 110,
+            autoAlpha: 0,
+            duration: 0.45,
+            ease: "power2.inOut",
+            overwrite: true,
           });
+
+          // Incoming: enter from below (forward) or from above (backward)
+          gsap.fromTo(
+            processDigits[i],
+            { yPercent: forward ? 110 : -110, autoAlpha: 0 },
+            { yPercent: 0, autoAlpha: 1, duration: 0.45, ease: "power2.inOut", overwrite: true },
+          );
+
           processDots.forEach((d, idx) => {
             d.setAttribute("data-is-on", idx === i ? "true" : "false");
           });
         };
 
+        // Use the steps container height as the scroll track (content-driven, not fixed height)
+        const stepsEl =
+          processTrack.querySelector<HTMLElement>("[data-process-step]")?.parentElement;
         ScrollTrigger.create({
-          trigger: processTrack,
+          trigger: processSteps[0]?.parentElement ?? processTrack,
           start: "top top",
           end: "bottom bottom",
           onUpdate: (self) => {
             const idx = Math.min(n - 1, Math.max(0, Math.floor(self.progress * n * 0.999)));
-            setActive(idx);
-            if (processPath) {
-              processPath.style.strokeDashoffset = String(pathLen * (1 - self.progress));
-            }
+            setDigit(idx);
           },
         });
+
+        void stepsEl; // suppress unused warning
       }
 
       // ── Philosophy: word-by-word reveal, driven by ScrollTrigger ───────
