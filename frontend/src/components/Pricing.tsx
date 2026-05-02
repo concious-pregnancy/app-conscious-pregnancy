@@ -1,46 +1,16 @@
 import styles from "./Pricing.module.css";
 
-const tiers = [
-  {
-    name: "Hers",
-    desc: "Explore therapy at your own pace.",
-    price: "$49",
-    unit: "/ month",
-    features: [
-      "Dedicated therapist",
-      "Online or in-person",
-      "Personalized goal-setting",
-      "Client portal access",
-    ],
-  },
-  {
-    name: "His",
-    desc: "Ongoing support for continued growth.",
-    price: "$89",
-    unit: "/ month",
-    features: [
-      "Everything in Starter",
-      "More flexible scheduling",
-      "Progress tracking",
-      "Extra resources",
-    ],
-    featured: true,
-  },
-  {
-    name: "Theirs",
-    desc: "Consistent support with full access.",
-    price: "$229",
-    unit: "/ month",
-    features: [
-      "All Growth features",
-      "Extended sessions",
-      "Priority booking",
-      "Direct therapist messaging",
-    ],
-  },
-];
+type PricingTier = {
+  _id: string;
+  name: string;
+  description: string;
+  price: string;
+  unit: string;
+  featured?: boolean;
+  features: string[];
+};
 
-export default function Pricing() {
+export default function Pricing({ tiers }: { tiers: PricingTier[] }) {
   return (
     <section id="pricing" data-section="pricing" className={styles.pricing}>
       <div className={styles.head}>
@@ -82,13 +52,13 @@ export default function Pricing() {
       <div className={styles.grid}>
         {tiers.map((tier) => (
           <article
-            key={tier.name}
+            key={tier._id}
             className={`${styles.tier} ${tier.featured ? styles.tierFeat : ""}`}
           >
             <h3 className={styles.tierName}>{tier.name}</h3>
-            <p className={styles.tierDesc}>{tier.desc}</p>
+            <p className={styles.tierDesc}>{tier.description}</p>
             <ul className={styles.features}>
-              {tier.features.map((f) => (
+              {tier.features?.map((f) => (
                 <li key={f}>
                   <svg className={styles.check} viewBox="0 0 20 20" fill="none" aria-hidden="true">
                     <circle cx="10" cy="10" r="8.5" stroke="currentColor" strokeWidth="1.25" />

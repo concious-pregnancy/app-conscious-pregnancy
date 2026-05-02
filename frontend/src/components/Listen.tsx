@@ -1,6 +1,17 @@
 import styles from "./Listen.module.css";
 
-export default function Listen() {
+type ListenContent = {
+  quote?: string;
+  attribution?: string;
+} | null;
+
+export default function Listen({ content }: { content?: ListenContent }) {
+  const quote =
+    content?.quote ??
+    "The body is always speaking. Learning to listen is where the deepest healing begins.";
+  const attribution =
+    content?.attribution ?? "Dr. Ashley Alden, DACM · L.Ac. · Founder of Conscious Pregnancy";
+
   return (
     <section id="listen" data-section="listen" className={styles.listen}>
       <div className={styles.stage}>
@@ -22,13 +33,8 @@ export default function Listen() {
             </svg>
           </div>
           <div className={styles.overlay}>
-            <p className={styles.quote}>
-              &ldquo;The body is always speaking. Learning to listen is where the deepest healing
-              begins.&rdquo;
-            </p>
-            <p className={styles.attr}>
-              Dr. Ashley Alden, DACM &middot; L.Ac. &middot; Founder of Conscious Pregnancy
-            </p>
+            <p className={styles.quote}>&ldquo;{quote}&rdquo;</p>
+            <p className={styles.attr}>{attribution}</p>
           </div>
         </div>
       </div>
