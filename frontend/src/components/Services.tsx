@@ -1,11 +1,14 @@
+import { urlFor } from "@/lib/sanity/image";
 import styles from "./Services.module.css";
+
+type SanityImage = { asset?: { _ref: string } };
 
 type Service = {
   _id: string;
   title: string;
   titleLine2?: string;
   body: string;
-  imagePath: string;
+  image?: SanityImage;
   trigram: string;
 };
 
@@ -41,30 +44,36 @@ export default function Services({
       </div>
 
       <div className={styles.grid}>
-        {services.map((s, i) => (
-          <div key={s._id} className={styles.col} data-stagger>
-            <article className={styles.card} style={{ backgroundImage: `url(${s.imagePath})` }}>
-              <div className={styles.cardInner}>
-                <h3 className={styles.cardTitle}>
-                  {s.titleLine2 ? (
-                    <>
-                      {s.title}
-                      <br />
-                      {s.titleLine2}
-                    </>
-                  ) : (
-                    s.title
-                  )}
-                </h3>
-                <div className={styles.cardFoot}>
-                  <span className={styles.trigram}>{s.trigram}</span>
-                  <a href="#contact">Read More</a>
+        {services.map((s) => {
+          const imgUrl = s.image?.asset ? urlFor(s.image).width(800).url() : "";
+          return (
+            <div key={s._id} className={styles.col} data-stagger>
+              <article
+                className={styles.card}
+                style={{ backgroundImage: imgUrl ? `url(${imgUrl})` : undefined }}
+              >
+                <div className={styles.cardInner}>
+                  <h3 className={styles.cardTitle}>
+                    {s.titleLine2 ? (
+                      <>
+                        {s.title}
+                        <br />
+                        {s.titleLine2}
+                      </>
+                    ) : (
+                      s.title
+                    )}
+                  </h3>
+                  <div className={styles.cardFoot}>
+                    <span className={styles.trigram}>{s.trigram}</span>
+                    <a href="#contact">Read More</a>
+                  </div>
                 </div>
-              </div>
-            </article>
-            <p className={styles.body}>{s.body}</p>
-          </div>
-        ))}
+              </article>
+              <p className={styles.body}>{s.body}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className={styles.strip}>
