@@ -45,3 +45,7 @@ jobs:
       - name: Build Next.js app
         working-directory: frontend
         run: bun run build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ih14cr70
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: "2024-01-01"
