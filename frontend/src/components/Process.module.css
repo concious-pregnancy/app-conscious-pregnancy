@@ -148,17 +148,23 @@
   /* inherits font from .numDisplay */
 }
 
-/* Clips the entering/exiting digits */
+/* Clips the entering/exiting digits — must be position:relative so
+   overflow:hidden catches absolutely-positioned children translated outside */
 .numDigitWrap {
-  display: grid;
+  position: relative;
   overflow: hidden;
-  /* line-height * font-size gives the visible cap height; add a touch extra */
-  height: 0.92em;
+  /* 0.9em tracks the effective cap height at the current font-size */
+  height: 0.9em;
+  /* Wide enough for the widest single numeral in the serif font */
+  width: 0.72em;
+  flex-shrink: 0;
 }
 
-/* All digits in the same grid cell — GSAP moves them vertically */
+/* All digits overlap at top-left; GSAP translates them in and out */
 .numDigit {
-  grid-area: 1 / 1;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   will-change: transform, opacity;
 }
