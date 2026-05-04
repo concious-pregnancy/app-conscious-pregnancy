@@ -16,6 +16,7 @@
 
 .eyebrow {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.63rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -148,7 +149,9 @@
 .cardTitle {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: 1.6rem;
+  /* Card title cap at 2.25rem ≈ 36px to match ClearPath h3 (was
+     1.6rem / 25.6px — audit flag). */
+  font-size: 2.25rem;
   line-height: 1.15;
   letter-spacing: -0.01em;
   max-width: 10ch;
@@ -160,6 +163,7 @@
   align-items: center;
   gap: 0.7rem;
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -241,7 +245,8 @@
   }
   .col:nth-child(n) .card {
     margin-top: 0;
-    height: 380px;
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 }
 
