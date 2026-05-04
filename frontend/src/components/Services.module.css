@@ -97,8 +97,6 @@
   position: relative;
   overflow: hidden;
   background-color: var(--dark);
-  background-size: cover;
-  background-position: center;
   isolation: isolate;
   transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -107,7 +105,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: inherit;
+  background-image: var(--card-image);
+  background-color: var(--dark);
   background-size: cover;
   background-position: center;
   transition: transform 6s ease-out;

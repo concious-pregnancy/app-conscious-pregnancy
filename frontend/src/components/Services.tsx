@@ -45,12 +45,14 @@ export default function Services({
 
       <div className={styles.grid}>
         {services.map((s) => {
-          const imgUrl = s.image?.asset ? urlFor(s.image).width(800).url() : "";
+          const imgUrl = s.image?.asset ? urlFor(s.image).width(800).auto("format").url() : "";
           return (
             <div key={s._id} className={styles.col} data-stagger>
               <article
                 className={styles.card}
-                style={{ backgroundImage: imgUrl ? `url(${imgUrl})` : undefined }}
+                style={
+                  imgUrl ? ({ "--card-image": `url(${imgUrl})` } as React.CSSProperties) : undefined
+                }
               >
                 <div className={styles.cardInner}>
                   <h3 className={styles.cardTitle}>
