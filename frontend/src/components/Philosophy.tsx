@@ -1,10 +1,21 @@
 import styles from "./Philosophy.module.css";
 
-const HEADING =
+type PhilosophyContent = {
+  eyebrow?: string;
+  heading?: string;
+  ctaLabel?: string;
+  footnote?: string;
+} | null;
+
+const DEFAULT_HEADING =
   "These are not separate modalities stitched together. They are four lenses on the same truth: your whole self, physical, energetic, and emotional, shapes the life you are about to create.";
 
-export default function Philosophy() {
-  const tokens = HEADING.split(/(\s+)/);
+export default function Philosophy({ content }: { content?: PhilosophyContent }) {
+  const eyebrow = content?.eyebrow ?? "Prepping the Palace";
+  const heading = content?.heading ?? DEFAULT_HEADING;
+  const ctaLabel = content?.ctaLabel ?? "How We Work Together";
+  const footnote = content?.footnote ?? "Real People. Real Change.";
+  const tokens = heading.split(/(\s+)/);
 
   return (
     <section id="philosophy" data-section="philosophy" className={styles.philosophy}>
@@ -30,7 +41,7 @@ export default function Philosophy() {
           </g>
         </svg>
 
-        <p className={styles.eyebrow}>Prepping the Palace</p>
+        <p className={styles.eyebrow}>{eyebrow}</p>
 
         <h2 className={styles.h2} data-philo-heading>
           {tokens.map((tok, i) =>
@@ -45,11 +56,11 @@ export default function Philosophy() {
         </h2>
 
         <a href="#process" className={`btn btn-primary ${styles.pill}`}>
-          How We Work Together
+          {ctaLabel}
           <span className="btn-dot" />
         </a>
       </div>
-      <div className={styles.footnote}>Real People. Real Change.</div>
+      <div className={styles.footnote}>{footnote}</div>
     </section>
   );
 }

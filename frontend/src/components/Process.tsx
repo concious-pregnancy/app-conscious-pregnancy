@@ -3,6 +3,9 @@ import styles from "./Process.module.css";
 type ProcessStep = { title: string; body: string };
 
 type ProcessContent = {
+  eyebrow?: string;
+  headingLine1?: string;
+  headingLine2Em?: string;
   lede?: string;
   steps?: ProcessStep[];
 } | null;
@@ -27,6 +30,9 @@ const defaultSteps: ProcessStep[] = [
 ];
 
 export default function Process({ content }: { content?: ProcessContent }) {
+  const eyebrow = content?.eyebrow ?? "Process";
+  const headingLine1 = content?.headingLine1 ?? "How";
+  const headingLine2Em = content?.headingLine2Em ?? "It Works";
   const lede =
     content?.lede ??
     "Getting started doesn’t have to be complicated. Our process is simple, supportive, and designed to move at a pace that feels right for you, from the first conversation to the changes you’ll see over time.";
@@ -37,9 +43,9 @@ export default function Process({ content }: { content?: ProcessContent }) {
       <section id="process" data-section="process-intro" className={styles.intro}>
         <div className={styles.introInner}>
           <div className={styles.introLeft}>
-            <p className={styles.introEyebrow}>Process</p>
+            <p className={styles.introEyebrow}>{eyebrow}</p>
             <h2 className={styles.introDisplay}>
-              How <em>It Works</em>
+              {headingLine1} <em>{headingLine2Em}</em>
             </h2>
             <div className={styles.introRule} />
           </div>

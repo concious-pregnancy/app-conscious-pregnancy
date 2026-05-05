@@ -8,9 +8,33 @@ type PricingTier = {
   unit: string;
   featured?: boolean;
   features: string[];
+  herFeatures?: string[];
+  hisFeatures?: string[];
 };
 
-export default function Pricing({ tiers }: { tiers: PricingTier[] }) {
+type PricingSection = {
+  eyebrow?: string;
+  headingLine1?: string;
+  headingLine2?: string;
+  sub?: string;
+  ctaLabel?: string;
+} | null;
+
+export default function Pricing({
+  tiers,
+  sectionContent,
+}: {
+  tiers: PricingTier[];
+  sectionContent?: PricingSection;
+}) {
+  const eyebrow = sectionContent?.eyebrow ?? "The Program";
+  const line1 = sectionContent?.headingLine1 ?? "This is not just";
+  const line2 = sectionContent?.headingLine2 ?? "her journey.";
+  const sub =
+    sectionContent?.sub ??
+    "A first session is often just a conversation, a starting point. From there, you choose the pace and depth of support that feels right for you.";
+  const ctaLabel = sectionContent?.ctaLabel ?? "Get Started";
+
   return (
     <section id="pricing" data-section="pricing" className={styles.pricing}>
       <div className={styles.head}>
@@ -37,16 +61,13 @@ export default function Pricing({ tiers }: { tiers: PricingTier[] }) {
             fill="none"
           />
         </svg>
-        <p className={styles.eyebrow}>The Program</p>
+        <p className={styles.eyebrow}>{eyebrow}</p>
         <h2 className={styles.h2}>
-          This is not just
+          {line1}
           <br />
-          her journey.
+          {line2}
         </h2>
-        <p className={styles.sub}>
-          A first session is often just a conversation, a starting point. From there, you choose the
-          pace and depth of support that feels right for you.
-        </p>
+        <p className={styles.sub}>{sub}</p>
       </div>
 
       <div className={styles.grid}>
@@ -57,26 +78,102 @@ export default function Pricing({ tiers }: { tiers: PricingTier[] }) {
           >
             <h3 className={styles.tierName}>{tier.name}</h3>
             <p className={styles.tierDesc}>{tier.description}</p>
-            <ul className={styles.features}>
-              {tier.features?.map((f) => (
-                <li key={f}>
-                  <svg className={styles.check} viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                    <circle cx="10" cy="10" r="8.5" stroke="currentColor" strokeWidth="1.25" />
-                    <path
-                      d="M6.5 10.5l2.5 2.5 4.5-5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
+            {tier.herFeatures?.length || tier.hisFeatures?.length ? (
+              <div className={styles.featureGroups}>
+                {tier.herFeatures?.length ? (
+                  <div className={styles.featureGroup}>
+                    <p className={styles.featureGroupLabel}>Her</p>
+                    <ul className={styles.features}>
+                      {tier.herFeatures.map((f) => (
+                        <li key={f}>
+                          <svg
+                            className={styles.check}
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <circle
+                              cx="10"
+                              cy="10"
+                              r="8.5"
+                              stroke="currentColor"
+                              strokeWidth="1.25"
+                            />
+                            <path
+                              d="M6.5 10.5l2.5 2.5 4.5-5"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {tier.hisFeatures?.length ? (
+                  <div className={styles.featureGroup}>
+                    <p className={styles.featureGroupLabel}>Him</p>
+                    <ul className={styles.features}>
+                      {tier.hisFeatures.map((f) => (
+                        <li key={f}>
+                          <svg
+                            className={styles.check}
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <circle
+                              cx="10"
+                              cy="10"
+                              r="8.5"
+                              stroke="currentColor"
+                              strokeWidth="1.25"
+                            />
+                            <path
+                              d="M6.5 10.5l2.5 2.5 4.5-5"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <ul className={styles.features}>
+                {tier.features?.map((f) => (
+                  <li key={f}>
+                    <svg
+                      className={styles.check}
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <circle cx="10" cy="10" r="8.5" stroke="currentColor" strokeWidth="1.25" />
+                      <path
+                        d="M6.5 10.5l2.5 2.5 4.5-5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className={styles.cta}>
               <a href="#contact" className={`btn ${styles.tierBtn}`}>
-                Get Started
+                {ctaLabel}
                 <span className="btn-dot" />
               </a>
             </div>

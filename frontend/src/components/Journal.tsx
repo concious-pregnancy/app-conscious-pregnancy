@@ -24,7 +24,29 @@ const blobs = [
   },
 ];
 
-export default function Journal({ articles }: { articles: JournalArticle[] }) {
+type JournalSection = {
+  eyebrow?: string;
+  headingLine1?: string;
+  headingLine2Em?: string;
+  sub?: string;
+  ctaLabel?: string;
+} | null;
+
+export default function Journal({
+  articles,
+  sectionContent,
+}: {
+  articles: JournalArticle[];
+  sectionContent?: JournalSection;
+}) {
+  const eyebrow = sectionContent?.eyebrow ?? "Our Journal";
+  const line1 = sectionContent?.headingLine1 ?? "Evidence, not";
+  const line2Em = sectionContent?.headingLine2Em ?? "opinion.";
+  const sub =
+    sectionContent?.sub ??
+    "Reflections, research, and practical tools grounded in functional medicine and Chinese medicine. Written for women who want to understand, not just follow.";
+  const ctaLabel = sectionContent?.ctaLabel ?? "Browse Insights";
+
   return (
     <section id="journal" data-section="journal" className={`section ${styles.journal}`}>
       <div className="container">
@@ -53,17 +75,16 @@ export default function Journal({ articles }: { articles: JournalArticle[] }) {
             />
           </svg>
           <p data-reveal className={styles.eyebrow}>
-            Our Journal
+            {eyebrow}
           </p>
           <h2 data-reveal className={styles.title}>
-            Evidence, not <em>opinion.</em>
+            {line1} <em>{line2Em}</em>
           </h2>
           <p data-reveal className={styles.sub}>
-            Reflections, research, and practical tools grounded in functional medicine and Chinese
-            medicine. Written for women who want to understand, not just follow.
+            {sub}
           </p>
           <a href="#" className={`btn ${styles.browseBtn}`}>
-            Browse Insights
+            {ctaLabel}
             <span className="btn-dot" />
           </a>
         </div>

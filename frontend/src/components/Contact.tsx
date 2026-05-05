@@ -10,27 +10,45 @@ const whereOptions = [
   "Postpartum",
 ];
 
-export default function Contact() {
+type ContactContent = {
+  label?: string;
+  headingLine1?: string;
+  headingLine2?: string;
+  sub?: string;
+  formHeading?: string;
+  trustLine?: string;
+  submitLabel?: string;
+} | null;
+
+export default function Contact({ content }: { content?: ContactContent }) {
+  const label = content?.label ?? "Begin Your Journey";
+  const headingLine1 = content?.headingLine1 ?? "Your preparation";
+  const headingLine2 = content?.headingLine2 ?? "starts here.";
+  const sub =
+    content?.sub ??
+    "Fill out the form and we will reach out within 24 hours to schedule your discovery call. We will talk through where you are, what you want to optimize, and whether this program is the right fit.";
+  const formHeading = content?.formHeading ?? "Tell us about you.";
+  const trustLine = content?.trustLine ?? "Trusted by 80+ clients";
+  const submitLabel = content?.submitLabel ?? "Request a Discovery Call";
+
   return (
     <section id="contact" data-section="contact" className={styles.contact}>
       <div className={`container ${styles.inner}`}>
         <div className={styles.left}>
           <p data-reveal className={styles.label}>
-            Begin Your Journey
+            {label}
           </p>
           <h2 data-reveal className={styles.heading}>
-            Your preparation
+            {headingLine1}
             <br />
-            starts here.
+            {headingLine2}
           </h2>
           <p data-reveal className={styles.sub}>
-            Fill out the form and we will reach out within 24 hours to schedule your discovery call.
-            We will talk through where you are, what you want to optimize, and whether this program
-            is the right fit.
+            {sub}
           </p>
 
           <div className={styles.trust}>
-            <p className={styles.trustLine}>Trusted by 80+ clients</p>
+            <p className={styles.trustLine}>{trustLine}</p>
             <p className={styles.trustContact}>
               Prefer to chat first?{" "}
               <a href="mailto:hello@consciouspregnancy.care" className={styles.trustLink}>
@@ -42,7 +60,7 @@ export default function Contact() {
         </div>
 
         <form className={styles.form} onSubmit={(e) => e.preventDefault()} data-reveal>
-          <p className={styles.formHeading}>Tell us about you.</p>
+          <p className={styles.formHeading}>{formHeading}</p>
 
           <div className={styles.row}>
             <div className={styles.field}>
@@ -122,7 +140,7 @@ export default function Contact() {
 
           <button type="submit" className={`btn btn-primary ${styles.submit}`}>
             <span className="btn-dot" />
-            Request a Discovery Call
+            {submitLabel}
           </button>
         </form>
       </div>

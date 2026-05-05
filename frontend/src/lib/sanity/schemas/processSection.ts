@@ -8,6 +8,9 @@ export const processSectionType = defineType({
     prepare: () => ({ title: "Process Section" }),
   },
   fields: [
+    defineField({ name: "eyebrow", title: "Eyebrow", type: "string" }),
+    defineField({ name: "headingLine1", title: "Heading Line 1", type: "string" }),
+    defineField({ name: "headingLine2Em", title: "Heading Line 2 (italic)", type: "string" }),
     defineField({ name: "lede", title: "Intro Paragraph", type: "text", rows: 3 }),
     defineField({
       name: "steps",

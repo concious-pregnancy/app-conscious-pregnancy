@@ -24,6 +24,7 @@
 
 .eyebrow {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.625rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -146,6 +147,31 @@
   height: 18px;
   flex-shrink: 0;
   color: var(--sage);
+}
+
+/* ── His / Her feature groups ─────────────────────────────────── */
+.featureGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  flex: 1;
+}
+
+.featureGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.featureGroupLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin: 0;
 }
 
 /* ── CTA ──────────────────────────────────────────────────────── */

@@ -19,27 +19,40 @@ type ServiceExtra = {
   body: string;
 };
 
+type ServicesSection = {
+  eyebrow?: string;
+  headingLine1?: string;
+  headingLine2Em?: string;
+  sub?: string;
+} | null;
+
 export default function Services({
   services,
   extras,
+  sectionContent,
 }: {
   services: Service[];
   extras: ServiceExtra[];
+  sectionContent?: ServicesSection;
 }) {
+  const eyebrow = sectionContent?.eyebrow ?? "The Work";
+  const line1 = sectionContent?.headingLine1 ?? "Four lenses on";
+  const line2Em = sectionContent?.headingLine2Em ?? "one preparation.";
+  const sub =
+    sectionContent?.sub ??
+    "Each practice stands on its own. Together, they meet you at every layer, cellular, energetic, emotional, in the window before you conceive.";
+
   return (
     <section id="services" data-section="services" className={styles.services}>
       <div className={styles.head}>
         <div>
-          <p className={styles.eyebrow}>The Work</p>
+          <p className={styles.eyebrow}>{eyebrow}</p>
           <h2 className={styles.h2}>
-            Four lenses on <em>one preparation.</em>
+            {line1} <em>{line2Em}</em>
           </h2>
         </div>
         <div className={styles.headRight}>
-          <p>
-            Each practice stands on its own. Together, they meet you at every layer, cellular,
-            energetic, emotional, in the window before you conceive.
-          </p>
+          <p>{sub}</p>
         </div>
       </div>
 

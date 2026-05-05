@@ -6,6 +6,11 @@ export const faqsQuery = groq`*[_type == "faq"] | order(order asc) {
   answer
 }`;
 
+export const faqSectionQuery = groq`*[_type == "faqSection"][0] {
+  headingLine1,
+  headingLine2Em
+}`;
+
 export const pricingTiersQuery = groq`*[_type == "pricingTier"] | order(order asc) {
   _id,
   name,
@@ -13,7 +18,17 @@ export const pricingTiersQuery = groq`*[_type == "pricingTier"] | order(order as
   price,
   unit,
   featured,
-  features
+  features,
+  herFeatures,
+  hisFeatures
+}`;
+
+export const pricingSectionQuery = groq`*[_type == "pricingSection"][0] {
+  eyebrow,
+  headingLine1,
+  headingLine2,
+  sub,
+  ctaLabel
 }`;
 
 export const servicesQuery = groq`*[_type == "service"] | order(order asc) {
@@ -32,12 +47,27 @@ export const serviceExtrasQuery = groq`*[_type == "serviceExtra"] | order(order 
   body
 }`;
 
+export const servicesSectionQuery = groq`*[_type == "servicesSection"][0] {
+  eyebrow,
+  headingLine1,
+  headingLine2Em,
+  sub
+}`;
+
 export const journalArticlesQuery = groq`*[_type == "journalArticle"] | order(order asc) {
   _id,
   title,
   excerpt,
   image,
   slug
+}`;
+
+export const journalSectionQuery = groq`*[_type == "journalSection"][0] {
+  eyebrow,
+  headingLine1,
+  headingLine2Em,
+  sub,
+  ctaLabel
 }`;
 
 export const testimonialQuery = groq`*[_type == "testimonial"][0] {
@@ -81,6 +111,9 @@ export const statsSectionQuery = groq`*[_type == "statsSection"][0] {
 }`;
 
 export const processSectionQuery = groq`*[_type == "processSection"][0] {
+  eyebrow,
+  headingLine1,
+  headingLine2Em,
   lede,
   steps[] { title, body }
 }`;
@@ -93,4 +126,38 @@ export const credentialsSectionQuery = groq`*[_type == "credentialsSection"][0] 
   ctaLabel,
   image,
   image2
+}`;
+
+export const readySectionQuery = groq`*[_type == "readySection"][0] {
+  headingLine1,
+  headingEm,
+  sub,
+  ctaLabel,
+  trustLabel,
+  ratingText,
+  chatIntro,
+  chatEmail
+}`;
+
+export const contactSectionQuery = groq`*[_type == "contactSection"][0] {
+  label,
+  headingLine1,
+  headingLine2,
+  sub,
+  formHeading,
+  trustLine,
+  submitLabel
+}`;
+
+export const philosophySectionQuery = groq`*[_type == "philosophySection"][0] {
+  eyebrow,
+  heading,
+  ctaLabel,
+  footnote
+}`;
+
+export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
+  heading,
+  headingEm,
+  sub
 }`;

@@ -33,6 +33,14 @@ export const structure: StructureResolver = (S) =>
                     .title("Services")
                     .items([
                       S.listItem()
+                        .title("Section Header")
+                        .child(
+                          S.document()
+                            .title("Services Section Header")
+                            .schemaType("servicesSection")
+                            .documentId("servicesSection-singleton"),
+                        ),
+                      S.listItem()
                         .title("Service Cards")
                         .child(S.documentTypeList("service").title("Service Cards")),
                       S.listItem()
@@ -57,10 +65,34 @@ export const structure: StructureResolver = (S) =>
                     .documentId("credentialsSection-singleton"),
                 ),
               S.listItem()
-                .title("6. Pricing Tiers")
-                .child(S.documentTypeList("pricingTier").title("Pricing Tiers")),
+                .title("6. Ready")
+                .child(
+                  S.document()
+                    .title("Ready Section")
+                    .schemaType("readySection")
+                    .documentId("readySection-singleton"),
+                ),
               S.listItem()
-                .title("7. Listen (Quote)")
+                .title("7. Pricing")
+                .child(
+                  S.list()
+                    .title("Pricing")
+                    .items([
+                      S.listItem()
+                        .title("Section Header")
+                        .child(
+                          S.document()
+                            .title("Pricing Section Header")
+                            .schemaType("pricingSection")
+                            .documentId("pricingSection-singleton"),
+                        ),
+                      S.listItem()
+                        .title("Pricing Tiers")
+                        .child(S.documentTypeList("pricingTier").title("Pricing Tiers")),
+                    ]),
+                ),
+              S.listItem()
+                .title("8. Listen (Quote)")
                 .child(
                   S.document()
                     .title("Listen (Quote)")
@@ -68,20 +100,78 @@ export const structure: StructureResolver = (S) =>
                     .documentId("listenSection-singleton"),
                 ),
               S.listItem()
-                .title("8. Testimonials")
+                .title("9. Testimonials")
                 .child(S.documentTypeList("testimonial").title("Testimonials")),
               S.listItem()
-                .title("9. Journal Articles")
-                .child(S.documentTypeList("journalArticle").title("Journal Articles")),
+                .title("10. Journal")
+                .child(
+                  S.list()
+                    .title("Journal")
+                    .items([
+                      S.listItem()
+                        .title("Section Header")
+                        .child(
+                          S.document()
+                            .title("Journal Section Header")
+                            .schemaType("journalSection")
+                            .documentId("journalSection-singleton"),
+                        ),
+                      S.listItem()
+                        .title("Journal Articles")
+                        .child(S.documentTypeList("journalArticle").title("Journal Articles")),
+                    ]),
+                ),
               S.listItem()
-                .title("10. Stats")
+                .title("11. Stats")
                 .child(
                   S.document()
                     .title("Stats")
                     .schemaType("statsSection")
                     .documentId("statsSection-singleton"),
                 ),
-              S.listItem().title("11. FAQ").child(S.documentTypeList("faq").title("FAQ")),
+              S.listItem()
+                .title("12. FAQ")
+                .child(
+                  S.list()
+                    .title("FAQ")
+                    .items([
+                      S.listItem()
+                        .title("Section Header")
+                        .child(
+                          S.document()
+                            .title("FAQ Section Header")
+                            .schemaType("faqSection")
+                            .documentId("faqSection-singleton"),
+                        ),
+                      S.listItem()
+                        .title("FAQ Items")
+                        .child(S.documentTypeList("faq").title("FAQ Items")),
+                    ]),
+                ),
+              S.listItem()
+                .title("13. Contact")
+                .child(
+                  S.document()
+                    .title("Contact Section")
+                    .schemaType("contactSection")
+                    .documentId("contactSection-singleton"),
+                ),
+              S.listItem()
+                .title("14. Philosophy (hidden)")
+                .child(
+                  S.document()
+                    .title("Philosophy Section")
+                    .schemaType("philosophySection")
+                    .documentId("philosophySection-singleton"),
+                ),
+              S.listItem()
+                .title("15. Approach (hidden)")
+                .child(
+                  S.document()
+                    .title("Approach Section")
+                    .schemaType("approachSection")
+                    .documentId("approachSection-singleton"),
+                ),
             ]),
         ),
     ]);
