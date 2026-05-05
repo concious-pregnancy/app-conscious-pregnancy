@@ -20,10 +20,14 @@ import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
   faqsQuery,
+  faqSectionQuery,
   pricingTiersQuery,
+  pricingSectionQuery,
   servicesQuery,
   serviceExtrasQuery,
+  servicesSectionQuery,
   journalArticlesQuery,
+  journalSectionQuery,
   testimonialQuery,
   heroSectionQuery,
   balanceSectionQuery,
@@ -31,16 +35,24 @@ import {
   statsSectionQuery,
   processSectionQuery,
   credentialsSectionQuery,
+  readySectionQuery,
+  contactSectionQuery,
+  philosophySectionQuery,
+  approachSectionQuery,
 } from "@/lib/sanity/queries";
 
 export default async function Home() {
   const fetchOpts = { cache: "no-store" } as const;
   const [
     faqs,
+    faqSectionContent,
     pricingTiers,
+    pricingSectionContent,
     services,
     serviceExtras,
+    servicesSectionContent,
     journalArticles,
+    journalSectionContent,
     testimonial,
     heroContent,
     balanceContent,
@@ -48,12 +60,20 @@ export default async function Home() {
     statsContent,
     processContent,
     credentialsContent,
+    readyContent,
+    contactContent,
+    philosophyContent,
+    approachContent,
   ] = await Promise.all([
     client.fetch(faqsQuery, {}, fetchOpts),
+    client.fetch(faqSectionQuery, {}, fetchOpts),
     client.fetch(pricingTiersQuery, {}, fetchOpts),
+    client.fetch(pricingSectionQuery, {}, fetchOpts),
     client.fetch(servicesQuery, {}, fetchOpts),
     client.fetch(serviceExtrasQuery, {}, fetchOpts),
+    client.fetch(servicesSectionQuery, {}, fetchOpts),
     client.fetch(journalArticlesQuery, {}, fetchOpts),
+    client.fetch(journalSectionQuery, {}, fetchOpts),
     client.fetch(testimonialQuery, {}, fetchOpts),
     client.fetch(heroSectionQuery, {}, fetchOpts),
     client.fetch(balanceSectionQuery, {}, fetchOpts),
@@ -61,6 +81,10 @@ export default async function Home() {
     client.fetch(statsSectionQuery, {}, fetchOpts),
     client.fetch(processSectionQuery, {}, fetchOpts),
     client.fetch(credentialsSectionQuery, {}, fetchOpts),
+    client.fetch(readySectionQuery, {}, fetchOpts),
+    client.fetch(contactSectionQuery, {}, fetchOpts),
+    client.fetch(philosophySectionQuery, {}, fetchOpts),
+    client.fetch(approachSectionQuery, {}, fetchOpts),
   ]);
 
   return (
@@ -69,8 +93,12 @@ export default async function Home() {
       <main>
         <Hero content={heroContent} />
         <Balance content={balanceContent} />
-        <Services services={services} extras={serviceExtras} />
-        {!FLAGS.OMIT_SECTIONS.philosophy && <Philosophy />}
+        <Services
+          services={services}
+          extras={serviceExtras}
+          sectionContent={servicesSectionContent}
+        />
+        {!FLAGS.OMIT_SECTIONS.philosophy && <Philosophy content={philosophyContent} />}
         <Process content={processContent} />
         <Story
           id="credentials"
@@ -98,15 +126,15 @@ export default async function Home() {
               : "/hero/hero-kimono.jpeg"
           }
         />
-        <Ready />
-        <Pricing tiers={pricingTiers} />
-        {!FLAGS.OMIT_SECTIONS.approach && <Approach />}
+        <Ready content={readyContent} />
+        <Pricing tiers={pricingTiers} sectionContent={pricingSectionContent} />
+        {!FLAGS.OMIT_SECTIONS.approach && <Approach content={approachContent} />}
         <Listen content={listenContent} />
         {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
-        <Journal articles={journalArticles} />
+        <Journal articles={journalArticles} sectionContent={journalSectionContent} />
         {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
-        <FAQ items={faqs} />
-        <Contact />
+        <FAQ items={faqs} sectionContent={faqSectionContent} />
+        <Contact content={contactContent} />
       </main>
       <Footer />
     </>

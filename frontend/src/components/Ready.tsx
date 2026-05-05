@@ -1,6 +1,28 @@
 import styles from "./Ready.module.css";
 
-export default function Ready() {
+type ReadyContent = {
+  headingLine1?: string;
+  headingEm?: string;
+  sub?: string;
+  ctaLabel?: string;
+  trustLabel?: string;
+  ratingText?: string;
+  chatIntro?: string;
+  chatEmail?: string;
+} | null;
+
+export default function Ready({ content }: { content?: ReadyContent }) {
+  const headingLine1 = content?.headingLine1 ?? "Ready to find";
+  const headingEm = content?.headingEm ?? "your path?";
+  const sub =
+    content?.sub ??
+    "Every step is flexible, we adapt to your needs, pace, and comfort level. Whether you're here for a short chapter or a longer journey, we'll walk it together.";
+  const ctaLabel = content?.ctaLabel ?? "Start Your Journey";
+  const trustLabel = content?.trustLabel ?? "Trusted by 80+ clients";
+  const ratingText = content?.ratingText ?? "Excellent 4.9 out of 5";
+  const chatIntro = content?.chatIntro ?? "Prefer to chat first?";
+  const chatEmail = content?.chatEmail ?? "#contact";
+
   return (
     <section id="ready" data-section="ready" className={styles.ready}>
       <div className={styles.curve} aria-hidden="true">
@@ -23,22 +45,19 @@ export default function Ready() {
       <div className={styles.inner}>
         <div className={styles.left} data-reveal>
           <h2 className={styles.h2}>
-            Ready to find
+            {headingLine1}
             <br />
-            <em>your path?</em>
+            <em>{headingEm}</em>
           </h2>
-          <p className={styles.sub}>
-            Every step is flexible, we adapt to your needs, pace, and comfort level. Whether
-            you&rsquo;re here for a short chapter or a longer journey, we&rsquo;ll walk it together.
-          </p>
+          <p className={styles.sub}>{sub}</p>
           <a href="#contact" className={`btn ${styles.pill}`}>
-            Start Your Journey
+            {ctaLabel}
             <span className="btn-dot" />
           </a>
         </div>
 
         <div className={styles.right} data-reveal>
-          <p className={styles.trustLabel}>Trusted by 80+ clients</p>
+          <p className={styles.trustLabel}>{trustLabel}</p>
           <div className={styles.avatars} aria-hidden="true">
             <span
               className={styles.av}
@@ -64,7 +83,7 @@ export default function Ready() {
           </div>
 
           <div className={styles.rating}>
-            <strong>Excellent 4.9 out of 5</strong>
+            <strong>{ratingText}</strong>
             <svg className={styles.star} viewBox="0 0 20 20" aria-hidden="true">
               <path
                 d="M10 1l2.39 4.84L18 6.76l-4 3.9.94 5.5L10 13.77l-4.94 2.39L6 10.66 2 6.76l5.61-.92L10 1z"
@@ -75,8 +94,15 @@ export default function Ready() {
           </div>
 
           <p className={styles.chatLine}>
-            Prefer to chat first?{" "}
-            <a href="#contact" className={styles.emailLink}>
+            {chatIntro}{" "}
+            <a
+              href={
+                chatEmail.startsWith("http") || chatEmail.startsWith("mailto")
+                  ? chatEmail
+                  : `mailto:${chatEmail}`
+              }
+              className={styles.emailLink}
+            >
               Send us an email
             </a>{" "}
             or connect with us on social, we&rsquo;re always happy to help.

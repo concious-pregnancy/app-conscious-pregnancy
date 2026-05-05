@@ -36,9 +36,23 @@ export const pricingTierType = defineType({
     }),
     defineField({
       name: "features",
-      title: "Features",
+      title: "Features (flat list — used when his/hers are not set)",
       type: "array",
       of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "herFeatures",
+      title: "Her Features",
+      type: "array",
+      of: [{ type: "string" }],
+      description: 'Bullet points shown under a "Her" heading',
+    }),
+    defineField({
+      name: "hisFeatures",
+      title: "His Features",
+      type: "array",
+      of: [{ type: "string" }],
+      description: 'Bullet points shown under a "His" heading',
     }),
     defineField({
       name: "order",

@@ -9,8 +9,21 @@ type FaqItem = {
   answer: string;
 };
 
-export default function FAQ({ items }: { items: FaqItem[] }) {
+type FaqSection = {
+  headingLine1?: string;
+  headingLine2Em?: string;
+} | null;
+
+export default function FAQ({
+  items,
+  sectionContent,
+}: {
+  items: FaqItem[];
+  sectionContent?: FaqSection;
+}) {
   const [open, setOpen] = useState<number | null>(null);
+  const headingLine1 = sectionContent?.headingLine1 ?? "Your questions.";
+  const headingLine2Em = sectionContent?.headingLine2Em ?? "Answered.";
 
   return (
     <section id="faq" data-section="faq" className={`section ${styles.faq}`}>
@@ -18,9 +31,9 @@ export default function FAQ({ items }: { items: FaqItem[] }) {
         <div className={styles.layout}>
           <div className={styles.left}>
             <h2 data-reveal className={styles.title}>
-              Your questions.
+              {headingLine1}
               <br />
-              <em>Answered.</em>
+              <em>{headingLine2Em}</em>
             </h2>
           </div>
 
