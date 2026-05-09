@@ -161,3 +161,50 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
   headingEm,
   sub
 }`;
+
+/* ── Standalone-page queries (about / services / journal) ──────── */
+
+export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
+  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
+  introEyebrow, introTitle, introTitleEm, introBody,
+  founderEyebrow, founderTitle, founderTitleEm, founderBody,
+  founderImage, founderQuote, founderQuoteAttribution,
+  teamEyebrow, teamTitle, teamTitleEm, teamSub,
+  approachTitle, approachTitleEm, approachBody,
+  pebblesEyebrow, pebblesQuote, pebblesAttribution, pebblesCtaLabel, pebblesImage,
+  storyEyebrow, storyTitle, storyTitleEm, storyBody, storyCtaLabel,
+  storyImageBack, storyImageFront,
+  faqEyebrow, faqTitle, faqTitleEm, faqSub, faqFootnote,
+  faqs[] { q, a },
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+}`;
+
+export const teamMembersQuery = groq`*[_type == "teamMember"] | order(order asc) {
+  _id, name, role, bio, image
+}`;
+
+export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
+  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
+  serviceBlocks[] { eyebrow, title, titleEm, image, paragraphs, ctaLabel },
+  statsEyebrow, statsTitle, statsTitleEm, statsBody,
+  stats[] { value, label },
+  pricingEyebrow, pricingTitle, pricingTitleEm, pricingSub,
+  tiers[] { name, blurb, features },
+  storyEyebrow, storyTitle, storyTitleEm, storyBody, storyImage, storyCtaLabel,
+  faqEyebrow, faqTitle, faqTitleEm, faqSub, faqFootnote,
+  faqs[] { q, a },
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+}`;
+
+export const journalPageQuery = groq`*[_type == "journalPage"][0] {
+  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
+  featuredCount,
+  recentEyebrow, recentTitle, recentTitleEm,
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+}`;
+
+export const journalArticlesFullQuery = groq`*[_type == "journalArticle"] | order(order asc) {
+  _id, title, excerpt, image, slug,
+  "eyebrow": coalesce(eyebrow, "Article"),
+  order
+}`;
