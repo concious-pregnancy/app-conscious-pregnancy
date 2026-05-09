@@ -17,6 +17,10 @@ import { readySectionType } from "./readySection";
 import { contactSectionType } from "./contactSection";
 import { philosophySectionType } from "./philosophySection";
 import { approachSectionType } from "./approachSection";
+import { aboutPageType } from "./aboutPage";
+import { servicesPageType } from "./servicesPage";
+import { journalPageType } from "./journalPage";
+import { teamMemberType } from "./teamMember";
 
 export const schemaTypes = [
   faqType,
@@ -39,4 +43,8 @@ export const schemaTypes = [
   contactSectionType,
   philosophySectionType,
   approachSectionType,
+  aboutPageType,
+  servicesPageType,
+  journalPageType,
+  teamMemberType,
 ];

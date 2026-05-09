@@ -174,4 +174,39 @@ export const structure: StructureResolver = (S) =>
                 ),
             ]),
         ),
+      S.listItem()
+        .title("About Page")
+        .child(
+          S.list()
+            .title("About Page")
+            .items([
+              S.listItem()
+                .title("Page Content")
+                .child(
+                  S.document()
+                    .title("About Page Content")
+                    .schemaType("aboutPage")
+                    .documentId("aboutPage-singleton"),
+                ),
+              S.listItem()
+                .title("Team Members")
+                .child(S.documentTypeList("teamMember").title("Team Members")),
+            ]),
+        ),
+      S.listItem()
+        .title("Services Page")
+        .child(
+          S.document()
+            .title("Services Page Content")
+            .schemaType("servicesPage")
+            .documentId("servicesPage-singleton"),
+        ),
+      S.listItem()
+        .title("Journal Page")
+        .child(
+          S.document()
+            .title("Journal Page Content")
+            .schemaType("journalPage")
+            .documentId("journalPage-singleton"),
+        ),
     ]);
