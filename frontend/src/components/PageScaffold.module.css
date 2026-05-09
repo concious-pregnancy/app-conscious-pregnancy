@@ -451,3 +451,263 @@
 .trustAvatar:first-child {
   margin-left: 0;
 }
+
+/* ── Blob-mask system (about team + journal articles) ─────────── */
+/* Three organic alpha-mask shapes from Clearpath cycled across imagery.
+   Technique uses CSS `mask` so the underlying <img> stays a real image
+   (good for object-fit, focal point, and lazy loading). The outline halo
+   sibling renders the same blob silhouette as a thin sage stroke behind
+   the masked image so the silhouette reads even on light backgrounds. */
+.blobFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.blobFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  mask-position: center;
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.blobOutline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: var(--sage-light);
+  opacity: 0.55;
+  /* Slight scale so the stroke ring sits just outside the mask edge */
+  transform: scale(1.015);
+}
+
+.blob0 img {
+  mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
+}
+
+.blob1 img {
+  mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
+}
+
+.blob2 img {
+  mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
+}
+
+/* ── Hero wisp line decoration (about + services + journal) ────── */
+.heroWisp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: var(--sage-light);
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.heroWisp svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Leaf mark (small section ornament) ─────────────────────────── */
+.leafMark {
+  width: 24px;
+  height: auto;
+  display: inline-block;
+  color: var(--sage);
+  margin-bottom: var(--s-3);
+}
+
+.waveDivider {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-top: var(--s-12);
+  opacity: 0.55;
+}
+
+.waveDivider .leafMark {
+  margin-bottom: 0;
+  color: var(--sage-light);
+}
+
+/* ── Article item (journal — NO card chrome) ────────────────────── */
+.articleGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-12);
+  row-gap: var(--s-16);
+}
+
+@media (min-width: 720px) {
+  .articleGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .articleGridFeatured {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.articleItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.articleItemSolo {
+  grid-column: 1 / -1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.articleTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--dark);
+}
+
+.articleExcerpt {
+  font-family: var(--font-sans);
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.readMorePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem 0.7rem 1.1rem;
+  border-radius: var(--radius-pill);
+  background: var(--sage);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  width: fit-content;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.readMorePill:hover {
+  background: var(--sage-dark);
+  transform: translateY(-1px);
+}
+
+/* ── Full-bleed alternating service block (services) ─────────────── */
+.serviceBleedBlock {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
+  align-items: center;
+  padding: clamp(48px, 7vw, 96px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.serviceBleedBlock:first-of-type {
+  border-top: none;
+}
+
+@media (min-width: 900px) {
+  .serviceBleedBlock {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: var(--s-12);
+  }
+  .serviceBleedReverse > :first-child {
+    order: 2;
+  }
+}
+
+.serviceBleedMedia {
+  width: 100%;
+  aspect-ratio: 5 / 6;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* ── Sticky-pinned section (services process) ───────────────────── */
+.stickySection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
+}
+
+@media (min-width: 900px) {
+  .stickySection {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--s-16);
+    align-items: start;
+  }
+}
+
+.stickyHead {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-8));
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.stepItem {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--s-4);
+  border-top: 1px solid var(--border);
+  padding-top: var(--s-6);
+}
+
+.stepNumber {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  color: var(--sage);
+  line-height: 1;
+}
+
+.stepTitle {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--dark);
+  margin-bottom: var(--s-3);
+}
+
+.stepBody {
+  font-family: var(--font-sans);
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 52ch;
+}

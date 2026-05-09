@@ -10,6 +10,14 @@ export const metadata: Metadata = {
 };
 
 const IMG = "/clearpath-ref/about";
+const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
+
+const blobOutlinePaths = [
+  "M250 36c-58 6-127 36-150 88-22 50 6 100 30 134 28 38 78 50 122 47 50-3 100-22 124-58 28-43 12-100-26-138-30-30-66-46-100-73z",
+  "M270 30c-72-2-156 30-186 86-26 50 6 110 38 142 36 36 96 50 144 44 56-7 110-30 132-72 22-44 0-100-32-138-30-36-58-58-96-62z",
+  "M270 28c-78 0-160 22-200 70-32 40 0 96 28 130 28 34 84 50 138 48 56-3 110-22 138-58 24-30 18-78-12-118-32-44-50-72-92-72z",
+];
+const blobClasses = ["blob0", "blob1", "blob2"] as const;
 
 const team = [
   {
@@ -56,15 +64,35 @@ const faqs = [
   },
 ];
 
+function LeafMark({ size = 24 }: { size?: number }) {
+  return (
+    <img
+      src={LEAF}
+      alt=""
+      className={s.leafMark}
+      style={{ width: size, height: "auto" }}
+      aria-hidden="true"
+    />
+  );
+}
+
 export default function AboutPage() {
   return (
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
+        {/* Hero with wisp-line decoration */}
         <section className={s.hero}>
-          <div className={s.heroMediaWrap} aria-hidden="true">
-            <img src={`${IMG}/6s6w8sBdk4udefM5WmJNctwuGaw.jpg`} alt="" className={s.heroMedia} />
+          <div className={s.heroWisp} aria-hidden="true">
+            <svg
+              viewBox="0 0 1516 443"
+              preserveAspectRatio="none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+            >
+              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
+            </svg>
           </div>
           <div className={s.heroInner}>
             <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>About</span>
@@ -82,6 +110,7 @@ export default function AboutPage() {
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">The Way We Help</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   We start by <em>listening,</em> really listening.
@@ -104,6 +133,7 @@ export default function AboutPage() {
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">Meet our founder</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Therapy isn't about <em>fixing people.</em>
@@ -138,32 +168,54 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team */}
+        {/* Team — blob-masked portraits, three different shapes */}
         <section className={`${s.section} ${s.sectionOffWhite}`}>
           <div className={s.sectionInner}>
-            <div style={{ marginBottom: "var(--s-12)" }}>
+            <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
+              <LeafMark />
               <span className="t-label t-label-eyebrow">Our team</span>
-              <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+              <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
                 The People Who <em>Walk Beside You.</em>
               </h2>
-              <p className={s.twoColBody} style={{ marginTop: "1.5rem" }}>
+              <p className={s.twoColBody} style={{ marginTop: "1.5rem", marginInline: "auto" }}>
                 ClearPath is more than a service, each member of our team is here to listen, guide,
                 and support you at your own pace.
               </p>
             </div>
-            <div className={`${s.cardGrid} ${s.cardGrid3}`}>
-              {team.map((member) => (
-                <article key={member.name} className={s.card}>
-                  <img
-                    src={member.image}
-                    alt={`${member.name} portrait`}
-                    className={s.teamPortrait}
-                  />
-                  <span className={`t-label t-label-eyebrow ${s.cardEyebrow}`}>Therapist</span>
-                  <h3 className={s.cardTitle}>{member.name}</h3>
-                  <p className={s.cardBody}>{member.bio}</p>
-                </article>
-              ))}
+            <div className={s.articleGrid}>
+              {team.map((member, i) => {
+                const blobClass = s[blobClasses[i % 3]];
+                const outlinePath = blobOutlinePaths[i % 3];
+                return (
+                  <article key={member.name} className={s.articleItem}>
+                    <div className={`${s.blobFrame} ${blobClass}`}>
+                      <img src={member.image} alt={`${member.name} portrait`} />
+                      <svg
+                        className={s.blobOutline}
+                        viewBox="0 0 540 405"
+                        preserveAspectRatio="none"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        aria-hidden="true"
+                      >
+                        <path d={outlinePath} />
+                      </svg>
+                    </div>
+                    <span className={`t-label`} style={{ marginTop: "var(--s-3)" }}>
+                      Therapist
+                    </span>
+                    <h3 className={s.articleTitle}>{member.name}</h3>
+                    <p className={s.articleExcerpt}>{member.bio}</p>
+                  </article>
+                );
+              })}
+            </div>
+            {/* Wave divider closing the team section */}
+            <div className={s.waveDivider} aria-hidden="true">
+              <LeafMark size={20} />
+              <LeafMark size={20} />
+              <LeafMark size={20} />
             </div>
           </div>
         </section>
@@ -188,6 +240,7 @@ export default function AboutPage() {
         {/* Founder pull quote */}
         <section className={`${s.section} ${s.sectionPaper}`}>
           <div className={s.sectionInner} style={{ textAlign: "center" }}>
+            <LeafMark />
             <span className="t-label t-label-eyebrow">Real people. Real change.</span>
             <blockquote
               className="t-quote"
@@ -207,11 +260,12 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Featured story */}
+        {/* Featured story — rectangular, not blob-masked */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">Real people. Real change.</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Finding each other <em>again.</em>
@@ -246,6 +300,7 @@ export default function AboutPage() {
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">FAQ</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Your questions. <em>Answered.</em>

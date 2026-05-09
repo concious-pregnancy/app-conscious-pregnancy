@@ -134,10 +134,18 @@ export default function ServicesPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
+        {/* Hero with wisp-line decoration */}
         <section className={s.hero}>
-          <div className={s.heroMediaWrap} aria-hidden="true">
-            <img src={`${IMG}/VW2dIv9jFcnOEMXK68HcTW0X9g.jpg`} alt="" className={s.heroMedia} />
+          <div className={s.heroWisp} aria-hidden="true">
+            <svg
+              viewBox="0 0 1516 443"
+              preserveAspectRatio="none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+            >
+              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
+            </svg>
           </div>
           <div className={s.heroInner}>
             <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>Services</span>
@@ -152,27 +160,31 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Service blocks */}
+        {/* Service blocks — full-bleed alternating, rectangular (no blob masks) */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             {services.map((svc, idx) => (
               <article
                 key={idx}
-                className={`${s.serviceBlock} ${idx % 2 === 1 ? s.serviceBlockReverse : ""}`}
+                className={`${s.serviceBleedBlock} ${idx % 2 === 1 ? s.serviceBleedReverse : ""}`}
               >
-                <div>
+                <img
+                  src={svc.image}
+                  alt=""
+                  className={s.serviceBleedMedia}
+                  style={{ aspectRatio: "4 / 5" }}
+                />
+                <div className={s.serviceBody}>
                   <img
-                    src={svc.image}
+                    src="/clearpath-ref/services/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg"
                     alt=""
-                    className={s.serviceMedia}
-                    style={{ marginBottom: "var(--s-6)" }}
+                    className={s.leafMark}
+                    aria-hidden="true"
                   />
                   <span className="t-label t-label-eyebrow">Service · 0{idx + 1}</span>
                   <h2 className={s.serviceTitle} style={{ marginTop: "1rem" }}>
                     {svc.title}
                   </h2>
-                </div>
-                <div className={s.serviceBody}>
                   {svc.paragraphs.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
