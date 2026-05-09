@@ -487,6 +487,8 @@
 .blobFrame {
   position: relative;
   width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
   aspect-ratio: 297 / 222;
 }
 
