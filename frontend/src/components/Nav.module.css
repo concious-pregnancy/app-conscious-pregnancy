@@ -55,6 +55,26 @@
   color: var(--white);
 }
 
+.links a.activeLink {
+  color: var(--white);
+  position: relative;
+}
+
+.links a.activeLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.85;
+}
+
+.lightBg .links a.activeLink {
+  color: var(--dark);
+}
+
 .cta {
   font-size: 0.7rem !important;
   padding: 0.55rem 1.5rem 0.55rem 1rem !important;
