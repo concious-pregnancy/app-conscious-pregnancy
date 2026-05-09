@@ -7,29 +7,53 @@
 }
 
 /* ── Page hero ─────────────────────────────────────────────── */
+/* Reference: clearpath /about,/services,/journal scroll 0 — large
+   serif title left-side, small lead paragraph top-right, eyebrow
+   bottom-left under title, wisp-line decoration tracing across. */
 .hero {
   position: relative;
   background: var(--paper);
   padding: clamp(96px, 14vw, 168px) var(--pad-x) clamp(64px, 10vw, 120px);
   overflow: hidden;
+  min-height: 80vh;
+  display: flex;
+  align-items: stretch;
 }
 
 .heroInner {
+  width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
   display: grid;
-  gap: var(--s-6);
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
   position: relative;
   z-index: 1;
 }
 
+@media (min-width: 900px) {
+  .heroInner {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--s-16);
+  }
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-12);
+  min-height: 50vh;
+}
+
 .heroEyebrow {
-  margin-bottom: var(--s-4);
+  /* Eyebrow sits at the BOTTOM-LEFT of hero, below the title. */
+  align-self: flex-start;
 }
 
 .heroTitle {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(3rem, 7vw, 6.4rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
   font-weight: 400;
@@ -44,10 +68,11 @@
 
 .heroLead {
   font-family: var(--font-sans);
-  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-  line-height: 1.55;
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.5;
   color: var(--muted);
-  max-width: 56ch;
+  max-width: 30ch;
+  align-self: start;
 }
 
 /* ── Generic section wrapper ─────────────────────────────────── */
@@ -514,17 +539,21 @@
 }
 
 /* ── Offset image pair (about Finding-each-other section) ─────── */
+/* Reference: clearpath /about scroll-7200 — back image right-aligned
+   and taller, front image offset bottom-left, partially overlapping
+   the back image. Back is the wider couple shot, front is the closer
+   portrait. */
 .offsetPair {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 6;
 }
 
 .offsetPairBack {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 65%;
+  right: 0;
+  width: 70%;
   aspect-ratio: 3 / 4;
   z-index: 1;
 }
@@ -532,8 +561,8 @@
 .offsetPairFront {
   position: absolute;
   bottom: 0;
-  right: 0;
-  width: 55%;
+  left: 0;
+  width: 52%;
   aspect-ratio: 3 / 4;
   z-index: 2;
 }
@@ -544,6 +573,91 @@
   object-fit: cover;
   border-radius: var(--radius-md);
   display: block;
+}
+
+/* ── Full-bleed split (about founder portrait + quote section) ── */
+/* Reference: clearpath /about scroll-2700 — edge-to-edge horizontal
+   split with rectangular portrait left and quote callout right. */
+.fullBleedSplit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: stretch;
+  background: var(--paper);
+}
+
+@media (min-width: 900px) {
+  .fullBleedSplit {
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+}
+
+.fullBleedSplitImg {
+  width: 100%;
+  height: 100%;
+  min-height: 50vh;
+  object-fit: cover;
+  display: block;
+}
+
+.fullBleedSplitContent {
+  padding: clamp(48px, 8vw, 96px) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-4);
+}
+
+/* ── Photo overlay (about pebbles quote section) ─────────────── */
+/* Reference: clearpath /about scroll-5400 — full-bleed photographic
+   image with text overlay sitting bottom-left, white text on dark. */
+.photoOverlay {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.photoOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--photo-overlay-bg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.photoOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
+}
+
+.photoOverlayContent {
+  position: relative;
+  z-index: 2;
+  padding: clamp(48px, 8vw, 120px) var(--pad-x);
+  max-width: 56ch;
+  color: var(--white);
+}
+
+.photoOverlayContent .t-label {
+  color: var(--sage-light);
+}
+
+.photoOverlayContent blockquote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.2;
+  font-style: italic;
+  color: var(--white);
+  margin-top: var(--s-4);
 }
 
 /* ── Hero wisp line decoration (about + services + journal) ────── */
@@ -597,6 +711,12 @@
 @media (min-width: 720px) {
   .articleGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .articleGrid3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

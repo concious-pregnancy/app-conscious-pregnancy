@@ -75,7 +75,7 @@ export default function AboutPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero with wisp-line decoration */}
+        {/* Hero — title left, small lead top-right, eyebrow bottom-left */}
         <section className={s.hero}>
           <div className={s.heroWisp} aria-hidden="true">
             <svg
@@ -89,10 +89,12 @@ export default function AboutPage() {
             </svg>
           </div>
           <div className={s.heroInner}>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>About</span>
-            <h1 className={s.heroTitle}>
-              Your Path, <em>Our Purpose.</em>
-            </h1>
+            <div className={s.heroLeft}>
+              <h1 className={s.heroTitle}>
+                Your Path, <em>Our Purpose.</em>
+              </h1>
+              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>About</span>
+            </div>
             <p className={s.heroLead}>
               Find out who we are, what we stand for, and how we can support your journey.
             </p>
@@ -122,43 +124,44 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Founder */}
+        {/* Founder intro — text only */}
         <section className={s.section}>
           <div className={s.sectionInner}>
-            <div className={s.twoCol}>
-              <div>
-                <LeafMark />
-                <span className="t-label t-label-eyebrow">Meet our founder</span>
-                <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                  Therapy isn't about <em>fixing people.</em>
-                </h2>
-                <img
-                  src={`${IMG}/1OD7wXOtYnqOi7RvvRqTnSC8o.jpg`}
-                  alt="Founder portrait"
-                  className={s.twoColMedia}
-                  style={{ marginTop: "var(--s-6)" }}
-                />
-              </div>
-              <div className={s.twoColBody}>
-                <p>
-                  ClearPath was founded by Anna Keller, a therapist with over 15 years of experience
-                  helping people navigate life's turning points. Her work is grounded in the belief
-                  that clarity and change come from small, intentional steps, and that no one should
-                  walk their path alone.
-                </p>
-                <p style={{ marginTop: "1rem" }}>
-                  Anna started ClearPath to create a welcoming, non-judgmental space where people
-                  could slow down, reflect, and find their next direction with confidence and care.
-                </p>
-                <blockquote className="t-quote" style={{ marginTop: "2rem" }}>
-                  Therapy isn't about fixing people, it's about walking beside them as they discover
-                  their own way forward.
-                </blockquote>
-                <p className="t-label" style={{ marginTop: "0.75rem", color: "var(--muted)" }}>
-                  Anna Keller
-                </p>
-              </div>
+            <LeafMark />
+            <span className="t-label t-label-eyebrow">Meet our founder</span>
+            <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
+              Meet <em>Our Founder.</em>
+            </h2>
+            <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
+              <p>
+                ClearPath was founded by Anna Keller, a therapist with over 15 years of experience
+                helping people navigate life's turning points. Her work is grounded in the belief
+                that clarity and change come from small, intentional steps, and that no one should
+                walk their path alone.
+              </p>
+              <p style={{ marginTop: "1rem" }}>
+                Anna started ClearPath to create a welcoming, non-judgmental space where people
+                could slow down, reflect, and find their next direction with confidence and care.
+              </p>
             </div>
+          </div>
+        </section>
+
+        {/* Founder full-bleed portrait + quote callout — edge-to-edge split */}
+        <section className={s.fullBleedSplit}>
+          <img
+            src={`${IMG}/1OD7wXOtYnqOi7RvvRqTnSC8o.jpg`}
+            alt="Anna Keller"
+            className={s.fullBleedSplitImg}
+          />
+          <div className={s.fullBleedSplitContent}>
+            <blockquote className="t-quote" style={{ maxWidth: "22ch" }}>
+              Therapy isn't about fixing people, it's about walking beside them as they discover
+              their own way forward.
+            </blockquote>
+            <p className="t-label" style={{ marginTop: "var(--s-3)", color: "var(--muted)" }}>
+              Anna Keller
+            </p>
           </div>
         </section>
 
@@ -176,7 +179,7 @@ export default function AboutPage() {
                 and support you at your own pace.
               </p>
             </div>
-            <div className={s.articleGrid}>
+            <div className={`${s.articleGrid} ${s.articleGrid3}`}>
               {team.map((member, i) => (
                 <article key={member.name} className={s.articleItem}>
                   <BlobImage src={member.image} alt={`${member.name} portrait`} index={i} />
@@ -214,26 +217,31 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Founder pull quote */}
-        <section className={`${s.section} ${s.sectionPaper}`}>
-          <div className={s.sectionInner} style={{ textAlign: "center" }}>
-            <LeafMark />
+        {/* Pebbles quote — full-bleed photographic background with text overlay */}
+        <section
+          className={s.photoOverlay}
+          style={
+            {
+              "--photo-overlay-bg": `url(${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg)`,
+            } as React.CSSProperties
+          }
+        >
+          <div className={s.photoOverlayContent}>
             <span className="t-label t-label-eyebrow">Real people. Real change.</span>
-            <blockquote
-              className="t-quote"
-              style={{
-                marginTop: "var(--s-6)",
-                maxWidth: "32ch",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
+            <blockquote>
               Every path is unique, the important thing is taking the next step, no matter how
               small.
             </blockquote>
-            <p className="t-label" style={{ marginTop: "var(--s-4)", color: "var(--muted)" }}>
+            <p className="t-label" style={{ marginTop: "var(--s-4)" }}>
               Anna Keller · Therapist and Founder of ClearPath
             </p>
+            <Link
+              href="/#contact"
+              className="btn btn-ghost-light"
+              style={{ marginTop: "var(--s-6)" }}
+            >
+              <span className="btn-dot" /> Start your journey
+            </Link>
           </div>
         </section>
 
