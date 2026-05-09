@@ -134,7 +134,7 @@ export default function ServicesPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero with wisp-line decoration */}
+        {/* Hero — title left, small lead top-right, eyebrow bottom-left */}
         <section className={s.hero}>
           <div className={s.heroWisp} aria-hidden="true">
             <svg
@@ -148,58 +148,49 @@ export default function ServicesPage() {
             </svg>
           </div>
           <div className={s.heroInner}>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>Services</span>
-            <h1 className={s.heroTitle}>
-              Every Step <em>of Your Journey.</em>
-            </h1>
+            <div className={s.heroLeft}>
+              <h1 className={s.heroTitle}>
+                Every Step <em>of Your Journey.</em>
+              </h1>
+              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>Services</span>
+            </div>
             <p className={s.heroLead}>
               Explore our therapy and coaching options tailored to your goals, pace, and needs.
-              Therapy and coaching designed entirely around you, your goals, your pace, and your
-              needs. We help you move forward with clarity, confidence, and real, lasting change.
             </p>
           </div>
         </section>
 
-        {/* Service blocks — full-bleed alternating, rectangular (no blob masks) */}
-        <section className={s.section}>
-          <div className={s.sectionInner}>
-            {services.map((svc, idx) => (
-              <article
-                key={idx}
-                className={`${s.serviceBleedBlock} ${idx % 2 === 1 ? s.serviceBleedReverse : ""}`}
-              >
-                <img
-                  src={svc.image}
-                  alt=""
-                  className={s.serviceBleedMedia}
-                  style={{ aspectRatio: "4 / 5" }}
-                />
-                <div className={s.serviceBody}>
-                  <img
-                    src="/clearpath-ref/services/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg"
-                    alt=""
-                    className={s.leafMark}
-                    aria-hidden="true"
-                  />
-                  <span className="t-label t-label-eyebrow">Service · 0{idx + 1}</span>
-                  <h2 className={s.serviceTitle} style={{ marginTop: "1rem" }}>
-                    {svc.title}
-                  </h2>
+        {/* Service blocks — each is a full-bleed dark photographic section
+            with white-text overlay. Reference: clearpath /services
+            scroll-1800/2700/3600. */}
+        {services.map((svc, idx) => (
+          <section
+            key={idx}
+            className={s.servicePhotoBlock}
+            style={{ "--service-bg": `url(${svc.image})` } as React.CSSProperties}
+          >
+            <div className={s.servicePhotoContent}>
+              <div className={s.servicePhotoInner}>
+                <span className="t-label t-label-eyebrow" style={{ color: "var(--sage-light)" }}>
+                  Service · 0{idx + 1}
+                </span>
+                <h2 className={s.servicePhotoTitle}>{svc.title}</h2>
+                <div className={s.servicePhotoBody}>
                   {svc.paragraphs.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
-                  <Link
-                    href="/#contact"
-                    className="btn btn-ghost"
-                    style={{ alignSelf: "flex-start", marginTop: "var(--s-3)" }}
-                  >
-                    <span className="btn-dot" /> Book a session
-                  </Link>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+                <Link
+                  href="/#contact"
+                  className="btn btn-ghost-light"
+                  style={{ alignSelf: "flex-start", marginTop: "var(--s-4)" }}
+                >
+                  <span className="btn-dot" /> Book a session
+                </Link>
+              </div>
+            </div>
+          </section>
+        ))}
 
         {/* Stats */}
         <section className={`${s.section} ${s.sectionDark} noise-overlay`}>

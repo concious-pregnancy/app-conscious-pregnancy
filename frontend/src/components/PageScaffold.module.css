@@ -660,6 +660,84 @@
   margin-top: var(--s-4);
 }
 
+/* ── Service photo block (services per-service full-bleed) ─────── */
+/* Reference: clearpath /services scroll-1800/2700/3600 — each service
+   is a full-bleed dark photographic section with white serif title
+   stacked left, body below, CTA pill, all on a left-aligned overlay
+   gradient that fades photo → text-readable on the left side. */
+.servicePhotoBlock {
+  position: relative;
+  width: 100%;
+  min-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.servicePhotoBlock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--service-bg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.servicePhotoBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 30, 28, 0.7) 0%,
+    rgba(20, 30, 28, 0.45) 45%,
+    rgba(20, 30, 28, 0.1) 100%
+  );
+  z-index: 1;
+}
+
+.servicePhotoContent {
+  position: relative;
+  z-index: 2;
+  padding: clamp(48px, 8vw, 120px) var(--pad-x);
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.servicePhotoInner {
+  max-width: 56ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.servicePhotoTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  color: var(--white);
+  max-width: 14ch;
+}
+
+.servicePhotoBody {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 52ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.servicePhotoBody p {
+  margin: 0;
+}
+
 /* ── Hero wisp line decoration (about + services + journal) ────── */
 .heroWisp {
   position: absolute;
@@ -738,9 +816,10 @@
 }
 
 .articleItemSolo {
-  grid-column: 1 / -1;
-  max-width: 720px;
-  margin: 0 auto;
+  /* Solo article occupies the first column of the 2-col grid, leaving
+     the right column empty. Reference (clearpath /journal scroll-2198):
+     not centered, not stretched. */
+  grid-column: 1;
 }
 
 .articleTitle {
