@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import BlobImage from "@/components/BlobImage";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -48,18 +49,58 @@ const articles = [
     image: `${IMG}/TF67zgMSYINSD7dymhKX4rhrTM.jpg`,
     excerpt:
       "In a noisy world full of advice, opinions, and pressure, it's easy to lose touch with your own voice. We start living on autopilot, doing what's expected instead of what feels true.",
+    solo: true,
   },
 ];
+
+function ArticleItem({
+  index,
+  title,
+  excerpt,
+  image,
+  eyebrow,
+  solo = false,
+}: {
+  index: number;
+  title: string;
+  excerpt: string;
+  image: string;
+  eyebrow: string;
+  solo?: boolean;
+}) {
+  return (
+    <article className={`${s.articleItem} ${solo ? s.articleItemSolo : ""}`}>
+      <BlobImage src={image} index={index} />
+      <span className="t-label t-label-eyebrow" style={{ marginTop: "var(--s-3)" }}>
+        {eyebrow}
+      </span>
+      <h3 className={s.articleTitle}>{title}</h3>
+      <p className={s.articleExcerpt}>{excerpt}</p>
+      <Link href="#" className={s.readMorePill}>
+        <span className="btn-dot" />
+        Read more
+      </Link>
+    </article>
+  );
+}
 
 export default function JournalPage() {
   return (
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
+        {/* Hero with inline wisp line decoration */}
         <section className={s.hero}>
-          <div className={s.heroMediaWrap} aria-hidden="true">
-            <img src={`${IMG}/D6H1lHKBDuxkhpUVf8PPyt7Jivg.jpg`} alt="" className={s.heroMedia} />
+          <div className={s.heroWisp} aria-hidden="true">
+            <svg
+              viewBox="0 0 1516 443"
+              preserveAspectRatio="none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+            >
+              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
+            </svg>
           </div>
           <div className={s.heroInner}>
             <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>Journal</span>
@@ -74,51 +115,50 @@ export default function JournalPage() {
           </div>
         </section>
 
-        {/* Featured pair */}
+        {/* Featured pair — blob-masked, no card chrome */}
         <section className={s.section}>
           <div className={s.sectionInner}>
-            <div className={s.cardGrid}>
-              {featured.map((article) => (
-                <article key={article.title} className={s.card}>
-                  <img src={article.image} alt="" className={s.cardMedia} />
-                  <span className={`t-label t-label-eyebrow ${s.cardEyebrow}`}>
-                    {article.eyebrow}
-                  </span>
-                  <h2 className={s.cardTitle} style={{ fontSize: "2rem", lineHeight: 1.15 }}>
-                    {article.title}
-                  </h2>
-                  <p className={s.cardBody}>{article.excerpt}</p>
-                  <Link href="#" className={s.cardLink}>
-                    Read more
-                  </Link>
-                </article>
+            <div className={`${s.articleGrid} ${s.articleGridFeatured}`}>
+              {featured.map((article, i) => (
+                <ArticleItem
+                  key={article.title}
+                  index={i}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  image={article.image}
+                  eyebrow={article.eyebrow}
+                />
               ))}
             </div>
           </div>
         </section>
 
-        {/* Article grid */}
-        <section className={`${s.section} ${s.sectionOffWhite}`}>
+        {/* Article grid — no card chrome, blob masks cycling, solo rows allowed */}
+        <section className={`${s.section} ${s.sectionPaper}`}>
           <div className={s.sectionInner}>
             <div style={{ marginBottom: "var(--s-12)" }}>
+              <img
+                src={`${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`}
+                alt=""
+                className={s.leafMark}
+                aria-hidden="true"
+              />
               <span className="t-label t-label-eyebrow">Latest writing</span>
-              <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+              <h2 className={s.twoColTitle} style={{ marginTop: "1rem", color: "var(--dark)" }}>
                 Recent <em>articles.</em>
               </h2>
             </div>
-            <div className={`${s.cardGrid} ${s.cardGrid3}`}>
-              {articles.map((article) => (
-                <article key={article.title} className={s.card}>
-                  <img src={article.image} alt="" className={s.cardMedia} />
-                  <span className={`t-label t-label-eyebrow ${s.cardEyebrow}`}>
-                    {article.eyebrow}
-                  </span>
-                  <h3 className={s.cardTitle}>{article.title}</h3>
-                  <p className={s.cardBody}>{article.excerpt}</p>
-                  <Link href="#" className={s.cardLink}>
-                    Read more
-                  </Link>
-                </article>
+            <div className={s.articleGrid}>
+              {articles.map((article, i) => (
+                <ArticleItem
+                  key={article.title}
+                  index={i + featured.length}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  image={article.image}
+                  eyebrow={article.eyebrow}
+                  solo={article.solo}
+                />
               ))}
             </div>
           </div>

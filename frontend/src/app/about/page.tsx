@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import BlobImage from "@/components/BlobImage";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 const IMG = "/clearpath-ref/about";
+const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
 
 const team = [
   {
@@ -56,21 +58,43 @@ const faqs = [
   },
 ];
 
+function LeafMark({ size = 24 }: { size?: number }) {
+  return (
+    <img
+      src={LEAF}
+      alt=""
+      className={s.leafMark}
+      style={{ width: size, height: "auto" }}
+      aria-hidden="true"
+    />
+  );
+}
+
 export default function AboutPage() {
   return (
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
+        {/* Hero — title left, small lead top-right, eyebrow bottom-left */}
         <section className={s.hero}>
-          <div className={s.heroMediaWrap} aria-hidden="true">
-            <img src={`${IMG}/6s6w8sBdk4udefM5WmJNctwuGaw.jpg`} alt="" className={s.heroMedia} />
+          <div className={s.heroWisp} aria-hidden="true">
+            <svg
+              viewBox="0 0 1516 443"
+              preserveAspectRatio="none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+            >
+              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
+            </svg>
           </div>
           <div className={s.heroInner}>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>About</span>
-            <h1 className={s.heroTitle}>
-              Your Path, <em>Our Purpose.</em>
-            </h1>
+            <div className={s.heroLeft}>
+              <h1 className={s.heroTitle}>
+                Your Path, <em>Our Purpose.</em>
+              </h1>
+              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>About</span>
+            </div>
             <p className={s.heroLead}>
               Find out who we are, what we stand for, and how we can support your journey.
             </p>
@@ -82,6 +106,7 @@ export default function AboutPage() {
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">The Way We Help</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   We start by <em>listening,</em> really listening.
@@ -99,71 +124,78 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Founder */}
+        {/* Founder intro — text only */}
         <section className={s.section}>
           <div className={s.sectionInner}>
-            <div className={s.twoCol}>
-              <div>
-                <span className="t-label t-label-eyebrow">Meet our founder</span>
-                <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                  Therapy isn't about <em>fixing people.</em>
-                </h2>
-                <img
-                  src={`${IMG}/1OD7wXOtYnqOi7RvvRqTnSC8o.jpg`}
-                  alt="Founder portrait"
-                  className={s.twoColMedia}
-                  style={{ marginTop: "var(--s-6)" }}
-                />
-              </div>
-              <div className={s.twoColBody}>
-                <p>
-                  ClearPath was founded by Anna Keller, a therapist with over 15 years of experience
-                  helping people navigate life's turning points. Her work is grounded in the belief
-                  that clarity and change come from small, intentional steps, and that no one should
-                  walk their path alone.
-                </p>
-                <p style={{ marginTop: "1rem" }}>
-                  Anna started ClearPath to create a welcoming, non-judgmental space where people
-                  could slow down, reflect, and find their next direction with confidence and care.
-                </p>
-                <blockquote className="t-quote" style={{ marginTop: "2rem" }}>
-                  Therapy isn't about fixing people, it's about walking beside them as they discover
-                  their own way forward.
-                </blockquote>
-                <p className="t-label" style={{ marginTop: "0.75rem", color: "var(--muted)" }}>
-                  Anna Keller
-                </p>
-              </div>
+            <LeafMark />
+            <span className="t-label t-label-eyebrow">Meet our founder</span>
+            <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
+              Meet <em>Our Founder.</em>
+            </h2>
+            <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
+              <p>
+                ClearPath was founded by Anna Keller, a therapist with over 15 years of experience
+                helping people navigate life's turning points. Her work is grounded in the belief
+                that clarity and change come from small, intentional steps, and that no one should
+                walk their path alone.
+              </p>
+              <p style={{ marginTop: "1rem" }}>
+                Anna started ClearPath to create a welcoming, non-judgmental space where people
+                could slow down, reflect, and find their next direction with confidence and care.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Team */}
+        {/* Founder full-bleed portrait + quote callout — edge-to-edge split */}
+        <section className={s.fullBleedSplit}>
+          <img
+            src={`${IMG}/1OD7wXOtYnqOi7RvvRqTnSC8o.jpg`}
+            alt="Anna Keller"
+            className={s.fullBleedSplitImg}
+          />
+          <div className={s.fullBleedSplitContent}>
+            <blockquote className="t-quote" style={{ maxWidth: "22ch" }}>
+              Therapy isn't about fixing people, it's about walking beside them as they discover
+              their own way forward.
+            </blockquote>
+            <p className="t-label" style={{ marginTop: "var(--s-3)", color: "var(--muted)" }}>
+              Anna Keller
+            </p>
+          </div>
+        </section>
+
+        {/* Team — blob-masked portraits, three different shapes */}
         <section className={`${s.section} ${s.sectionOffWhite}`}>
           <div className={s.sectionInner}>
-            <div style={{ marginBottom: "var(--s-12)" }}>
+            <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
+              <LeafMark />
               <span className="t-label t-label-eyebrow">Our team</span>
-              <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+              <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
                 The People Who <em>Walk Beside You.</em>
               </h2>
-              <p className={s.twoColBody} style={{ marginTop: "1.5rem" }}>
+              <p className={s.twoColBody} style={{ marginTop: "1.5rem", marginInline: "auto" }}>
                 ClearPath is more than a service, each member of our team is here to listen, guide,
                 and support you at your own pace.
               </p>
             </div>
-            <div className={`${s.cardGrid} ${s.cardGrid3}`}>
-              {team.map((member) => (
-                <article key={member.name} className={s.card}>
-                  <img
-                    src={member.image}
-                    alt={`${member.name} portrait`}
-                    className={s.teamPortrait}
-                  />
-                  <span className={`t-label t-label-eyebrow ${s.cardEyebrow}`}>Therapist</span>
-                  <h3 className={s.cardTitle}>{member.name}</h3>
-                  <p className={s.cardBody}>{member.bio}</p>
+            <div className={`${s.articleGrid} ${s.articleGrid3}`}>
+              {team.map((member, i) => (
+                <article key={member.name} className={s.articleItem}>
+                  <BlobImage src={member.image} alt={`${member.name} portrait`} index={i} />
+                  <span className="t-label" style={{ marginTop: "var(--s-3)" }}>
+                    Therapist
+                  </span>
+                  <h3 className={s.articleTitle}>{member.name}</h3>
+                  <p className={s.articleExcerpt}>{member.bio}</p>
                 </article>
               ))}
+            </div>
+            {/* Wave divider closing the team section */}
+            <div className={s.waveDivider} aria-hidden="true">
+              <LeafMark size={20} />
+              <LeafMark size={20} />
+              <LeafMark size={20} />
             </div>
           </div>
         </section>
@@ -185,46 +217,45 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Founder pull quote */}
-        <section className={`${s.section} ${s.sectionPaper}`}>
-          <div className={s.sectionInner} style={{ textAlign: "center" }}>
+        {/* Pebbles quote — full-bleed photographic background with text overlay */}
+        <section
+          className={s.photoOverlay}
+          style={
+            {
+              "--photo-overlay-bg": `url(${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg)`,
+            } as React.CSSProperties
+          }
+        >
+          <div className={s.photoOverlayContent}>
             <span className="t-label t-label-eyebrow">Real people. Real change.</span>
-            <blockquote
-              className="t-quote"
-              style={{
-                marginTop: "var(--s-6)",
-                maxWidth: "32ch",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
+            <blockquote>
               Every path is unique, the important thing is taking the next step, no matter how
               small.
             </blockquote>
-            <p className="t-label" style={{ marginTop: "var(--s-4)", color: "var(--muted)" }}>
+            <p className="t-label" style={{ marginTop: "var(--s-4)" }}>
               Anna Keller · Therapist and Founder of ClearPath
             </p>
+            <Link
+              href="/#contact"
+              className="btn btn-ghost-light"
+              style={{ marginTop: "var(--s-6)" }}
+            >
+              <span className="btn-dot" /> Start your journey
+            </Link>
           </div>
         </section>
 
-        {/* Featured story */}
+        {/* Featured story — offset two-image arrangement */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">Real people. Real change.</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Finding each other <em>again.</em>
                 </h2>
-                <img
-                  src={`${IMG}/0tyXlpa0soVzPMq44gbKMcP680.jpg`}
-                  alt="Couple in session"
-                  className={s.featuredStoryMedia}
-                  style={{ marginTop: "var(--s-6)" }}
-                />
-              </div>
-              <div className={s.twoColBody}>
-                <p>
+                <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
                   When Daniel and Marisa first came in, they weren't on the verge of breaking up,
                   but they felt more like roommates than partners. They missed the warmth they used
                   to share, but neither knew how to bridge the distance.
@@ -237,6 +268,22 @@ export default function AboutPage() {
                   <span className="btn-dot" /> Read full story
                 </Link>
               </div>
+              <div className={s.offsetPair}>
+                <div className={s.offsetPairBack}>
+                  <img
+                    src={`${IMG}/0tyXlpa0soVzPMq44gbKMcP680.jpg`}
+                    alt="Couple together"
+                    className={s.offsetPairImg}
+                  />
+                </div>
+                <div className={s.offsetPairFront}>
+                  <img
+                    src={`${IMG}/wQLwxTlAvuy2tWEdKj8oaawUp0s.jpg`}
+                    alt="Close portrait"
+                    className={s.offsetPairImg}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -246,6 +293,7 @@ export default function AboutPage() {
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
+                <LeafMark />
                 <span className="t-label t-label-eyebrow">FAQ</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Your questions. <em>Answered.</em>

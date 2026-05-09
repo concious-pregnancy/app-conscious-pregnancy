@@ -7,29 +7,53 @@
 }
 
 /* ── Page hero ─────────────────────────────────────────────── */
+/* Reference: clearpath /about,/services,/journal scroll 0 — large
+   serif title left-side, small lead paragraph top-right, eyebrow
+   bottom-left under title, wisp-line decoration tracing across. */
 .hero {
   position: relative;
   background: var(--paper);
   padding: clamp(96px, 14vw, 168px) var(--pad-x) clamp(64px, 10vw, 120px);
   overflow: hidden;
+  min-height: 80vh;
+  display: flex;
+  align-items: stretch;
 }
 
 .heroInner {
+  width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
   display: grid;
-  gap: var(--s-6);
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
   position: relative;
   z-index: 1;
 }
 
+@media (min-width: 900px) {
+  .heroInner {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--s-16);
+  }
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-12);
+  min-height: 50vh;
+}
+
 .heroEyebrow {
-  margin-bottom: var(--s-4);
+  /* Eyebrow sits at the BOTTOM-LEFT of hero, below the title. */
+  align-self: flex-start;
 }
 
 .heroTitle {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(3rem, 7vw, 6.4rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
   font-weight: 400;
@@ -44,10 +68,11 @@
 
 .heroLead {
   font-family: var(--font-sans);
-  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-  line-height: 1.55;
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.5;
   color: var(--muted);
-  max-width: 56ch;
+  max-width: 30ch;
+  align-self: start;
 }
 
 /* ── Generic section wrapper ─────────────────────────────────── */
@@ -450,4 +475,481 @@
 
 .trustAvatar:first-child {
   margin-left: 0;
+}
+
+/* ── Blob-mask system (about team + journal articles) ─────────── */
+/* Three organic alpha-mask shapes from Clearpath cycled across imagery.
+   Technique uses CSS `mask` with `mask-size: 100% 100%` so the blob
+   silhouette stretches to fill its frame, and the outline-svg sibling
+   uses the SAME path with `preserveAspectRatio="none"` so the stroke
+   ring stretches in lockstep. Per-blob aspect-ratio keeps shape
+   distortion minimal at typical card widths. */
+.blobFrame {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  aspect-ratio: 297 / 222;
+}
+
+.blobFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  mask-position: center;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.blobOutline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: var(--sage-light);
+  opacity: 0.7;
+}
+
+.blob0 {
+  aspect-ratio: 297 / 222;
+}
+.blob0 img {
+  mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
+}
+
+.blob1 {
+  aspect-ratio: 314 / 236;
+}
+.blob1 img {
+  mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
+}
+
+.blob2 {
+  aspect-ratio: 314 / 211;
+}
+.blob2 img {
+  mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
+  -webkit-mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
+}
+
+/* ── Offset image pair (about Finding-each-other section) ─────── */
+/* Reference: clearpath /about scroll-7200 — back image right-aligned
+   and taller, front image offset bottom-left, partially overlapping
+   the back image. Back is the wider couple shot, front is the closer
+   portrait. */
+.offsetPair {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 6;
+}
+
+.offsetPairBack {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70%;
+  aspect-ratio: 3 / 4;
+  z-index: 1;
+}
+
+.offsetPairFront {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 52%;
+  aspect-ratio: 3 / 4;
+  z-index: 2;
+}
+
+.offsetPairImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* ── Full-bleed split (about founder portrait + quote section) ── */
+/* Reference: clearpath /about scroll-2700 — edge-to-edge horizontal
+   split with rectangular portrait left and quote callout right. */
+.fullBleedSplit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: stretch;
+  background: var(--paper);
+}
+
+@media (min-width: 900px) {
+  .fullBleedSplit {
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+}
+
+.fullBleedSplitImg {
+  width: 100%;
+  height: 100%;
+  min-height: 50vh;
+  object-fit: cover;
+  display: block;
+}
+
+.fullBleedSplitContent {
+  padding: clamp(48px, 8vw, 96px) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-4);
+}
+
+/* ── Photo overlay (about pebbles quote section) ─────────────── */
+/* Reference: clearpath /about scroll-5400 — full-bleed photographic
+   image with text overlay sitting bottom-left, white text on dark. */
+.photoOverlay {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.photoOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--photo-overlay-bg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.photoOverlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
+}
+
+.photoOverlayContent {
+  position: relative;
+  z-index: 2;
+  padding: clamp(48px, 8vw, 120px) var(--pad-x);
+  max-width: 56ch;
+  color: var(--white);
+}
+
+.photoOverlayContent .t-label {
+  color: var(--sage-light);
+}
+
+.photoOverlayContent blockquote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.2;
+  font-style: italic;
+  color: var(--white);
+  margin-top: var(--s-4);
+}
+
+/* ── Service photo block (services per-service full-bleed) ─────── */
+/* Reference: clearpath /services scroll-1800/2700/3600 — each service
+   is a full-bleed dark photographic section with white serif title
+   stacked left, body below, CTA pill, all on a left-aligned overlay
+   gradient that fades photo → text-readable on the left side. */
+.servicePhotoBlock {
+  position: relative;
+  width: 100%;
+  min-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.servicePhotoBlock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--service-bg);
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.servicePhotoBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 30, 28, 0.7) 0%,
+    rgba(20, 30, 28, 0.45) 45%,
+    rgba(20, 30, 28, 0.1) 100%
+  );
+  z-index: 1;
+}
+
+.servicePhotoContent {
+  position: relative;
+  z-index: 2;
+  padding: clamp(48px, 8vw, 120px) var(--pad-x);
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.servicePhotoInner {
+  max-width: 56ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.servicePhotoTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  color: var(--white);
+  max-width: 14ch;
+}
+
+.servicePhotoBody {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 52ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.servicePhotoBody p {
+  margin: 0;
+}
+
+/* ── Hero wisp line decoration (about + services + journal) ────── */
+.heroWisp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: var(--sage-light);
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.heroWisp svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Leaf mark (small section ornament) ─────────────────────────── */
+.leafMark {
+  width: 24px;
+  height: auto;
+  display: inline-block;
+  color: var(--sage);
+  margin-bottom: var(--s-3);
+}
+
+.waveDivider {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-top: var(--s-12);
+  opacity: 0.55;
+}
+
+.waveDivider .leafMark {
+  margin-bottom: 0;
+  color: var(--sage-light);
+}
+
+/* ── Article item (journal — NO card chrome) ────────────────────── */
+.articleGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-12);
+  row-gap: var(--s-16);
+}
+
+@media (min-width: 720px) {
+  .articleGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .articleGrid3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .articleGridFeatured {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.articleItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.articleItemSolo {
+  /* Solo article occupies the first column of the 2-col grid, leaving
+     the right column empty. Reference (clearpath /journal scroll-2198):
+     not centered, not stretched. */
+  grid-column: 1;
+}
+
+.articleTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--dark);
+}
+
+.articleExcerpt {
+  font-family: var(--font-sans);
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.readMorePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem 0.7rem 1.1rem;
+  border-radius: var(--radius-pill);
+  background: var(--sage);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  width: fit-content;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.readMorePill:hover {
+  background: var(--sage-dark);
+  transform: translateY(-1px);
+}
+
+/* ── Full-bleed alternating service block (services) ─────────────── */
+.serviceBleedBlock {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
+  align-items: center;
+  padding: clamp(48px, 7vw, 96px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.serviceBleedBlock:first-of-type {
+  border-top: none;
+}
+
+@media (min-width: 900px) {
+  .serviceBleedBlock {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: var(--s-12);
+  }
+  .serviceBleedReverse > :first-child {
+    order: 2;
+  }
+}
+
+.serviceBleedMedia {
+  width: 100%;
+  aspect-ratio: 5 / 6;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* ── Sticky-pinned section (services process) ───────────────────── */
+.stickySection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
+}
+
+@media (min-width: 900px) {
+  .stickySection {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--s-16);
+    align-items: start;
+  }
+}
+
+.stickyHead {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-8));
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.stepItem {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--s-4);
+  border-top: 1px solid var(--border);
+  padding-top: var(--s-6);
+}
+
+.stepNumber {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  color: var(--sage);
+  line-height: 1;
+}
+
+.stepTitle {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--dark);
+  margin-bottom: var(--s-3);
+}
+
+.stepBody {
+  font-family: var(--font-sans);
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 52ch;
 }

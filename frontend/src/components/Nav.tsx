@@ -9,7 +9,6 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/journal", label: "Journal" },
-  { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Nav() {
