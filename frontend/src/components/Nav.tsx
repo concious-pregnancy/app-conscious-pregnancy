@@ -1,22 +1,40 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "./Nav.module.css";
 
 const links = [
-  { href: "#about", label: "Pregnancy Prep" },
-  { href: "#services", label: "Modalities" },
-  { href: "#process", label: "How It Works" },
-  { href: "#credentials", label: "Dr. Alden" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/journal", label: "Journal" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Nav() {
-  const [lightBg, setLightBg] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [lightBg, setLightBg] = useState(!isHome);
   const [overFooter, setOverFooter] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (!isHome) {
+      // Inner pages have no Balance stage and a light hero background, so the
+      // nav stays in its light theme the entire scroll. Footer flip still applies.
+      setLightBg(true);
+      const onScroll = () => {
+        const footer = document.getElementById("footer");
+        if (footer) {
+          setOverFooter(window.scrollY + 64 >= footer.offsetTop);
+        }
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+
     const stage = document.querySelector<HTMLElement>("[data-balance-stage]");
 
     const syncLightBg = () => {
@@ -55,13 +73,13 @@ export default function Nav() {
       window.removeEventListener("scroll", onScroll);
       observer?.disconnect();
     };
-  }, []);
+  }, [isHome, pathname]);
 
   return (
     <nav
       className={`${styles.nav} ${lightBg ? styles.lightBg : ""} ${overFooter ? styles.overFooter : ""}`}
     >
-      <a href="#" className={styles.logo}>
+      <Link href="/" className={styles.logo}>
         <svg
           className={styles.logoTrigram}
           viewBox="0 0 34 22"
@@ -77,22 +95,29 @@ export default function Nav() {
           <rect x="20" y="19" width="14" height="2" />
         </svg>
         conscious&mdash;pregnancy
-      </a>
+      </Link>
 
       <ul className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}>
-        {links.map((l) => (
-          <li key={l.href}>
-            <a href={l.href} onClick={() => setMenuOpen(false)}>
-              {l.label}
-            </a>
-          </li>
-        ))}
+        {links.map((l) => {
+          const active = l.href.startsWith("/") && !l.href.includes("#") && pathname === l.href;
+          return (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                onClick={() => setMenuOpen(false)}
+                className={active ? styles.activeLink : undefined}
+              >
+                {l.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
 
-      <a href="#contact" className={`btn btn-primary ${styles.cta}`}>
+      <Link href="/#contact" className={`btn btn-primary ${styles.cta}`}>
         <span className="btn-dot" />
         Begin Your Journey
-      </a>
+      </Link>
 
       <button
         className={styles.menuBtn}
