@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import BlobImage from "@/components/BlobImage";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -10,15 +11,6 @@ export const metadata: Metadata = {
 };
 
 const IMG = "/clearpath-ref/journal";
-
-const blobOutlinePaths = [
-  // wisp / outline ring approximations matching XzHb5S2N (lobed top-left)
-  "M250 36c-58 6-127 36-150 88-22 50 6 100 30 134 28 38 78 50 122 47 50-3 100-22 124-58 28-43 12-100-26-138-30-30-66-46-100-73z",
-  // YRuh4U5T (right-bulge wider)
-  "M270 30c-72-2-156 30-186 86-26 50 6 110 38 142 36 36 96 50 144 44 56-7 110-30 132-72 22-44 0-100-32-138-30-36-58-58-96-62z",
-  // 4hAvhj6oD (flatter pebble)
-  "M270 28c-78 0-160 22-200 70-32 40 0 96 28 130 28 34 84 50 138 48 56-3 110-22 138-58 24-30 18-78-12-118-32-44-50-72-92-72z",
-];
 
 const featured = [
   {
@@ -61,8 +53,6 @@ const articles = [
   },
 ];
 
-const blobClasses = [s.blob0, s.blob1, s.blob2];
-
 function ArticleItem({
   index,
   title,
@@ -78,26 +68,10 @@ function ArticleItem({
   eyebrow: string;
   solo?: boolean;
 }) {
-  const blobIdx = index % 3;
-  const blobClass = blobClasses[blobIdx];
-  const outlinePath = blobOutlinePaths[blobIdx];
   return (
     <article className={`${s.articleItem} ${solo ? s.articleItemSolo : ""}`}>
-      <div className={`${s.blobFrame} ${blobClass}`}>
-        <img src={image} alt="" />
-        <svg
-          className={s.blobOutline}
-          viewBox="0 0 540 405"
-          preserveAspectRatio="none"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          aria-hidden="true"
-        >
-          <path d={outlinePath} />
-        </svg>
-      </div>
-      <span className={`t-label t-label-eyebrow`} style={{ marginTop: "var(--s-3)" }}>
+      <BlobImage src={image} index={index} />
+      <span className="t-label t-label-eyebrow" style={{ marginTop: "var(--s-3)" }}>
         {eyebrow}
       </span>
       <h3 className={s.articleTitle}>{title}</h3>

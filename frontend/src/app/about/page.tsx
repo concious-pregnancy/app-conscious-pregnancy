@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import BlobImage from "@/components/BlobImage";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -11,13 +12,6 @@ export const metadata: Metadata = {
 
 const IMG = "/clearpath-ref/about";
 const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
-
-const blobOutlinePaths = [
-  "M250 36c-58 6-127 36-150 88-22 50 6 100 30 134 28 38 78 50 122 47 50-3 100-22 124-58 28-43 12-100-26-138-30-30-66-46-100-73z",
-  "M270 30c-72-2-156 30-186 86-26 50 6 110 38 142 36 36 96 50 144 44 56-7 110-30 132-72 22-44 0-100-32-138-30-36-58-58-96-62z",
-  "M270 28c-78 0-160 22-200 70-32 40 0 96 28 130 28 34 84 50 138 48 56-3 110-22 138-58 24-30 18-78-12-118-32-44-50-72-92-72z",
-];
-const blobClasses = ["blob0", "blob1", "blob2"] as const;
 
 const team = [
   {
@@ -183,33 +177,16 @@ export default function AboutPage() {
               </p>
             </div>
             <div className={s.articleGrid}>
-              {team.map((member, i) => {
-                const blobClass = s[blobClasses[i % 3]];
-                const outlinePath = blobOutlinePaths[i % 3];
-                return (
-                  <article key={member.name} className={s.articleItem}>
-                    <div className={`${s.blobFrame} ${blobClass}`}>
-                      <img src={member.image} alt={`${member.name} portrait`} />
-                      <svg
-                        className={s.blobOutline}
-                        viewBox="0 0 540 405"
-                        preserveAspectRatio="none"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        aria-hidden="true"
-                      >
-                        <path d={outlinePath} />
-                      </svg>
-                    </div>
-                    <span className={`t-label`} style={{ marginTop: "var(--s-3)" }}>
-                      Therapist
-                    </span>
-                    <h3 className={s.articleTitle}>{member.name}</h3>
-                    <p className={s.articleExcerpt}>{member.bio}</p>
-                  </article>
-                );
-              })}
+              {team.map((member, i) => (
+                <article key={member.name} className={s.articleItem}>
+                  <BlobImage src={member.image} alt={`${member.name} portrait`} index={i} />
+                  <span className="t-label" style={{ marginTop: "var(--s-3)" }}>
+                    Therapist
+                  </span>
+                  <h3 className={s.articleTitle}>{member.name}</h3>
+                  <p className={s.articleExcerpt}>{member.bio}</p>
+                </article>
+              ))}
             </div>
             {/* Wave divider closing the team section */}
             <div className={s.waveDivider} aria-hidden="true">
@@ -260,7 +237,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Featured story — rectangular, not blob-masked */}
+        {/* Featured story — offset two-image arrangement */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
@@ -270,15 +247,7 @@ export default function AboutPage() {
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   Finding each other <em>again.</em>
                 </h2>
-                <img
-                  src={`${IMG}/0tyXlpa0soVzPMq44gbKMcP680.jpg`}
-                  alt="Couple in session"
-                  className={s.featuredStoryMedia}
-                  style={{ marginTop: "var(--s-6)" }}
-                />
-              </div>
-              <div className={s.twoColBody}>
-                <p>
+                <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
                   When Daniel and Marisa first came in, they weren't on the verge of breaking up,
                   but they felt more like roommates than partners. They missed the warmth they used
                   to share, but neither knew how to bridge the distance.
@@ -290,6 +259,22 @@ export default function AboutPage() {
                 >
                   <span className="btn-dot" /> Read full story
                 </Link>
+              </div>
+              <div className={s.offsetPair}>
+                <div className={s.offsetPairBack}>
+                  <img
+                    src={`${IMG}/0tyXlpa0soVzPMq44gbKMcP680.jpg`}
+                    alt="Couple together"
+                    className={s.offsetPairImg}
+                  />
+                </div>
+                <div className={s.offsetPairFront}>
+                  <img
+                    src={`${IMG}/wQLwxTlAvuy2tWEdKj8oaawUp0s.jpg`}
+                    alt="Close portrait"
+                    className={s.offsetPairImg}
+                  />
+                </div>
               </div>
             </div>
           </div>

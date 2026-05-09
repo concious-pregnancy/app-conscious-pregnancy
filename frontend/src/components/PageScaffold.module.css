@@ -454,14 +454,15 @@
 
 /* ── Blob-mask system (about team + journal articles) ─────────── */
 /* Three organic alpha-mask shapes from Clearpath cycled across imagery.
-   Technique uses CSS `mask` so the underlying <img> stays a real image
-   (good for object-fit, focal point, and lazy loading). The outline halo
-   sibling renders the same blob silhouette as a thin sage stroke behind
-   the masked image so the silhouette reads even on light backgrounds. */
+   Technique uses CSS `mask` with `mask-size: 100% 100%` so the blob
+   silhouette stretches to fill its frame, and the outline-svg sibling
+   uses the SAME path with `preserveAspectRatio="none"` so the stroke
+   ring stretches in lockstep. Per-blob aspect-ratio keeps shape
+   distortion minimal at typical card widths. */
 .blobFrame {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 297 / 222;
 }
 
 .blobFrame img {
@@ -470,11 +471,11 @@
   object-fit: cover;
   display: block;
   mask-position: center;
-  mask-size: cover;
+  mask-size: 100% 100%;
   mask-repeat: no-repeat;
   mask-mode: alpha;
   -webkit-mask-position: center;
-  -webkit-mask-size: cover;
+  -webkit-mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
 }
 
@@ -485,24 +486,64 @@
   height: 100%;
   pointer-events: none;
   color: var(--sage-light);
-  opacity: 0.55;
-  /* Slight scale so the stroke ring sits just outside the mask edge */
-  transform: scale(1.015);
+  opacity: 0.7;
 }
 
+.blob0 {
+  aspect-ratio: 297 / 222;
+}
 .blob0 img {
   mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
   -webkit-mask-image: url("/clearpath-ref/journal/XzHb5S2N4RU9GakyQhgQX2XqY6w.svg");
 }
 
+.blob1 {
+  aspect-ratio: 314 / 236;
+}
 .blob1 img {
   mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
   -webkit-mask-image: url("/clearpath-ref/journal/YRuh4U5ThvXtO2fvm6HWgEZuE4.svg");
 }
 
+.blob2 {
+  aspect-ratio: 314 / 211;
+}
 .blob2 img {
   mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
   -webkit-mask-image: url("/clearpath-ref/journal/4hAvhj6oDkzuyTUlP4waQ9M3jSw.svg");
+}
+
+/* ── Offset image pair (about Finding-each-other section) ─────── */
+.offsetPair {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.offsetPairBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 65%;
+  aspect-ratio: 3 / 4;
+  z-index: 1;
+}
+
+.offsetPairFront {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  aspect-ratio: 3 / 4;
+  z-index: 2;
+}
+
+.offsetPairImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
 }
 
 /* ── Hero wisp line decoration (about + services + journal) ────── */
