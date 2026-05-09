@@ -25,6 +25,7 @@
 
 .eyebrow {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -35,7 +36,9 @@
 .h2 {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  /* Display h2 cap at 4.5rem ≈ 72px to match ClearPath's standard
+     display size (was 4rem / 64px — flagged in audit). */
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--dark);

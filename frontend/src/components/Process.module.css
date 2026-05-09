@@ -22,6 +22,7 @@
 
 .introEyebrow {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.625rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -36,7 +37,9 @@
 .introDisplay {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(3.5rem, 7vw, 6rem);
+  /* Display h2 cap at 4.5rem ≈ 72px to match ClearPath's standard
+     display size (was 6rem / 96px — audit flag). */
+  font-size: clamp(3rem, 5.5vw, 4.5rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
   color: var(--dark);
@@ -96,8 +99,10 @@
 .stepTitle {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2.2rem, 3.6vw, 3rem);
-  line-height: 1.05;
+  /* h3 step title cap at 2.25rem ≈ 36px to match ClearPath's
+     consistent h3 size (was 3rem / 48px — audit flag). */
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  line-height: 1.15;
   letter-spacing: -0.02em;
   color: var(--sage);
   margin-bottom: 1.5rem;
@@ -207,8 +212,9 @@
   opacity: 1;
 }
 
-/* ── Mobile: stacked list, no sticky number ──────────── */
-@media (max-width: 810px) {
+/* ── Mobile only: stacked list, no sticky number. Tablet keeps the
+   2-col layout with the digit panel scrub-animating on the right. */
+@media (max-width: 600px) {
   .intro {
     padding: 6rem var(--pad-x) 3rem;
   }

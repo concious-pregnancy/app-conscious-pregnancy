@@ -166,6 +166,7 @@
   cursor: pointer;
   color: var(--dark);
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -210,6 +211,7 @@
 
 .sitemap {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.62rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;

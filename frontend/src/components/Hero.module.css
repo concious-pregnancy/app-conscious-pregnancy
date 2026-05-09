@@ -138,6 +138,7 @@
   align-items: center;
   gap: 0.8rem;
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -170,7 +171,9 @@
 .h1 {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(3.4rem, 8.4vw, 8.4rem);
+  /* Hero h1 max 8.5rem ≈ 136px to match ClearPath's hero (verified via
+     audit.fonts.spec.ts — ClearPath h1 was 136px, ours was 121px). */
+  font-size: clamp(3.4rem, 8.4vw, 8.5rem);
   line-height: 0.94;
   letter-spacing: -0.035em;
   color: var(--white);
@@ -221,6 +224,7 @@
 
 .ctaBtn {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -232,6 +236,7 @@
   align-items: center;
   gap: 1rem;
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -257,6 +262,7 @@
 
 .footLabel {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -273,6 +279,7 @@
   align-items: center;
   gap: 0.65rem;
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -291,6 +298,7 @@
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.65rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;

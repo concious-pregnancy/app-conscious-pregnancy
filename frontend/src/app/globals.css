@@ -33,9 +33,14 @@
   --border-light: rgba(255, 255, 255, 0.12);
   --veil: rgba(46, 50, 49, 0.55);
 
-  /* ── Type: families (--font-crimson/inter/mono injected by next/font) */
+  /* ── Type: families (--font-crimson/inter injected by next/font) ─
+     ClearPath uses Inter weight 600 for every eyebrow / CTA / nav
+     label (no monospace family is loaded). --font-mono now aliases
+     Inter so any legacy var(--font-mono) references resolve to the
+     same family ClearPath uses. */
   --font-serif: var(--font-crimson), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-inter), system-ui, -apple-system, sans-serif;
 
   /* ── Layout ───────────────────────────────────────────── */
   --max-w: 1400px;
@@ -202,9 +207,9 @@ button {
 /* Eyebrow / mono label */
 .t-label {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.68rem;
   letter-spacing: 0.22em;
-  font-weight: 400;
   text-transform: uppercase;
   color: var(--sage);
 }
@@ -242,8 +247,8 @@ button {
 /* ── Legacy type utilities (kept for existing components) ─── */
 .section-label {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.63rem;
-  font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--sage);
@@ -299,8 +304,8 @@ button {
   padding: 0.75rem 2.75rem 0.75rem 1.25rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 0.68rem;
-  font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   transition:

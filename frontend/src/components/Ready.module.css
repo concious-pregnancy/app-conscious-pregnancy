@@ -49,7 +49,8 @@
 .h2 {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+  /* Display h2 cap at 4.5rem ≈ 72px (was 3.75rem / 60px — audit flag). */
+  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
   line-height: 1.1;
   letter-spacing: -0.025em;
   color: var(--dark);
