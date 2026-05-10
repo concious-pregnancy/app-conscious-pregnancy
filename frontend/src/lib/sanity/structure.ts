@@ -181,32 +181,179 @@ export const structure: StructureResolver = (S) =>
             .title("About Page")
             .items([
               S.listItem()
-                .title("Page Content")
+                .title("1. Hero")
                 .child(
                   S.document()
-                    .title("About Page Content")
-                    .schemaType("aboutPage")
-                    .documentId("aboutPage-singleton"),
+                    .title("Hero")
+                    .schemaType("aboutHero")
+                    .documentId("aboutHero-singleton"),
                 ),
               S.listItem()
-                .title("Team Members")
-                .child(S.documentTypeList("teamMember").title("Team Members")),
+                .title("2. Intro (The Way We Help)")
+                .child(
+                  S.document()
+                    .title("Intro")
+                    .schemaType("aboutIntro")
+                    .documentId("aboutIntro-singleton"),
+                ),
+              S.listItem()
+                .title("3. Founder")
+                .child(
+                  S.document()
+                    .title("Founder")
+                    .schemaType("aboutFounder")
+                    .documentId("aboutFounder-singleton"),
+                ),
+              S.listItem()
+                .title("4. Team")
+                .child(
+                  S.list()
+                    .title("Team")
+                    .items([
+                      S.listItem()
+                        .title("Section Header")
+                        .child(
+                          S.document()
+                            .title("Team Section Header")
+                            .schemaType("aboutTeamSection")
+                            .documentId("aboutTeamSection-singleton"),
+                        ),
+                      S.listItem()
+                        .title("Team Members")
+                        .child(S.documentTypeList("teamMember").title("Team Members")),
+                    ]),
+                ),
+              S.listItem()
+                .title("5. Approach Summary")
+                .child(
+                  S.document()
+                    .title("Approach Summary")
+                    .schemaType("aboutApproach")
+                    .documentId("aboutApproach-singleton"),
+                ),
+              S.listItem()
+                .title("6. Pebbles Quote")
+                .child(
+                  S.document()
+                    .title("Pebbles Quote")
+                    .schemaType("aboutPebbles")
+                    .documentId("aboutPebbles-singleton"),
+                ),
+              S.listItem()
+                .title("7. Featured Story")
+                .child(
+                  S.document()
+                    .title("Featured Story")
+                    .schemaType("aboutStory")
+                    .documentId("aboutStory-singleton"),
+                ),
+              S.listItem()
+                .title("8. FAQ")
+                .child(
+                  S.document().title("FAQ").schemaType("aboutFaq").documentId("aboutFaq-singleton"),
+                ),
+              S.listItem()
+                .title("9. Closing CTA")
+                .child(
+                  S.document()
+                    .title("Closing CTA")
+                    .schemaType("aboutCta")
+                    .documentId("aboutCta-singleton"),
+                ),
             ]),
         ),
       S.listItem()
         .title("Services Page")
         .child(
-          S.document()
-            .title("Services Page Content")
-            .schemaType("servicesPage")
-            .documentId("servicesPage-singleton"),
+          S.list()
+            .title("Services Page")
+            .items([
+              S.listItem()
+                .title("1. Hero")
+                .child(
+                  S.document()
+                    .title("Hero")
+                    .schemaType("servicesHero")
+                    .documentId("servicesHero-singleton"),
+                ),
+              S.listItem()
+                .title("2. Service Blocks")
+                .child(S.documentTypeList("servicesBlock").title("Service Blocks")),
+              S.listItem()
+                .title("3. Stats")
+                .child(
+                  S.document()
+                    .title("Stats")
+                    .schemaType("servicesStats")
+                    .documentId("servicesStats-singleton"),
+                ),
+              S.listItem()
+                .title("4. Pricing")
+                .child(
+                  S.document()
+                    .title("Pricing")
+                    .schemaType("servicesPricing")
+                    .documentId("servicesPricing-singleton"),
+                ),
+              S.listItem()
+                .title("5. Featured Story")
+                .child(
+                  S.document()
+                    .title("Featured Story")
+                    .schemaType("servicesStory")
+                    .documentId("servicesStory-singleton"),
+                ),
+              S.listItem()
+                .title("6. FAQ")
+                .child(
+                  S.document()
+                    .title("FAQ")
+                    .schemaType("servicesFaq")
+                    .documentId("servicesFaq-singleton"),
+                ),
+              S.listItem()
+                .title("7. Closing CTA")
+                .child(
+                  S.document()
+                    .title("Closing CTA")
+                    .schemaType("servicesCta")
+                    .documentId("servicesCta-singleton"),
+                ),
+            ]),
         ),
       S.listItem()
         .title("Journal Page")
         .child(
-          S.document()
-            .title("Journal Page Content")
-            .schemaType("journalPage")
-            .documentId("journalPage-singleton"),
+          S.list()
+            .title("Journal Page")
+            .items([
+              S.listItem()
+                .title("1. Hero")
+                .child(
+                  S.document()
+                    .title("Hero")
+                    .schemaType("journalHero")
+                    .documentId("journalHero-singleton"),
+                ),
+              S.listItem()
+                .title("2. Recent Articles Header")
+                .child(
+                  S.document()
+                    .title("Recent Articles Header")
+                    .schemaType("journalRecent")
+                    .documentId("journalRecent-singleton"),
+                ),
+              S.listItem()
+                .title("3. Articles")
+                .child(S.documentTypeList("journalArticle").title("Journal Articles")),
+              S.listItem()
+                .title("4. Closing CTA")
+                .child(
+                  S.document()
+                    .title("Closing CTA")
+                    .schemaType("journalCta")
+                    .documentId("journalCta-singleton"),
+                ),
+            ]),
         ),
     ]);

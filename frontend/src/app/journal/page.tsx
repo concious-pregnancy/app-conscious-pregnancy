@@ -5,7 +5,12 @@ import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
-import { journalPageQuery, journalArticlesFullQuery } from "@/lib/sanity/queries";
+import {
+  journalHeroQuery,
+  journalRecentQuery,
+  journalCtaQuery,
+  journalArticlesFullQuery,
+} from "@/lib/sanity/queries";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -23,61 +28,13 @@ type Article = {
   image: string;
 };
 
-const defaults = {
-  heroEyebrow: "Journal",
-  heroTitleLine1: "Insights",
-  heroTitleEm: "That Matter.",
-  heroLead:
-    "Articles, tools, and insights to help you find clarity, balance, and direction. Our journal is where we share thoughts, stories, and practical tools to help you find clarity and balance, and keep moving toward the life you want.",
-
-  featuredCount: 2,
-
-  recentEyebrow: "Latest writing",
-  recentTitle: "Recent",
-  recentTitleEm: "articles.",
-
-  ctaEyebrow: "Begin Your Journey",
-  ctaTitle: "Ready to find",
-  ctaTitleEm: "your path?",
-  ctaBody:
-    "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes, it's about meaningful change, one clear step at a time.",
-  ctaLabel: "Start your journey",
-};
-
-const defaultArticles: Article[] = [
+const fallbackArticles: Article[] = [
   {
     eyebrow: "Reflection · No. 01",
     title: "Learning to Pause Without Guilt.",
     image: `${IMG}/LksF7zMOHE97HJPqXDmb7LSvWE.jpg`,
     excerpt:
       "Taking a break isn't failure, it's part of the process. Here's how to slow down with kindness.",
-  },
-  {
-    eyebrow: "Practice · No. 02",
-    title: "What Makes Therapy Work?",
-    image: `${IMG}/ZMX4xonC6WvSRyRzHHgOkTDzw4.jpg`,
-    excerpt: "Beyond techniques or tools, therapy works best when it feels safe, real, and human.",
-  },
-  {
-    eyebrow: "Slowing down · No. 03",
-    title: "The Gentle Art of Slowing Down",
-    image: `${IMG}/2EIIgE63cU5md9VUpWNs5xhsM.jpg`,
-    excerpt:
-      "Slowing down is more than just taking a break, it's a conscious choice to live at a pace that allows space for reflection, connection, and clarity. In a world that celebrates speed, learning to slow down can feel radical, but it's a powerful way to reclaim presence and peace.",
-  },
-  {
-    eyebrow: "Release · No. 04",
-    title: "Finding Strength in Release",
-    image: `${IMG}/LsGrGUWDWx4Ok7pTwhp0PXTTA.jpg`,
-    excerpt:
-      "Letting go is one of the hardest, and most transformative, things we do. It asks us to release control, loosen our grip, and trust that something better might come in its place.",
-  },
-  {
-    eyebrow: "Self-knowledge · No. 05",
-    title: "Listening to Yourself Again.",
-    image: `${IMG}/TF67zgMSYINSD7dymhKX4rhrTM.jpg`,
-    excerpt:
-      "In a noisy world full of advice, opinions, and pressure, it's easy to lose touch with your own voice. We start living on autopilot, doing what's expected instead of what feels true.",
   },
 ];
 
@@ -113,12 +70,18 @@ function ArticleItem({
 }
 
 export default async function JournalPage() {
-  const fetchOpts = { cache: "no-store" } as const;
-  const [content, sanityArticles] = await Promise.all([
-    client.fetch(journalPageQuery, {}, fetchOpts),
-    client.fetch(journalArticlesFullQuery, {}, fetchOpts),
+  const opts = { cache: "no-store" } as const;
+  const [hero, recent, cta, sanityArticles] = await Promise.all([
+    client.fetch(journalHeroQuery, {}, opts),
+    client.fetch(journalRecentQuery, {}, opts),
+    client.fetch(journalCtaQuery, {}, opts),
+    client.fetch(journalArticlesFullQuery, {}, opts),
   ]);
-  const c = content ?? {};
+
+  const h = hero ?? {};
+  const r = recent ?? {};
+  const c = cta ?? {};
+
   const articles: Article[] =
     sanityArticles && sanityArticles.length > 0
       ? sanityArticles.map(
@@ -128,21 +91,20 @@ export default async function JournalPage() {
               title?: string;
               excerpt?: string;
               image?: SanityImage;
-              order?: number;
             },
             i: number,
           ) => ({
             eyebrow: a.eyebrow ?? `Article · 0${i + 1}`,
             title: a.title ?? "",
             excerpt: a.excerpt ?? "",
-            image: imgUrl(a.image, defaultArticles[i % defaultArticles.length].image),
+            image: imgUrl(a.image, fallbackArticles[i % fallbackArticles.length].image),
           }),
         )
-      : defaultArticles;
+      : fallbackArticles;
 
-  const featuredCount = c.featuredCount ?? defaults.featuredCount;
+  const featuredCount = r.featuredCount ?? 2;
   const featured = articles.slice(0, featuredCount);
-  const recent = articles.slice(featuredCount);
+  const recentItems = articles.slice(featuredCount);
 
   return (
     <>
@@ -164,14 +126,16 @@ export default async function JournalPage() {
           <div className={s.heroInner}>
             <div className={s.heroLeft}>
               <h1 className={s.heroTitle}>
-                {c.heroTitleLine1 ?? defaults.heroTitleLine1}{" "}
-                <em>{c.heroTitleEm ?? defaults.heroTitleEm}</em>
+                {h.titleLine1 ?? "Insights"} <em>{h.titleEm ?? "That Matter."}</em>
               </h1>
               <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-                {c.heroEyebrow ?? defaults.heroEyebrow}
+                {h.eyebrow ?? "Journal"}
               </span>
             </div>
-            <p className={s.heroLead}>{c.heroLead ?? defaults.heroLead}</p>
+            <p className={s.heroLead}>
+              {h.lead ??
+                "Articles, tools, and insights to help you find clarity, balance, and direction."}
+            </p>
           </div>
         </section>
 
@@ -189,26 +153,23 @@ export default async function JournalPage() {
         )}
 
         {/* Recent articles */}
-        {recent.length > 0 && (
+        {recentItems.length > 0 && (
           <section className={`${s.section} ${s.sectionPaper}`}>
             <div className={s.sectionInner}>
               <div style={{ marginBottom: "var(--s-12)" }}>
                 <img src={LEAF} alt="" className={s.leafMark} aria-hidden="true" />
-                <span className="t-label t-label-eyebrow">
-                  {c.recentEyebrow ?? defaults.recentEyebrow}
-                </span>
+                <span className="t-label t-label-eyebrow">{r.eyebrow ?? "Latest writing"}</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem", color: "var(--dark)" }}>
-                  {c.recentTitle ?? defaults.recentTitle}{" "}
-                  <em>{c.recentTitleEm ?? defaults.recentTitleEm}</em>
+                  {r.title ?? "Recent"} <em>{r.titleEm ?? "articles."}</em>
                 </h2>
               </div>
               <div className={s.articleGrid}>
-                {recent.map((article, i) => (
+                {recentItems.map((article, i) => (
                   <ArticleItem
                     key={article.title + i}
                     index={i + featured.length}
                     article={article}
-                    solo={i === recent.length - 1 && recent.length % 2 === 1}
+                    solo={i === recentItems.length - 1 && recentItems.length % 2 === 1}
                   />
                 ))}
               </div>
@@ -218,13 +179,16 @@ export default async function JournalPage() {
 
         {/* Closing CTA */}
         <section className={s.closingCta}>
-          <span className="t-label t-label-eyebrow">{c.ctaEyebrow ?? defaults.ctaEyebrow}</span>
+          <span className="t-label t-label-eyebrow">{c.eyebrow ?? "Begin Your Journey"}</span>
           <h2 className={s.closingTitle}>
-            {c.ctaTitle ?? defaults.ctaTitle} <em>{c.ctaTitleEm ?? defaults.ctaTitleEm}</em>
+            {c.title ?? "Ready to find"} <em>{c.titleEm ?? "your path?"}</em>
           </h2>
-          <p className={s.closingBody}>{c.ctaBody ?? defaults.ctaBody}</p>
+          <p className={s.closingBody}>
+            {c.body ??
+              "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes."}
+          </p>
           <Link href="/#contact" className="btn btn-primary">
-            <span className="btn-dot" /> {c.ctaLabel ?? defaults.ctaLabel}
+            <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
           </Link>
         </section>
       </main>
