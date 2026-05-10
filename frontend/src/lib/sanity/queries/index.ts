@@ -162,45 +162,90 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
   sub
 }`;
 
-/* ── Standalone-page queries (about / services / journal) ──────── */
+/* ── About-page section queries ────────────────────────────────── */
 
-export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
-  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
-  introEyebrow, introTitle, introTitleEm, introBody,
-  founderEyebrow, founderTitle, founderTitleEm, founderBody,
-  founderImage, founderQuote, founderQuoteAttribution,
-  teamEyebrow, teamTitle, teamTitleEm, teamSub,
-  approachTitle, approachTitleEm, approachBody,
-  pebblesEyebrow, pebblesQuote, pebblesAttribution, pebblesCtaLabel, pebblesImage,
-  storyEyebrow, storyTitle, storyTitleEm, storyBody, storyCtaLabel,
-  storyImageBack, storyImageFront,
-  faqEyebrow, faqTitle, faqTitleEm, faqSub, faqFootnote,
-  faqs[] { q, a },
-  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+export const aboutHeroQuery = groq`*[_type == "aboutHero"][0] {
+  eyebrow, titleLine1, titleEm, lead
+}`;
+
+export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
+  eyebrow, title, titleEm, body
+}`;
+
+export const aboutFounderQuery = groq`*[_type == "aboutFounder"][0] {
+  eyebrow, title, titleEm, body, image, quote, quoteAttribution
+}`;
+
+export const aboutTeamSectionQuery = groq`*[_type == "aboutTeamSection"][0] {
+  eyebrow, title, titleEm, sub
 }`;
 
 export const teamMembersQuery = groq`*[_type == "teamMember"] | order(order asc) {
   _id, name, role, bio, image
 }`;
 
-export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
-  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
-  serviceBlocks[] { eyebrow, title, titleEm, image, paragraphs, ctaLabel },
-  statsEyebrow, statsTitle, statsTitleEm, statsBody,
-  stats[] { value, label },
-  pricingEyebrow, pricingTitle, pricingTitleEm, pricingSub,
-  tiers[] { name, blurb, features },
-  storyEyebrow, storyTitle, storyTitleEm, storyBody, storyImage, storyCtaLabel,
-  faqEyebrow, faqTitle, faqTitleEm, faqSub, faqFootnote,
-  faqs[] { q, a },
-  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+export const aboutApproachQuery = groq`*[_type == "aboutApproach"][0] {
+  title, titleEm, body
 }`;
 
-export const journalPageQuery = groq`*[_type == "journalPage"][0] {
-  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
-  featuredCount,
-  recentEyebrow, recentTitle, recentTitleEm,
-  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
+export const aboutPebblesQuery = groq`*[_type == "aboutPebbles"][0] {
+  eyebrow, quote, attribution, ctaLabel, image
+}`;
+
+export const aboutStoryQuery = groq`*[_type == "aboutStory"][0] {
+  eyebrow, title, titleEm, body, ctaLabel, imageBack, imageFront
+}`;
+
+export const aboutFaqQuery = groq`*[_type == "aboutFaq"][0] {
+  eyebrow, title, titleEm, sub, footnote, items[] { q, a }
+}`;
+
+export const aboutCtaQuery = groq`*[_type == "aboutCta"][0] {
+  eyebrow, title, titleEm, body, ctaLabel
+}`;
+
+/* ── Services-page section queries ─────────────────────────────── */
+
+export const servicesHeroQuery = groq`*[_type == "servicesHero"][0] {
+  eyebrow, titleLine1, titleEm, lead
+}`;
+
+export const servicesBlocksQuery = groq`*[_type == "servicesBlock"] | order(order asc) {
+  _id, eyebrow, title, titleEm, image, paragraphs, ctaLabel, order
+}`;
+
+export const servicesStatsQuery = groq`*[_type == "servicesStats"][0] {
+  title, titleEm, body, stats[] { value, label }
+}`;
+
+export const servicesPricingQuery = groq`*[_type == "servicesPricing"][0] {
+  eyebrow, title, titleEm, sub, tiers[] { name, blurb, features }
+}`;
+
+export const servicesStoryQuery = groq`*[_type == "servicesStory"][0] {
+  eyebrow, title, titleEm, body, image, ctaLabel
+}`;
+
+export const servicesFaqQuery = groq`*[_type == "servicesFaq"][0] {
+  eyebrow, title, titleEm, sub, footnote, items[] { q, a }
+}`;
+
+export const servicesCtaQuery = groq`*[_type == "servicesCta"][0] {
+  eyebrow, title, titleEm, body, ctaLabel
+}`;
+
+/* ── Journal-page section queries ──────────────────────────────── */
+
+export const journalHeroQuery = groq`*[_type == "journalHero"][0] {
+  eyebrow, titleLine1, titleEm, lead
+}`;
+
+export const journalRecentQuery = groq`*[_type == "journalRecent"][0] {
+  eyebrow, title, titleEm, featuredCount
+}`;
+
+export const journalCtaQuery = groq`*[_type == "journalCta"][0] {
+  eyebrow, title, titleEm, body, ctaLabel
 }`;
 
 export const journalArticlesFullQuery = groq`*[_type == "journalArticle"] | order(order asc) {

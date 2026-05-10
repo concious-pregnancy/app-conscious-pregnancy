@@ -17,12 +17,35 @@ import { readySectionType } from "./readySection";
 import { contactSectionType } from "./contactSection";
 import { philosophySectionType } from "./philosophySection";
 import { approachSectionType } from "./approachSection";
-import { aboutPageType } from "./aboutPage";
-import { servicesPageType } from "./servicesPage";
-import { journalPageType } from "./journalPage";
+
+// About-page sections (each is its own document, mirroring the homepage pattern)
+import { aboutHeroType } from "./aboutHero";
+import { aboutIntroType } from "./aboutIntro";
+import { aboutFounderType } from "./aboutFounder";
+import { aboutTeamSectionType } from "./aboutTeamSection";
+import { aboutApproachType } from "./aboutApproach";
+import { aboutPebblesType } from "./aboutPebbles";
+import { aboutStoryType } from "./aboutStory";
+import { aboutFaqType } from "./aboutFaq";
+import { aboutCtaType } from "./aboutCta";
 import { teamMemberType } from "./teamMember";
 
+// Services-page sections
+import { servicesHeroType } from "./servicesHero";
+import { servicesBlockType } from "./servicesBlock";
+import { servicesStatsType } from "./servicesStats";
+import { servicesPricingType } from "./servicesPricing";
+import { servicesStoryType } from "./servicesStory";
+import { servicesFaqType } from "./servicesFaq";
+import { servicesCtaType } from "./servicesCta";
+
+// Journal-page sections
+import { journalHeroType } from "./journalHero";
+import { journalRecentType } from "./journalRecent";
+import { journalCtaType } from "./journalCta";
+
 export const schemaTypes = [
+  // Homepage
   faqType,
   faqSectionType,
   pricingTierType,
@@ -43,8 +66,30 @@ export const schemaTypes = [
   contactSectionType,
   philosophySectionType,
   approachSectionType,
-  aboutPageType,
-  servicesPageType,
-  journalPageType,
+
+  // About page
+  aboutHeroType,
+  aboutIntroType,
+  aboutFounderType,
+  aboutTeamSectionType,
+  aboutApproachType,
+  aboutPebblesType,
+  aboutStoryType,
+  aboutFaqType,
+  aboutCtaType,
   teamMemberType,
+
+  // Services page
+  servicesHeroType,
+  servicesBlockType,
+  servicesStatsType,
+  servicesPricingType,
+  servicesStoryType,
+  servicesFaqType,
+  servicesCtaType,
+
+  // Journal page
+  journalHeroType,
+  journalRecentType,
+  journalCtaType,
 ];
