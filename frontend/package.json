@@ -26,7 +26,8 @@
     "extract:scroll-sequence:local": "PW_LOCAL=1 playwright test e2e/extract.scroll-sequence.spec.ts --project=chromium",
     "extract:video": "playwright test e2e/extract.video.spec.ts --project=chromium",
     "extract:all": "playwright test e2e/extract.blueprint.spec.ts e2e/extract.styles.spec.ts e2e/extract.animations.spec.ts --project=chromium && PW_LOCAL=1 playwright test e2e/extract.screenshots.spec.ts --project=chromium",
-    "typegen": "sanity typegen generate"
+    "typegen": "sanity typegen generate",
+    "seed:pages": "tsx scripts/seed-pages.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

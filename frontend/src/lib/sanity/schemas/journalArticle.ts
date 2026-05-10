@@ -12,6 +12,12 @@ export const journalArticleType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "eyebrow",
+      title: "Eyebrow",
+      type: "string",
+      description: "Small label above the title (e.g. 'Reflection · No. 01').",
+    }),
+    defineField({
       name: "excerpt",
       title: "Excerpt",
       type: "text",
