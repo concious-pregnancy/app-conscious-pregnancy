@@ -277,70 +277,12 @@ export default function MotionProvider() {
         }
       }
 
-      // ── Process: digit-only viewport-height slide, ScrollTrigger + GSAP ──
-      // Left column steps scroll naturally. Right sticky panel has a static "0"
-      // and an animated digit (1–4) that travels y: ±'100vh' (full viewport),
-      // clipped by numPanel (overflow:hidden, height:100vh).
-      const processTrack = document.querySelector<HTMLElement>('[data-section="process"]');
-      const processDigits = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-digit]"))
-        : [];
-      const processDots = processTrack
-        ? Array.from(processTrack.querySelectorAll<HTMLElement>("[data-process-progress] > span"))
-        : [];
-
-      if (processTrack && processDigits.length > 0) {
-        const n = processDigits.length;
-
-        // Initial state: digit 0 centred, rest parked one full viewport below.
-        // Colour-matched gradient overlays on numPanel handle the visual fade —
-        // no JS opacity needed.
-        gsap.set(processDigits[0], { y: 0 });
-        processDigits.slice(1).forEach((el) => gsap.set(el, { y: "100vh" }));
-
-        let current = 0;
-
-        const setDigit = (i: number) => {
-          if (i === current) return;
-          const prev = current;
-          const forward = i > prev;
-          current = i;
-
-          const dur = 0.57;
-
-          gsap.killTweensOf([processDigits[prev], processDigits[i]]);
-
-          // Outgoing: slides a full viewport height; overlay fades it near the edge
-          gsap.to(processDigits[prev], {
-            y: forward ? "-100vh" : "100vh",
-            duration: dur,
-            ease: "power3.out",
-          });
-
-          // Incoming: enters from below (or above); overlay fades it in near the edge
-          gsap.fromTo(
-            processDigits[i],
-            { y: forward ? "100vh" : "-100vh" },
-            { y: 0, duration: dur, ease: "power3.out" },
-          );
-
-          processDots.forEach((d, idx) => {
-            d.setAttribute("data-is-on", idx === i ? "true" : "false");
-          });
-        };
-
-        const stepsParent =
-          processTrack.querySelector<HTMLElement>("[data-process-step]")?.parentElement;
-        ScrollTrigger.create({
-          trigger: stepsParent ?? processTrack,
-          start: "top top",
-          end: "bottom bottom",
-          onUpdate: (self) => {
-            const idx = Math.min(n - 1, Math.max(0, Math.floor(self.progress * n * 0.999)));
-            setDigit(idx);
-          },
-        });
-      }
+      // ── Process: digit-only viewport-height slide ─────────────────────
+      // Moved into the Process component itself (src/components/Process.tsx)
+      // so its ScrollTrigger lifecycle matches the Process mount lifecycle.
+      // Previous implementation here held stale digit DOM refs after a
+      // cross-route navigation (/journal → /#contact) since MotionProvider
+      // never unmounts on route change while Process does.
 
       // ── Philosophy: word-by-word reveal, driven by ScrollTrigger ───────
       const philoSection = document.querySelector<HTMLElement>('[data-section="philosophy"]');
