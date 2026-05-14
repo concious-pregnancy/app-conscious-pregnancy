@@ -16,11 +16,6 @@ export default function MotionProvider() {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduceMotion) return;
 
-      // Skip Lenis + scroll-triggered animations on the Studio route.
-      // Lenis hijacks wheel events globally and breaks Sanity Studio's
-      // pane scrolling.
-      if (window.location.pathname.startsWith("/studio")) return;
-
       // ── Lenis smooth scroll, synced to GSAP ticker ──────────────────────
       const lenis = new Lenis({
         duration: 1.15,
