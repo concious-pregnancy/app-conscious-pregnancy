@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./Contact.module.css";
 
 const whereOptions = [
@@ -31,6 +32,41 @@ export default function Contact({ content }: { content?: ContactContent }) {
   const trustLine = content?.trustLine ?? "Trusted by 80+ clients";
   const submitLabel = content?.submitLabel ?? "Request a Discovery Call";
 
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    const data = new FormData(e.currentTarget);
+    const payload = {
+      firstName: String(data.get("firstName") ?? "").trim(),
+      lastName: String(data.get("lastName") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
+      stage: data.getAll("stage").map(String),
+      message: String(data.get("message") ?? "").trim(),
+    };
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error ?? "Something went wrong, please try again.");
+      }
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong, please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <section id="contact" data-section="contact" className={styles.contact}>
       <div className={`container ${styles.inner}`}>
@@ -59,90 +95,111 @@ export default function Contact({ content }: { content?: ContactContent }) {
           </div>
         </div>
 
-        <form className={styles.form} onSubmit={(e) => e.preventDefault()} data-reveal>
-          <p className={styles.formHeading}>{formHeading}</p>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label htmlFor="firstName" className={styles.fieldLabel}>
-                First Name
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                className={styles.input}
-                placeholder="Your first name"
-              />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="lastName" className={styles.fieldLabel}>
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                className={styles.input}
-                placeholder="Your last name"
-              />
-            </div>
+        {sent ? (
+          <div className={styles.form} data-reveal>
+            <p className={styles.formHeading}>Thank you.</p>
+            <p>
+              Your message is in. Ashley will be in touch within 24 hours to schedule your discovery
+              call.
+            </p>
           </div>
+        ) : (
+          <form className={styles.form} onSubmit={handleSubmit} data-reveal>
+            <p className={styles.formHeading}>{formHeading}</p>
 
-          <div className={styles.field}>
-            <label htmlFor="email" className={styles.fieldLabel}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className={styles.input}
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="phone" className={styles.fieldLabel}>
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              className={styles.input}
-              placeholder="+1 (555) 000-0000"
-            />
-          </div>
-
-          <fieldset className={styles.fieldset}>
-            <legend className={styles.formHeading}>Where are you in the process?</legend>
-            <div className={styles.options}>
-              {whereOptions.map((opt) => (
-                <label key={opt} className={styles.option}>
-                  <input type="checkbox" name="stage" value={opt} />
-                  <span>{opt}</span>
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label htmlFor="firstName" className={styles.fieldLabel}>
+                  First Name
                 </label>
-              ))}
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  className={styles.input}
+                  placeholder="Your first name"
+                />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="lastName" className={styles.fieldLabel}>
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  className={styles.input}
+                  placeholder="Your last name"
+                />
+              </div>
             </div>
-          </fieldset>
 
-          <div className={styles.field}>
-            <p className={styles.formHeading}>Tell Us About You.</p>
-            <textarea
-              id="message"
-              name="message"
-              className={styles.textarea}
-              rows={4}
-              placeholder="What brings you here? What do you most want to address before conception?"
-            />
-          </div>
+            <div className={styles.field}>
+              <label htmlFor="email" className={styles.fieldLabel}>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className={styles.input}
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <button type="submit" className={`btn btn-primary ${styles.submit}`}>
-            <span className="btn-dot" />
-            {submitLabel}
-          </button>
-        </form>
+            <div className={styles.field}>
+              <label htmlFor="phone" className={styles.fieldLabel}>
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className={styles.input}
+                placeholder="+1 (555) 000-0000"
+              />
+            </div>
+
+            <fieldset className={styles.fieldset}>
+              <legend className={styles.formHeading}>Where are you in the process?</legend>
+              <div className={styles.options}>
+                {whereOptions.map((opt) => (
+                  <label key={opt} className={styles.option}>
+                    <input type="checkbox" name="stage" value={opt} />
+                    <span>{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <div className={styles.field}>
+              <p className={styles.formHeading}>Tell Us About You.</p>
+              <textarea
+                id="message"
+                name="message"
+                className={styles.textarea}
+                rows={4}
+                placeholder="What brings you here? What do you most want to address before conception?"
+              />
+            </div>
+
+            {error ? (
+              <p role="alert" style={{ color: "#a33", marginTop: 8 }}>
+                {error}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              aria-busy={submitting}
+              className={`btn btn-primary ${styles.submit}`}
+            >
+              <span className="btn-dot" />
+              {submitting ? "Sending..." : submitLabel}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
