@@ -1,0 +1,110 @@
+import { defineField, defineType } from "sanity";
+
+export const servicePageType = defineType({
+  name: "servicePage",
+  title: "Services — Service Detail Chrome (/services/[slug])",
+  type: "document",
+  description:
+    "Shared labels and chrome that appear on every individual service detail page. Edit here once, applies to every service. Per-service body / title / image lives on the Service doc.",
+  groups: [
+    { name: "header", title: "Service Header" },
+    { name: "body", title: "Service Body Defaults" },
+    { name: "related", title: 'Section — "Other services"' },
+    { name: "cta", title: "Closing CTA" },
+    { name: "seo", title: "SEO Defaults" },
+  ],
+  fields: [
+    defineField({
+      name: "backLinkLabel",
+      title: "Back-Link Label",
+      type: "string",
+      group: "header",
+      description: 'Shown above the title. e.g. "← All services"',
+      initialValue: "← All services",
+    }),
+    defineField({
+      name: "bodyPlaceholder",
+      title: "Body Placeholder Copy",
+      type: "text",
+      rows: 3,
+      group: "body",
+      description: "Shown when a service has no detail body content yet.",
+      initialValue: "Details for this service are being written. Check back soon.",
+    }),
+    defineField({
+      name: "relatedEyebrow",
+      title: '"Other services" Eyebrow',
+      type: "string",
+      group: "related",
+      initialValue: "Continue exploring",
+    }),
+    defineField({
+      name: "relatedHeading",
+      title: '"Other services" Heading',
+      type: "string",
+      group: "related",
+      initialValue: "More ways we work together.",
+    }),
+    defineField({
+      name: "relatedReadLabel",
+      title: "Related Card Read-More Label",
+      type: "string",
+      group: "related",
+      initialValue: "Learn more",
+    }),
+    defineField({
+      name: "ctaEyebrow",
+      title: "CTA Eyebrow",
+      type: "string",
+      group: "cta",
+      initialValue: "Begin Your Journey",
+    }),
+    defineField({
+      name: "ctaTitle",
+      title: "CTA Title (line 1)",
+      type: "string",
+      group: "cta",
+      initialValue: "Ready to begin",
+    }),
+    defineField({
+      name: "ctaTitleEm",
+      title: "CTA Title (italic accent)",
+      type: "string",
+      group: "cta",
+      initialValue: "your work?",
+    }),
+    defineField({
+      name: "ctaBody",
+      title: "CTA Body",
+      type: "text",
+      rows: 3,
+      group: "cta",
+      initialValue:
+        "Discovery calls are free, hour-long, and unhurried. We talk about where you are, what you've tried, and whether this is the right fit before anything is booked.",
+    }),
+    defineField({
+      name: "ctaLabel",
+      title: "CTA Button Label",
+      type: "string",
+      group: "cta",
+      initialValue: "Book a discovery call",
+    }),
+    defineField({
+      name: "ctaHref",
+      title: "CTA Button Link",
+      type: "string",
+      group: "cta",
+      initialValue: "/#contact",
+    }),
+    defineField({
+      name: "metaTitleSuffix",
+      title: "Meta Title Suffix",
+      type: "string",
+      group: "seo",
+      description:
+        'Appended after the service title in the browser tab, e.g. " | Services | Conscious Pregnancy"',
+      initialValue: " | Services | Conscious Pregnancy",
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Services — Service Detail Chrome" }) },
+});

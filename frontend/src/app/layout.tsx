@@ -95,8 +95,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${crimsonText.variable} ${inter.variable}`}>
-      <body>
+    <html
+      lang="en"
+      className={`${crimsonText.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body suppressHydrationWarning>
         <JsonLd
           data={{
             "@context": "https://schema.org",
