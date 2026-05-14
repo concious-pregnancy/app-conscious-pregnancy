@@ -5,112 +5,166 @@ import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
-import {
-  journalHeroQuery,
-  journalRecentQuery,
-  journalCtaQuery,
-  journalArticlesFullQuery,
-} from "@/lib/sanity/queries";
+import { journalIndexPageQuery, journalArticlesFullQuery } from "@/lib/sanity/queries";
 import s from "@/components/PageScaffold.module.css";
 
-export const metadata: Metadata = {
-  title: "Journal",
-  description: "Articles, tools, and insights to help you find clarity, balance, and direction.",
-};
+export const revalidate = 300;
 
 const IMG = "/clearpath-ref/journal";
 const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
 
+type SanityImage = { asset?: { _ref?: string } } | null | undefined;
+
 type Article = {
+  _id: string;
   eyebrow: string;
   title: string;
   excerpt: string;
   image: string;
+  slug: string;
 };
 
-const fallbackArticles: Article[] = [
-  {
-    eyebrow: "Reflection · No. 01",
-    title: "Learning to Pause Without Guilt.",
-    image: `${IMG}/LksF7zMOHE97HJPqXDmb7LSvWE.jpg`,
-    excerpt:
-      "Taking a break isn't failure, it's part of the process. Here's how to slow down with kindness.",
-  },
-];
+type SanityArticle = {
+  _id: string;
+  title?: string;
+  excerpt?: string;
+  image?: SanityImage;
+  imageAlt?: string;
+  slug?: { current?: string };
+  eyebrow?: string;
+};
 
-type SanityImage = { asset?: { _ref?: string } } | null | undefined;
+type IndexPageData = {
+  heroEyebrow?: string;
+  heroTitleLine1?: string;
+  heroTitleEm?: string;
+  heroLead?: string;
+  featuredCount?: number;
+  gridEyebrow?: string;
+  gridTitle?: string;
+  gridTitleEm?: string;
+  readMoreLabel?: string;
+  ctaEyebrow?: string;
+  ctaTitle?: string;
+  ctaTitleEm?: string;
+  ctaBody?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+};
 
-function imgUrl(image: SanityImage, fallback: string): string {
-  return image?.asset?._ref ? urlFor(image).width(1600).url() : fallback;
+const DEFAULTS = {
+  heroEyebrow: "Journal",
+  heroTitleLine1: "Insights",
+  heroTitleEm: "That Matter.",
+  heroLead: "Articles, tools, and insights to help you find clarity, balance, and direction.",
+  featuredCount: 2,
+  gridEyebrow: "Latest writing",
+  gridTitle: "Recent",
+  gridTitleEm: "articles.",
+  readMoreLabel: "Read more",
+  ctaEyebrow: "Begin Your Journey",
+  ctaTitle: "Ready to find",
+  ctaTitleEm: "your path?",
+  ctaBody:
+    "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes.",
+  ctaLabel: "Start your journey",
+  ctaHref: "/#contact",
+  metaTitle: "Journal | Conscious Pregnancy",
+  metaDescription:
+    "Articles, tools, and insights to help you find clarity, balance, and direction.",
+};
+
+function imgUrl(image: SanityImage): string | null {
+  return image?.asset?._ref ? urlFor(image).width(1600).url() : null;
 }
 
-function ArticleItem({
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await client.fetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null);
+  return {
+    title: data?.metaTitle?.trim() || DEFAULTS.metaTitle,
+    description: data?.metaDescription?.trim() || DEFAULTS.metaDescription,
+  };
+}
+
+function ArticleCard({
   index,
   article,
+  readMoreLabel,
   solo = false,
 }: {
   index: number;
   article: Article;
+  readMoreLabel: string;
   solo?: boolean;
 }) {
   return (
     <article className={`${s.articleItem} ${solo ? s.articleItemSolo : ""}`}>
-      <BlobImage src={article.image} index={index} />
+      <Link href={`/journal/${article.slug}`} aria-label={article.title}>
+        <BlobImage src={article.image} index={index} />
+      </Link>
       <span className="t-label t-label-eyebrow" style={{ marginTop: "var(--s-3)" }}>
         {article.eyebrow}
       </span>
-      <h3 className={s.articleTitle}>{article.title}</h3>
+      <h3 className={s.articleTitle}>
+        <Link href={`/journal/${article.slug}`}>{article.title}</Link>
+      </h3>
       <p className={s.articleExcerpt}>{article.excerpt}</p>
-      <Link href="#" className={s.readMorePill}>
+      <Link href={`/journal/${article.slug}`} className={s.readMorePill}>
         <span className="btn-dot" />
-        Read more
+        {readMoreLabel}
       </Link>
     </article>
   );
 }
 
 export default async function JournalPage() {
-  const opts = { cache: "no-store" } as const;
-  const [hero, recent, cta, sanityArticles] = await Promise.all([
-    client.fetch(journalHeroQuery, {}, opts),
-    client.fetch(journalRecentQuery, {}, opts),
-    client.fetch(journalCtaQuery, {}, opts),
-    client.fetch(journalArticlesFullQuery, {}, opts),
+  const [indexData, sanityArticles] = await Promise.all([
+    client.fetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null),
+    client.fetch<SanityArticle[]>(journalArticlesFullQuery).catch(() => [] as SanityArticle[]),
   ]);
 
-  const h = hero ?? {};
-  const r = recent ?? {};
-  const c = cta ?? {};
+  const d = indexData ?? {};
+  const heroEyebrow = d.heroEyebrow?.trim() || DEFAULTS.heroEyebrow;
+  const heroTitleLine1 = d.heroTitleLine1?.trim() || DEFAULTS.heroTitleLine1;
+  const heroTitleEm = d.heroTitleEm?.trim() || DEFAULTS.heroTitleEm;
+  const heroLead = d.heroLead?.trim() || DEFAULTS.heroLead;
+  const featuredCount = d.featuredCount ?? DEFAULTS.featuredCount;
+  const gridEyebrow = d.gridEyebrow?.trim() || DEFAULTS.gridEyebrow;
+  const gridTitle = d.gridTitle?.trim() || DEFAULTS.gridTitle;
+  const gridTitleEm = d.gridTitleEm?.trim() || DEFAULTS.gridTitleEm;
+  const readMoreLabel = d.readMoreLabel?.trim() || DEFAULTS.readMoreLabel;
+  const ctaEyebrow = d.ctaEyebrow?.trim() || DEFAULTS.ctaEyebrow;
+  const ctaTitle = d.ctaTitle?.trim() || DEFAULTS.ctaTitle;
+  const ctaTitleEm = d.ctaTitleEm?.trim() || DEFAULTS.ctaTitleEm;
+  const ctaBody = d.ctaBody?.trim() || DEFAULTS.ctaBody;
+  const ctaLabel = d.ctaLabel?.trim() || DEFAULTS.ctaLabel;
+  const ctaHref = d.ctaHref?.trim() || DEFAULTS.ctaHref;
 
-  const articles: Article[] =
-    sanityArticles && sanityArticles.length > 0
-      ? sanityArticles.map(
-          (
-            a: {
-              eyebrow?: string;
-              title?: string;
-              excerpt?: string;
-              image?: SanityImage;
-            },
-            i: number,
-          ) => ({
-            eyebrow: a.eyebrow ?? `Article · 0${i + 1}`,
-            title: a.title ?? "",
-            excerpt: a.excerpt ?? "",
-            image: imgUrl(a.image, fallbackArticles[i % fallbackArticles.length].image),
-          }),
-        )
-      : fallbackArticles;
+  const articles: Article[] = sanityArticles
+    .map((a, i): Article | null => {
+      const image = imgUrl(a.image);
+      const slug = a.slug?.current?.trim();
+      if (!slug || !image) return null;
+      return {
+        _id: a._id,
+        eyebrow: a.eyebrow?.trim() || `Article · 0${i + 1}`,
+        title: a.title?.trim() || "",
+        excerpt: a.excerpt?.trim() || "",
+        image,
+        slug,
+      };
+    })
+    .filter((a): a is Article => a !== null);
 
-  const featuredCount = r.featuredCount ?? 2;
   const featured = articles.slice(0, featuredCount);
-  const recentItems = articles.slice(featuredCount);
+  const recent = articles.slice(featuredCount);
 
   return (
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
         <section className={s.hero}>
           <div className={s.heroWisp} aria-hidden="true">
             <svg
@@ -126,50 +180,24 @@ export default async function JournalPage() {
           <div className={s.heroInner}>
             <div className={s.heroLeft}>
               <h1 className={s.heroTitle}>
-                {h.titleLine1 ?? "Insights"} <em>{h.titleEm ?? "That Matter."}</em>
+                {heroTitleLine1} <em>{heroTitleEm}</em>
               </h1>
-              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-                {h.eyebrow ?? "Journal"}
-              </span>
+              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>{heroEyebrow}</span>
             </div>
-            <p className={s.heroLead}>
-              {h.lead ??
-                "Articles, tools, and insights to help you find clarity, balance, and direction."}
-            </p>
+            <p className={s.heroLead}>{heroLead}</p>
           </div>
         </section>
 
-        {/* Featured pair */}
         {featured.length > 0 && (
           <section className={s.section}>
             <div className={s.sectionInner}>
               <div className={`${s.articleGrid} ${s.articleGridFeatured}`}>
                 {featured.map((article, i) => (
-                  <ArticleItem key={article.title + i} index={i} article={article} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Recent articles */}
-        {recentItems.length > 0 && (
-          <section className={`${s.section} ${s.sectionPaper}`}>
-            <div className={s.sectionInner}>
-              <div style={{ marginBottom: "var(--s-12)" }}>
-                <img src={LEAF} alt="" className={s.leafMark} aria-hidden="true" />
-                <span className="t-label t-label-eyebrow">{r.eyebrow ?? "Latest writing"}</span>
-                <h2 className={s.twoColTitle} style={{ marginTop: "1rem", color: "var(--dark)" }}>
-                  {r.title ?? "Recent"} <em>{r.titleEm ?? "articles."}</em>
-                </h2>
-              </div>
-              <div className={s.articleGrid}>
-                {recentItems.map((article, i) => (
-                  <ArticleItem
-                    key={article.title + i}
-                    index={i + featured.length}
+                  <ArticleCard
+                    key={article._id}
+                    index={i}
                     article={article}
-                    solo={i === recentItems.length - 1 && recentItems.length % 2 === 1}
+                    readMoreLabel={readMoreLabel}
                   />
                 ))}
               </div>
@@ -177,18 +205,39 @@ export default async function JournalPage() {
           </section>
         )}
 
-        {/* Closing CTA */}
+        {recent.length > 0 && (
+          <section className={`${s.section} ${s.sectionPaper}`}>
+            <div className={s.sectionInner}>
+              <div style={{ marginBottom: "var(--s-12)" }}>
+                <img src={LEAF} alt="" className={s.leafMark} aria-hidden="true" />
+                <span className="t-label t-label-eyebrow">{gridEyebrow}</span>
+                <h2 className={s.twoColTitle} style={{ marginTop: "1rem", color: "var(--dark)" }}>
+                  {gridTitle} <em>{gridTitleEm}</em>
+                </h2>
+              </div>
+              <div className={s.articleGrid}>
+                {recent.map((article, i) => (
+                  <ArticleCard
+                    key={article._id}
+                    index={i + featured.length}
+                    article={article}
+                    readMoreLabel={readMoreLabel}
+                    solo={i === recent.length - 1 && recent.length % 2 === 1}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className={s.closingCta}>
-          <span className="t-label t-label-eyebrow">{c.eyebrow ?? "Begin Your Journey"}</span>
+          <span className="t-label t-label-eyebrow">{ctaEyebrow}</span>
           <h2 className={s.closingTitle}>
-            {c.title ?? "Ready to find"} <em>{c.titleEm ?? "your path?"}</em>
+            {ctaTitle} <em>{ctaTitleEm}</em>
           </h2>
-          <p className={s.closingBody}>
-            {c.body ??
-              "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes."}
-          </p>
-          <Link href="/#contact" className="btn btn-primary">
-            <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
+          <p className={s.closingBody}>{ctaBody}</p>
+          <Link href={ctaHref} className="btn btn-primary">
+            <span className="btn-dot" /> {ctaLabel}
           </Link>
         </section>
       </main>

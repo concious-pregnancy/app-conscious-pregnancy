@@ -27,10 +27,13 @@
     "extract:video": "playwright test e2e/extract.video.spec.ts --project=chromium",
     "extract:all": "playwright test e2e/extract.blueprint.spec.ts e2e/extract.styles.spec.ts e2e/extract.animations.spec.ts --project=chromium && PW_LOCAL=1 playwright test e2e/extract.screenshots.spec.ts --project=chromium",
     "typegen": "sanity typegen generate",
-    "seed:pages": "tsx scripts/seed-pages.ts"
+    "seed:pages": "tsx scripts/seed-pages.ts",
+    "seed:cms-chrome": "node scripts/seed-cms-chrome.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@portabletext/react": "^3.1.0",
+    "@portabletext/types": "^4.0.2",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
     "gsap": "^3.14.2",

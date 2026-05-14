@@ -39,10 +39,13 @@ import { servicesStoryType } from "./servicesStory";
 import { servicesFaqType } from "./servicesFaq";
 import { servicesCtaType } from "./servicesCta";
 
-// Journal-page sections
-import { journalHeroType } from "./journalHero";
-import { journalRecentType } from "./journalRecent";
-import { journalCtaType } from "./journalCta";
+// Journal page (chrome singletons that wrap the journalArticle collection)
+import { journalIndexPageType } from "./journalIndexPage";
+import { journalArticlePageType } from "./journalArticlePage";
+
+// Site-wide chrome (nav + footer)
+import { navSectionType } from "./navSection";
+import { footerSectionType } from "./footerSection";
 
 export const schemaTypes = [
   // Homepage
@@ -88,8 +91,11 @@ export const schemaTypes = [
   servicesFaqType,
   servicesCtaType,
 
-  // Journal page
-  journalHeroType,
-  journalRecentType,
-  journalCtaType,
+  // Journal page chrome
+  journalIndexPageType,
+  journalArticlePageType,
+
+  // Site-wide chrome
+  navSectionType,
+  footerSectionType,
 ];

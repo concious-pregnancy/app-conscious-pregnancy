@@ -234,22 +234,60 @@ export const servicesCtaQuery = groq`*[_type == "servicesCta"][0] {
   eyebrow, title, titleEm, body, ctaLabel
 }`;
 
-/* ── Journal-page section queries ──────────────────────────────── */
+/* ── Journal queries ──────────────────────────────────────────── */
 
-export const journalHeroQuery = groq`*[_type == "journalHero"][0] {
-  eyebrow, titleLine1, titleEm, lead
+// Index page chrome: hero copy, grid eyebrow + title, closing CTA, SEO meta.
+export const journalIndexPageQuery = groq`*[_type == "journalIndexPage"][0] {
+  heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
+  featuredCount,
+  gridEyebrow, gridTitle, gridTitleEm, readMoreLabel,
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel, ctaHref,
+  metaTitle, metaDescription
 }`;
 
-export const journalRecentQuery = groq`*[_type == "journalRecent"][0] {
-  eyebrow, title, titleEm, featuredCount
+// Article-detail chrome: shared labels for every /journal/[slug] page.
+export const journalArticlePageQuery = groq`*[_type == "journalArticlePage"][0] {
+  backLinkLabel, bylineFallbackAuthor, readingTimeSuffix,
+  bodyPlaceholder,
+  relatedEyebrow, relatedHeading, relatedReadLabel,
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel, ctaHref,
+  metaTitleSuffix
 }`;
 
-export const journalCtaQuery = groq`*[_type == "journalCta"][0] {
-  eyebrow, title, titleEm, body, ctaLabel
+// All articles, full payload for the index grid.
+export const journalArticlesFullQuery = groq`*[_type == "journalArticle"] | order(coalesce(order, 9999) asc, publishedAt desc) {
+  _id, title, excerpt, image, imageAlt, slug, publishedAt, readingTime, order,
+  "eyebrow": coalesce(eyebrow, "Article")
 }`;
 
-export const journalArticlesFullQuery = groq`*[_type == "journalArticle"] | order(order asc) {
-  _id, title, excerpt, image, slug,
-  "eyebrow": coalesce(eyebrow, "Article"),
-  order
+// Slug strings only — for generateStaticParams.
+export const journalArticleSlugsQuery = groq`*[_type == "journalArticle" && defined(slug.current)][].slug.current`;
+
+// Single article + N related (excluding self), keyed by slug.
+export const journalArticleBySlugQuery = groq`{
+  "article": *[_type == "journalArticle" && slug.current == $slug][0] {
+    _id, title, eyebrow, excerpt, image, imageAlt, slug, publishedAt,
+    readingTime, author, tldr, body, seo
+  },
+  "related": *[_type == "journalArticle" && slug.current != $slug] | order(coalesce(order, 9999) asc, publishedAt desc) [0...3] {
+    _id, title, excerpt, image, imageAlt, slug, publishedAt, readingTime,
+    "eyebrow": coalesce(eyebrow, "Article")
+  }
+}`;
+
+/* ── Site-wide chrome ─────────────────────────────────────────── */
+
+export const navSectionQuery = groq`*[_type == "navSection"][0] {
+  brandWordPrimary, brandWordItalic, brandAriaLabel,
+  navLinks[] { label, href },
+  ctaLabel, ctaHref, mobileMenuLabel
+}`;
+
+export const footerSectionQuery = groq`*[_type == "footerSection"][0] {
+  signupHeadline, signupHeadlineEm, signupSub,
+  signupPlaceholder, signupButtonLabel, signupSubmittingLabel,
+  signupSuccessMessage, signupFineprint, privacyHref,
+  sitemapColumn1[] { label, href },
+  sitemapColumn2[] { label, href },
+  brandWordPrimary, brandWordItalic, copyrightTemplate
 }`;
