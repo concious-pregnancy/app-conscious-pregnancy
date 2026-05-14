@@ -1,23 +1,7 @@
 import type { Metadata } from "next";
-import { Crimson_Text, Inter } from "next/font/google";
 import MotionProvider from "@/components/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
 import "../globals.css";
-
-const crimsonText = Crimson_Text({
-  variable: "--font-crimson",
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://consciouspregnancy.care";
 
@@ -90,7 +74,7 @@ export const metadata: Metadata = {
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${crimsonText.variable} ${inter.variable}`}>
+    <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -148,6 +132,6 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       />
       <MotionProvider />
       {children}
-    </div>
+    </>
   );
 }
