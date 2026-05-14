@@ -305,10 +305,10 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.divider(),
               S.listItem()
-                .title("Service Detail Chrome (shared labels)")
+                .title("Service Detail Layout (shared labels)")
                 .child(
                   S.document()
-                    .title("Services — Service Detail Chrome")
+                    .title("Services — Service Detail Layout")
                     .schemaType("servicePage")
                     .documentId("servicePage-singleton"),
                 ),
@@ -333,10 +333,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId("journalIndexPage-singleton"),
                 ),
               S.listItem()
-                .title("Article Detail Chrome (shared labels)")
+                .title("Article Detail Layout (shared labels)")
                 .child(
                   S.document()
-                    .title("Journal — Article Detail Chrome")
+                    .title("Journal — Article Detail Layout")
                     .schemaType("journalArticlePage")
                     .documentId("journalArticlePage-singleton"),
                 ),

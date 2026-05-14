@@ -39,14 +39,14 @@ import { servicesStoryType } from "./servicesStory";
 import { servicesFaqType } from "./servicesFaq";
 import { servicesCtaType } from "./servicesCta";
 
-// Journal page (chrome singletons that wrap the journalArticle collection)
+// Journal page (layout singletons that wrap the journalArticle collection)
 import { journalIndexPageType } from "./journalIndexPage";
 import { journalArticlePageType } from "./journalArticlePage";
 
-// Service detail page chrome (wraps the service collection at /services/[slug])
+// Service detail page layout (wraps the service collection at /services/[slug])
 import { servicePageType } from "./servicePage";
 
-// Site-wide chrome (nav + footer)
+// Site-wide layout (nav + footer)
 import { navSectionType } from "./navSection";
 import { footerSectionType } from "./footerSection";
 
@@ -94,14 +94,14 @@ export const schemaTypes = [
   servicesFaqType,
   servicesCtaType,
 
-  // Journal page chrome
+  // Journal page layout
   journalIndexPageType,
   journalArticlePageType,
 
-  // Service detail chrome
+  // Service detail layout
   servicePageType,
 
-  // Site-wide chrome
+  // Site-wide layout
   navSectionType,
   footerSectionType,
 ];
