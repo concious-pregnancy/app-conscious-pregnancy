@@ -303,6 +303,18 @@ export const structure: StructureResolver = (S) =>
                     .schemaType("servicesCta")
                     .documentId("servicesCta-singleton"),
                 ),
+              S.divider(),
+              S.listItem()
+                .title("Service Detail Chrome (shared labels)")
+                .child(
+                  S.document()
+                    .title("Services — Service Detail Chrome")
+                    .schemaType("servicePage")
+                    .documentId("servicePage-singleton"),
+                ),
+              S.listItem()
+                .title("All Services")
+                .child(S.documentTypeList("service").title("Services")),
             ]),
         ),
       S.divider(),

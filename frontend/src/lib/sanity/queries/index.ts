@@ -37,7 +37,32 @@ export const servicesQuery = groq`*[_type == "service"] | order(order asc) {
   titleLine2,
   body,
   image,
-  trigram
+  trigram,
+  slug
+}`;
+
+// Slug strings only — for generateStaticParams on /services/[slug].
+export const serviceSlugsQuery = groq`*[_type == "service" && defined(slug.current)][].slug.current`;
+
+// Single service + N related (excluding self), keyed by slug.
+export const serviceBySlugQuery = groq`{
+  "service": *[_type == "service" && slug.current == $slug][0] {
+    _id, title, titleLine2, eyebrow, body, image, imageAlt, trigram, slug,
+    lead, detailBody, seo
+  },
+  "related": *[_type == "service" && slug.current != $slug] | order(coalesce(order, 9999) asc) [0...3] {
+    _id, title, body, image, imageAlt, slug,
+    "eyebrow": coalesce(eyebrow, "Service")
+  }
+}`;
+
+// Service-detail chrome: shared labels for every /services/[slug] page.
+export const servicePageQuery = groq`*[_type == "servicePage"][0] {
+  backLinkLabel,
+  bodyPlaceholder,
+  relatedEyebrow, relatedHeading, relatedReadLabel,
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel, ctaHref,
+  metaTitleSuffix
 }`;
 
 export const serviceExtrasQuery = groq`*[_type == "serviceExtra"] | order(order asc) {
@@ -51,7 +76,10 @@ export const servicesSectionQuery = groq`*[_type == "servicesSection"][0] {
   eyebrow,
   headingLine1,
   headingLine2Em,
-  sub
+  sub,
+  "services": services[]->{
+    _id, title, titleLine2, body, image, trigram, slug
+  }
 }`;
 
 export const journalArticlesQuery = groq`*[_type == "journalArticle"] | order(order asc) {
@@ -67,7 +95,10 @@ export const journalSectionQuery = groq`*[_type == "journalSection"][0] {
   headingLine1,
   headingLine2Em,
   sub,
-  ctaLabel
+  ctaLabel,
+  "articles": articles[]->{
+    _id, title, excerpt, image, slug
+  }
 }`;
 
 export const testimonialQuery = groq`*[_type == "testimonial"][0] {

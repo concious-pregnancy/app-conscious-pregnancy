@@ -10,6 +10,7 @@ type Service = {
   body: string;
   image?: SanityImage;
   trigram: string;
+  slug?: { current?: string };
 };
 
 type ServiceExtra = {
@@ -81,7 +82,9 @@ export default function Services({
                   </h3>
                   <div className={styles.cardFoot}>
                     <span className={styles.trigram}>{s.trigram}</span>
-                    <a href="#contact">Read More</a>
+                    <a href={s.slug?.current ? `/services/${s.slug.current}` : "#contact"}>
+                      Read More
+                    </a>
                   </div>
                 </div>
               </article>

@@ -87,6 +87,17 @@ export default async function Home() {
     client.fetch(approachSectionQuery, {}, fetchOpts),
   ]);
 
+  // Editor-curated picks override the collection fallback. Empty array (or
+  // missing field) falls back to all services / all articles in order.
+  const homeServices =
+    servicesSectionContent?.services && servicesSectionContent.services.length > 0
+      ? servicesSectionContent.services
+      : services;
+  const homeArticles =
+    journalSectionContent?.articles && journalSectionContent.articles.length > 0
+      ? journalSectionContent.articles
+      : journalArticles;
+
   return (
     <>
       <Nav />
@@ -94,7 +105,7 @@ export default async function Home() {
         <Hero content={heroContent} />
         <Balance content={balanceContent} />
         <Services
-          services={services}
+          services={homeServices}
           extras={serviceExtras}
           sectionContent={servicesSectionContent}
         />
@@ -131,7 +142,7 @@ export default async function Home() {
         {!FLAGS.OMIT_SECTIONS.approach && <Approach content={approachContent} />}
         <Listen content={listenContent} />
         {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
-        <Journal articles={journalArticles} sectionContent={journalSectionContent} />
+        <Journal articles={homeArticles} sectionContent={journalSectionContent} />
         {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
         <FAQ items={faqs} sectionContent={faqSectionContent} />
         <Contact content={contactContent} />

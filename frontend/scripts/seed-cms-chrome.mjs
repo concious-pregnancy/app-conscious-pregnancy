@@ -176,6 +176,23 @@ const docs = [
     submitLabel: "Request a Discovery Call",
   },
   {
+    _id: "servicePage-singleton",
+    _type: "servicePage",
+    backLinkLabel: "← All services",
+    bodyPlaceholder: "Details for this service are being written. Check back soon.",
+    relatedEyebrow: "Continue exploring",
+    relatedHeading: "More ways we work together.",
+    relatedReadLabel: "Learn more",
+    ctaEyebrow: "Begin Your Journey",
+    ctaTitle: "Ready to begin",
+    ctaTitleEm: "your work?",
+    ctaBody:
+      "Discovery calls are free, hour-long, and unhurried. We talk about where you are, what you've tried, and whether this is the right fit before anything is booked.",
+    ctaLabel: "Book a discovery call",
+    ctaHref: "/#contact",
+    metaTitleSuffix: " | Services | Conscious Pregnancy",
+  },
+  {
     _id: "journalArticlePage-singleton",
     _type: "journalArticlePage",
     backLinkLabel: "← All articles",
