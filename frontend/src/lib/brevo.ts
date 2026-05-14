@@ -18,25 +18,38 @@ export async function upsertContact(params: UpsertContactParams): Promise<Upsert
   const listIdFromEnv = process.env.BREVO_LIST_ID;
   if (listIds.length === 0 && listIdFromEnv) listIds.push(Number(listIdFromEnv));
 
-  const body = {
-    email: params.email.toLowerCase().trim(),
-    attributes: params.attributes ?? {},
-    listIds,
-    updateEnabled: true,
-  };
+  const email = params.email.toLowerCase().trim();
+  const attributes: Record<string, string | number> = { ...(params.attributes ?? {}) };
 
-  const res = await fetch("https://api.brevo.com/v3/contacts", {
-    method: "POST",
-    headers: { "api-key": apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  async function postOnce(): Promise<Response> {
+    return fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST",
+      headers: { "api-key": apiKey!, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, attributes, listIds, updateEnabled: true }),
+    });
+  }
+
+  let res = await postOnce();
+
+  // Brevo enforces account-wide uniqueness on phone (SMS attribute). If the SMS
+  // is already attached to another contact, the whole upsert fails. Strip the
+  // SMS and retry so the email still gets captured; the phone is preserved in
+  // the notification email body either way.
+  if (res.status === 400 && "SMS" in attributes) {
+    const peek = await res.clone().text();
+    if (peek.includes("duplicate_parameter") && peek.includes("SMS")) {
+      console.warn("[brevo] SMS already attached to another contact, retrying without SMS");
+      delete attributes.SMS;
+      res = await postOnce();
+    }
+  }
 
   if (res.status === 201) {
-    console.log("[brevo] contact created:", body.email);
+    console.log("[brevo] contact created:", email);
     return { created: true };
   }
   if (res.status === 204) {
-    console.log("[brevo] contact updated:", body.email);
+    console.log("[brevo] contact updated:", email);
     return { created: false };
   }
 
