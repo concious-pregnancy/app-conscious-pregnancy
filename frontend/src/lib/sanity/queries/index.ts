@@ -56,7 +56,7 @@ export const serviceBySlugQuery = groq`{
   }
 }`;
 
-// Service-detail chrome: shared labels for every /services/[slug] page.
+// Service-detail layout: shared labels for every /services/[slug] page.
 export const servicePageQuery = groq`*[_type == "servicePage"][0] {
   backLinkLabel,
   bodyPlaceholder,
@@ -267,7 +267,7 @@ export const servicesCtaQuery = groq`*[_type == "servicesCta"][0] {
 
 /* ── Journal queries ──────────────────────────────────────────── */
 
-// Index page chrome: hero copy, grid eyebrow + title, closing CTA, SEO meta.
+// Index page layout: hero copy, grid eyebrow + title, closing CTA, SEO meta.
 export const journalIndexPageQuery = groq`*[_type == "journalIndexPage"][0] {
   heroEyebrow, heroTitleLine1, heroTitleEm, heroLead,
   featuredCount,
@@ -276,7 +276,7 @@ export const journalIndexPageQuery = groq`*[_type == "journalIndexPage"][0] {
   metaTitle, metaDescription
 }`;
 
-// Article-detail chrome: shared labels for every /journal/[slug] page.
+// Article-detail layout: shared labels for every /journal/[slug] page.
 export const journalArticlePageQuery = groq`*[_type == "journalArticlePage"][0] {
   backLinkLabel, bylineFallbackAuthor, readingTimeSuffix,
   bodyPlaceholder,
@@ -306,7 +306,7 @@ export const journalArticleBySlugQuery = groq`{
   }
 }`;
 
-/* ── Site-wide chrome ─────────────────────────────────────────── */
+/* ── Site-wide layout ─────────────────────────────────────────── */
 
 export const navSectionQuery = groq`*[_type == "navSection"][0] {
   brandWordPrimary, brandWordItalic, brandAriaLabel,

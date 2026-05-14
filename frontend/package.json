@@ -28,7 +28,8 @@
     "extract:all": "playwright test e2e/extract.blueprint.spec.ts e2e/extract.styles.spec.ts e2e/extract.animations.spec.ts --project=chromium && PW_LOCAL=1 playwright test e2e/extract.screenshots.spec.ts --project=chromium",
     "typegen": "sanity typegen generate",
     "seed:pages": "tsx scripts/seed-pages.ts",
-    "seed:cms-chrome": "node scripts/seed-cms-chrome.mjs"
+    "seed:cms-layout": "node scripts/seed-cms-layout.mjs",
+    "sanity:publish-drafts": "node scripts/publish-drafts.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -2,10 +2,10 @@ import { defineField, defineType } from "sanity";
 
 export const journalArticlePageType = defineType({
   name: "journalArticlePage",
-  title: "Journal — Article Detail Chrome (/journal/[slug])",
+  title: "Journal — Article Detail Layout (/journal/[slug])",
   type: "document",
   description:
-    "Shared labels and chrome that appear on every individual journal article. Edit here once, applies to every article. Per-article body / title / image still live on the Journal Article doc.",
+    "Shared labels and layout copy that appear on every individual journal article. Edit here once, applies to every article. Per-article body / title / image still live on the Journal Article doc.",
   groups: [
     { name: "header", title: "Article Header" },
     { name: "body", title: "Article Body Defaults" },
@@ -130,5 +130,5 @@ export const journalArticlePageType = defineType({
       initialValue: " | Journal | Conscious Pregnancy",
     }),
   ],
-  preview: { prepare: () => ({ title: "Journal — Article Detail Chrome" }) },
+  preview: { prepare: () => ({ title: "Journal — Article Detail Layout" }) },
 });

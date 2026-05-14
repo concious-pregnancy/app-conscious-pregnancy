@@ -89,14 +89,12 @@ export default async function Home() {
 
   // Editor-curated picks override the collection fallback. Empty array (or
   // missing field) falls back to all services / all articles in order.
-  const homeServices =
-    servicesSectionContent?.services && servicesSectionContent.services.length > 0
-      ? servicesSectionContent.services
-      : services;
-  const homeArticles =
-    journalSectionContent?.articles && journalSectionContent.articles.length > 0
-      ? journalSectionContent.articles
-      : journalArticles;
+  // Filter nulls — GROQ `[]->` returns null for refs whose target was deleted
+  // or unpublished; downstream components expect `_id` to exist.
+  const curatedServices = (servicesSectionContent?.services ?? []).filter(Boolean);
+  const curatedArticles = (journalSectionContent?.articles ?? []).filter(Boolean);
+  const homeServices = curatedServices.length > 0 ? curatedServices : services;
+  const homeArticles = curatedArticles.length > 0 ? curatedArticles : journalArticles;
 
   return (
     <>

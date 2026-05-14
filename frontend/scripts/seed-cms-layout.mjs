@@ -1,11 +1,14 @@
 /**
- * Seeds the site-wide and page-level "chrome" singletons used by the new CMS
- * model: navSection, footerSection, journalIndexPage, journalArticlePage.
+ * Seeds the site-wide and page-level layout singletons used by the new CMS
+ * model: navSection, footerSection, journalIndexPage, journalArticlePage,
+ * servicePage.
  *
  * Re-runnable. Uses createIfNotExists for the document, then setIfMissing
- * for individual fields so editor changes are never clobbered.
+ * for individual fields so editor changes are never clobbered. After every
+ * write, mirrors into drafts.<id> if a draft exists, so Studio's draft view
+ * doesn't shadow the seeded values.
  *
- * Run: node scripts/seed-cms-chrome.mjs
+ * Run: node scripts/seed-cms-layout.mjs
  */
 
 import { createClient } from "@sanity/client";
@@ -218,11 +221,23 @@ async function main() {
     const { _id, _type, ...fields } = doc;
     await client.createIfNotExists({ _id, _type, ...fields });
     await client.patch(_id).setIfMissing(fields).commit();
-    // eslint-disable-next-line no-console
-    console.log(`  ✓ ${_type}/${_id}`);
+
+    // Mirror into draft if one exists. Studio shows drafts.<id> by default
+    // when present, so a stale draft with missing fields would shadow these
+    // seed values in the editor UI even though /published renders correctly.
+    const draftId = `drafts.${_id}`;
+    const draft = await client.getDocument(draftId);
+    if (draft) {
+      await client.patch(draftId).setIfMissing(fields).commit();
+      // eslint-disable-next-line no-console
+      console.log(`  ✓ ${_type}/${_id} (+ mirrored to draft)`);
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`  ✓ ${_type}/${_id}`);
+    }
   }
   // eslint-disable-next-line no-console
-  console.log("\n✅ CMS chrome seeded.\n");
+  console.log("\n✅ CMS layout seeded.\n");
 }
 
 main().catch((err) => {

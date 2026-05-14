@@ -5,7 +5,7 @@ export const journalIndexPageType = defineType({
   title: "Journal — Index Page (/journal)",
   type: "document",
   description:
-    'Chrome and copy for the journal index page at "/journal". Articles themselves live under "Journal — All Articles".',
+    'Layout and copy for the journal index page at "/journal". Articles themselves live under "Journal — All Articles".',
   groups: [
     { name: "hero", title: 'Hero — "Insights That Matter"', default: true },
     { name: "featured", title: "Featured Pair (top of grid)" },

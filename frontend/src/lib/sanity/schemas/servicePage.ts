@@ -2,10 +2,10 @@ import { defineField, defineType } from "sanity";
 
 export const servicePageType = defineType({
   name: "servicePage",
-  title: "Services — Service Detail Chrome (/services/[slug])",
+  title: "Services — Service Detail Layout (/services/[slug])",
   type: "document",
   description:
-    "Shared labels and chrome that appear on every individual service detail page. Edit here once, applies to every service. Per-service body / title / image lives on the Service doc.",
+    "Shared labels and layout copy that appear on every individual service detail page. Edit here once, applies to every service. Per-service body / title / image lives on the Service doc.",
   groups: [
     { name: "header", title: "Service Header" },
     { name: "body", title: "Service Body Defaults" },
@@ -106,5 +106,5 @@ export const servicePageType = defineType({
       initialValue: " | Services | Conscious Pregnancy",
     }),
   ],
-  preview: { prepare: () => ({ title: "Services — Service Detail Chrome" }) },
+  preview: { prepare: () => ({ title: "Services — Service Detail Layout" }) },
 });
