@@ -19,7 +19,7 @@ export async function upsertContact(params: UpsertContactParams): Promise<Upsert
   if (listIds.length === 0 && listIdFromEnv) listIds.push(Number(listIdFromEnv));
 
   const email = params.email.toLowerCase().trim();
-  const attributes: Record<string, string | number> = { ...(params.attributes ?? {}) };
+  const attributes: Record<string, string | number> = { ...params.attributes };
 
   async function postOnce(): Promise<Response> {
     return fetch("https://api.brevo.com/v3/contacts", {
