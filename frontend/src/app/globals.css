@@ -181,6 +181,7 @@
    ============================================================ */
 
 html[data-mode="yin"] {
+  /* New semantic tokens. */
   --ground: var(--c-navy);
   --surface: var(--c-navy);
   --surface-raised: var(--c-slate);
@@ -193,6 +194,18 @@ html[data-mode="yin"] {
   --primary-hover: var(--c-gold-light);
   --primary-active: var(--c-gold);
   --primary-fg: var(--c-warm-black);
+
+  /* Legacy tokens. Component CSS modules still reference these
+     directly (--off-white, --dark, --paper, --muted, etc.), so the
+     yin flip has to remap them here or nothing visible changes. */
+  --off-white: var(--c-navy);
+  --paper: var(--c-slate);
+  --dark: var(--c-cream);
+  --dark-mid: var(--c-cream-raised);
+  --muted: var(--c-mist);
+
+  --sage: var(--c-gold-bright);
+  --sage-light: var(--c-gold-light);
 
   --border: rgba(244, 236, 216, 0.12);
   --border-strong: rgba(244, 236, 216, 0.22);

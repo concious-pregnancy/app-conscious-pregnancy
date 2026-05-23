@@ -14,12 +14,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  padding: 0 0.75rem;
+  height: 26px;
   border-radius: var(--radius-pill);
   color: inherit;
   background: transparent;
-  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   line-height: 1;
   transition:
     background-color 200ms var(--ease-out),
@@ -35,17 +39,10 @@
   color: var(--primary-fg);
 }
 
-.glyph {
-  font-family: "Apple Color Emoji", "Segoe UI Symbol", var(--font-sans);
-  font-size: 13px;
-  letter-spacing: 0;
-  /* Optical centering for the I Ching trigram glyphs. */
-  transform: translateY(-1px);
-}
-
 @media (max-width: 700px) {
   .option {
-    width: 24px;
+    padding: 0 0.55rem;
     height: 24px;
+    font-size: 0.58rem;
   }
 }

@@ -48,9 +48,7 @@ export default function ModeToggle() {
         aria-label="Yang, light mode"
         onClick={() => toggle("yang")}
       >
-        <span aria-hidden="true" className={styles.glyph}>
-          ☲
-        </span>
+        Yang
       </button>
       <button
         type="button"
@@ -59,9 +57,7 @@ export default function ModeToggle() {
         aria-label="Yin, dark mode"
         onClick={() => toggle("yin")}
       >
-        <span aria-hidden="true" className={styles.glyph}>
-          ☵
-        </span>
+        Yin
       </button>
     </div>
   );
