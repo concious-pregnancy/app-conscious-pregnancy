@@ -75,6 +75,19 @@
   color: var(--dark);
 }
 
+.modeToggleSlot {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  /* Hide toggle on phone so the nav doesn't get crowded. Users can
+     still flip mode from the mobile menu in a later iteration. */
+  .modeToggleSlot {
+    display: none;
+  }
+}
+
 .cta {
   font-size: 0.7rem !important;
   padding: 0.55rem 1.5rem 0.55rem 1rem !important;

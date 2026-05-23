@@ -167,6 +167,53 @@
   --dur-slow: 1100ms;
 }
 
+/* ============================================================
+   YIN MODE, site-wide dark palette.
+   Toggled via the ModeToggle component in the nav, which sets
+   data-mode="yin" on <html> and persists to localStorage.
+   Yang (light) is the default and lives in :root above.
+
+   Strategy: remap the semantic tokens only. Component CSS modules
+   still reference var(--ground), var(--ink), var(--surface), etc.,
+   so they switch automatically. Raw palette tokens (var --c-*) stay
+   constant so per-component overrides can still reach the real
+   color values when needed.
+   ============================================================ */
+
+html[data-mode="yin"] {
+  --ground: var(--c-navy);
+  --surface: var(--c-navy);
+  --surface-raised: var(--c-slate);
+  --surface-slate: var(--c-slate-mid);
+
+  --ink: var(--c-cream);
+  --ink-muted: var(--c-mist);
+
+  --primary: var(--c-gold-bright);
+  --primary-hover: var(--c-gold-light);
+  --primary-active: var(--c-gold);
+  --primary-fg: var(--c-warm-black);
+
+  --border: rgba(244, 236, 216, 0.12);
+  --border-strong: rgba(244, 236, 216, 0.22);
+}
+
+html[data-mode="yin"] body {
+  background: var(--ground);
+  color: var(--ink);
+}
+
+/* Mode transitions. Added by ModeToggle after first paint so the
+   initial load doesn't animate (FOUC prevention). */
+html.mode-transitions-ready body,
+html.mode-transitions-ready .mode-aware,
+html.mode-transitions-ready .mode-aware * {
+  transition:
+    background-color 240ms var(--ease-out),
+    color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
