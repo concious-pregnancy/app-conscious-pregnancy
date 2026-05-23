@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ModeToggle from "./ModeToggle";
 import styles from "./Nav.module.css";
 
 export type NavLink = { label: string; href: string };
@@ -121,6 +122,10 @@ export default function NavClient({
           );
         })}
       </ul>
+
+      <div className={styles.modeToggleSlot}>
+        <ModeToggle />
+      </div>
 
       <Link href={ctaHref} className={`btn btn-primary ${styles.cta}`}>
         <span className="btn-dot" />
