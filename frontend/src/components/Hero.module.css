@@ -74,12 +74,14 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Warm amber vignette (Palette C). Replaces the old teal vignette
+     that was neutralizing Ashley's golden hour photography. */
   background: radial-gradient(
     ellipse 60% 55% at 50% 50%,
-    rgba(90, 130, 120, 0) 0%,
-    rgba(90, 130, 120, 0.08) 45%,
-    rgba(70, 110, 100, 0.32) 75%,
-    rgba(55, 90, 82, 0.52) 100%
+    rgba(60, 38, 18, 0) 0%,
+    rgba(60, 38, 18, 0.1) 45%,
+    rgba(40, 25, 12, 0.32) 75%,
+    rgba(28, 21, 16, 0.52) 100%
   );
 }
 
@@ -88,7 +90,8 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(180deg, rgba(74, 126, 118, 0) 30%, rgba(74, 126, 118, 1) 100%);
+  /* Warm charcoal bottom fade. Bleeds into the navy wave strip below. */
+  background: linear-gradient(180deg, rgba(28, 21, 16, 0) 30%, rgba(23, 31, 43, 1) 100%);
 }
 
 .img {

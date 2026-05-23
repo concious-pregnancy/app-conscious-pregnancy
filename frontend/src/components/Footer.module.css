@@ -5,10 +5,10 @@
      trigger fires reliably. svh matches the small viewport on iOS so
      the footer doesn't get clipped under the URL bar at the bottom. */
   min-height: 100svh;
-  /* Brighter teal base, closer to the ClearPath template. The wave bg
-     image sits over this and the veil tints it down. */
-  background: #2c5560;
-  color: var(--off-white);
+  /* Deep navy base (Palette C). The wave bg image sits over this
+     and the veil tints it down. */
+  background: var(--surface-dark);
+  color: var(--ink-on-dark);
   overflow: hidden;
   isolation: isolate;
 }

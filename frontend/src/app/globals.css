@@ -7,47 +7,124 @@
 }
 
 :root {
-  /* ── Color: neutrals ───────────────────────────────────── */
+  /* ====================================================================
+     CONSCIOUS PREGNANCY DESIGN SYSTEM, PALETTE C (Day / Night), locked
+     ....................................................................
+     Original Clearpath token names are preserved so the 30+ component
+     CSS modules don't need to be rewritten. Values are remapped to
+     Palette C, warm cream "day" body, deep navy "night" hero and footer,
+     gold primary, auburn secondary, warm charcoal ink.
+
+     New semantic tokens (var --primary, var --ink, var --surface-hero,
+     var --hero-overlay, etc.) are added alongside for components built
+     from this point on.
+     ==================================================================== */
+
+  /* Raw palette tokens (photography extracted). */
+
+  /* Warm family. */
+  --c-warm-black: #1c1510;
+  --c-warm-charcoal: #2c2218;
+  --c-cream: #f3ebd8;
+  --c-cream-raised: #faf4e3;
+  --c-parchment: #e8dec6;
+  --c-driftwood: #b8a882;
+  --c-gold: #b89230;
+  --c-gold-light: #d4ae52;
+  --c-gold-dark: #8a6818;
+  --c-gold-bright: #c8a040; /* lit on navy */
+  --c-auburn: #7a2e18;
+  --c-auburn-light: #9e4830;
+  --c-crimson: #7c1e2a;
+  --c-blush: #e4b5a0;
+  --c-rose-mist: #f2ddd6;
+
+  /* Cool family. */
+  --c-navy: #171f2b;
+  --c-slate: #263544;
+  --c-slate-mid: #3e5468;
+  --c-mist: #7a98b0;
+  --c-sky-pale: #c2cedb;
+
+  /* Ink scale (warm tinted neutrals). */
+  --c-ink-900: #1c1510;
+  --c-ink-700: #4a4035;
+  --c-ink-500: #7a7060;
+  --c-ink-300: #b0a690;
+
+  /* Legacy token names, remapped to Palette C. */
+
   --white: #ffffff;
-  --off-white: #fafafa;
-  --paper: #f5f3ee;
-  --dark: #2e3231;
-  --dark-mid: #3d4443;
-  --muted: #535956;
+  --off-white: var(--c-cream);
+  --paper: var(--c-parchment);
+  --dark: var(--c-warm-black);
+  --dark-mid: var(--c-warm-charcoal);
+  --muted: var(--c-ink-500);
 
-  /* ── Color: sage (structural accent) ───────────────────── */
-  --sage: #7fa69b;
-  --sage-dark: #5d8278;
-  --sage-light: #a8c5be;
-  --teal-deep: #4a7e76;
-  --teal-deeper: #3d6e68;
+  /* "sage" used to be the brand primary. Remap to gold so every
+     legacy var(--sage) (buttons, eyebrows, italic accents, etc.)
+     picks up the new primary without touching component CSS. */
+  --sage: var(--c-gold);
+  --sage-dark: var(--c-gold-dark);
+  --sage-light: var(--c-gold-light);
+  --teal-deep: var(--c-navy);
+  --teal-deeper: var(--c-slate);
 
-  /* ── Color: gold (warm differentiator) ─────────────────── */
-  --gold: #c8a060;
-  --gold-light: #e3c896;
-  --gold-deep: #9a7a44;
+  --gold: var(--c-gold);
+  --gold-light: var(--c-gold-light);
+  --gold-deep: var(--c-gold-dark);
 
-  /* ── Color: borders & overlays ─────────────────────────── */
-  --border: rgba(46, 50, 49, 0.12);
-  --border-strong: rgba(46, 50, 49, 0.2);
-  --border-light: rgba(255, 255, 255, 0.12);
-  --veil: rgba(46, 50, 49, 0.55);
+  --border: rgba(28, 21, 16, 0.12);
+  --border-strong: rgba(28, 21, 16, 0.22);
+  --border-light: rgba(255, 255, 255, 0.14);
+  --veil: rgba(23, 31, 43, 0.55);
 
-  /* ── Type: families (--font-crimson/inter injected by next/font) ─
-     ClearPath uses Inter weight 600 for every eyebrow / CTA / nav
-     label (no monospace family is loaded). --font-mono now aliases
-     Inter so any legacy var(--font-mono) references resolve to the
-     same family ClearPath uses. */
+  /* New semantic tokens (Palette C day defaults). */
+
+  --ground: var(--c-cream);
+  --surface: var(--c-cream);
+  --surface-raised: var(--c-cream-raised);
+  --surface-hero: var(--c-navy);
+  --surface-dark: var(--c-navy);
+  --surface-slate: var(--c-slate);
+
+  --ink: var(--c-warm-black);
+  --ink-muted: var(--c-ink-500);
+  --ink-on-dark: #f4ecd8;
+  --ink-on-dark-muted: var(--c-mist);
+
+  --primary: var(--c-gold);
+  --primary-hover: var(--c-gold-light);
+  --primary-active: var(--c-gold-dark);
+  --primary-fg: var(--c-warm-black);
+  --primary-on-dark: var(--c-gold-bright);
+
+  --secondary: var(--c-auburn);
+  --secondary-hover: var(--c-auburn-light);
+  --accent: var(--c-blush);
+
+  /* Hero overlay, warm amber grade. Lets warm photography read warm.
+     Replaces the old teal overlay that was neutralizing Ashley's
+     golden hour photography. */
+  --hero-overlay: linear-gradient(
+    180deg,
+    rgba(28, 21, 16, 0.32) 0%,
+    rgba(28, 21, 16, 0.18) 35%,
+    rgba(60, 38, 18, 0.46) 80%,
+    rgba(40, 25, 12, 0.72) 100%
+  );
+
+  /* Type families (var --font-crimson / var --font-inter injected by next/font). */
   --font-serif: var(--font-crimson), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-inter), system-ui, -apple-system, sans-serif;
 
-  /* ── Layout ───────────────────────────────────────────── */
+  /* Layout. */
   --max-w: 1400px;
   --pad-x: clamp(24px, 5vw, 80px);
   --nav-h: 84px;
 
-  /* ── Spacing scale (4px base) ─────────────────────────── */
+  /* Spacing scale (4px base). */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -59,7 +136,7 @@
   --s-24: 96px;
   --s-32: 128px;
 
-  /* Legacy rem-based scale (kept for existing components) */
+  /* Legacy rem-based scale (kept for existing components). */
   --s1: 0.5rem;
   --s2: 1rem;
   --s3: 1.5rem;
@@ -69,20 +146,20 @@
   --s12: 6rem;
   --s16: 8rem;
 
-  /* ── Radii ────────────────────────────────────────────── */
+  /* Radii. */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 20px;
   --radius-pill: 999px;
 
-  /* ── Elevation ────────────────────────────────────────── */
-  --shadow-sm: 0 1px 2px rgba(46, 50, 49, 0.06);
-  --shadow-md: 0 8px 24px -10px rgba(46, 50, 49, 0.12);
-  --shadow-lg: 0 20px 50px -20px rgba(46, 50, 49, 0.15);
-  --shadow-xl: 0 30px 80px -30px rgba(46, 50, 49, 0.25);
+  /* Elevation. */
+  --shadow-sm: 0 1px 2px rgba(28, 21, 16, 0.06);
+  --shadow-md: 0 8px 24px -10px rgba(28, 21, 16, 0.14);
+  --shadow-lg: 0 20px 50px -20px rgba(28, 21, 16, 0.18);
+  --shadow-xl: 0 30px 80px -30px rgba(28, 21, 16, 0.28);
 
-  /* ── Motion ───────────────────────────────────────────── */
+  /* Motion. */
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 200ms;
@@ -97,8 +174,8 @@ html {
 }
 
 body {
-  background: var(--white);
-  color: var(--dark);
+  background: var(--ground);
+  color: var(--ink);
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.65;
@@ -120,7 +197,7 @@ button {
   background: none;
 }
 
-/* ── Layout utility ──────────────────────────────────────── */
+/* Layout utility. */
 .container {
   width: 100%;
   max-width: var(--max-w);
@@ -134,9 +211,9 @@ button {
   padding: var(--s-24) var(--pad-x);
 }
 
-/* ── Type utility classes ────────────────────────────────── */
+/* Type utility classes. */
 
-/* Hero display — Crimson Text, very large, italic accent line */
+/* Hero display, Crimson Text, very large, italic accent line. */
 .t-display {
   font-family: var(--font-serif);
   font-size: clamp(3.4rem, 8.4vw, 8.4rem);
@@ -149,7 +226,7 @@ button {
   color: var(--sage-light);
 }
 
-/* Section serif heading */
+/* Section serif heading. */
 .t-h1 {
   font-family: var(--font-serif);
   font-size: clamp(2.75rem, 6vw, 5rem);
@@ -162,7 +239,7 @@ button {
   color: var(--sage-dark);
 }
 
-/* Utility / service section heading — Inter */
+/* Utility / service section heading, Inter. */
 .t-h2 {
   font-family: var(--font-sans);
   font-size: clamp(2rem, 4vw, 2.75rem);
@@ -171,7 +248,7 @@ button {
   font-weight: 500;
 }
 
-/* Card title */
+/* Card title. */
 .t-h3 {
   font-family: var(--font-serif);
   font-size: 1.6rem;
@@ -180,7 +257,7 @@ button {
   font-weight: 400;
 }
 
-/* Body */
+/* Body. */
 .t-body {
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -195,7 +272,7 @@ button {
   color: var(--muted);
 }
 
-/* Pull quote */
+/* Pull quote. */
 .t-quote {
   font-family: var(--font-serif);
   font-style: italic;
@@ -204,7 +281,7 @@ button {
   color: var(--dark);
 }
 
-/* Eyebrow / mono label */
+/* Eyebrow / mono label. */
 .t-label {
   font-family: var(--font-mono);
   font-weight: 600;
@@ -226,7 +303,7 @@ button {
   opacity: 0.7;
 }
 
-/* Logo wordmark */
+/* Logo wordmark. */
 .t-logo {
   font-family: var(--font-serif);
   font-size: 1.35rem;
@@ -234,7 +311,7 @@ button {
   letter-spacing: 0;
 }
 
-/* Italic accent helpers */
+/* Italic accent helpers. */
 .t-italic-sage {
   font-style: italic;
   color: var(--sage);
@@ -244,7 +321,7 @@ button {
   color: var(--gold);
 }
 
-/* ── Legacy type utilities (kept for existing components) ─── */
+/* Legacy type utilities (kept for existing components). */
 .section-label {
   font-family: var(--font-mono);
   font-weight: 600;
@@ -296,7 +373,7 @@ button {
   line-height: 1.7;
 }
 
-/* ── Buttons ─────────────────────────────────────────────── */
+/* Buttons. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -316,30 +393,32 @@ button {
   white-space: nowrap;
 }
 
+/* Primary fill, gold on warm charcoal text. Reads on both cream day
+   surfaces and (with var --primary-on-dark) navy hero / footer. */
 .btn-primary {
-  background: var(--sage);
-  color: var(--white);
+  background: var(--primary);
+  color: var(--primary-fg);
 }
 
 .btn-primary:hover {
-  background: var(--sage-dark);
+  background: var(--primary-hover);
   transform: translateY(-1px);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--dark);
+  color: var(--ink);
   border: 1px solid var(--border-strong);
 }
 
 .btn-ghost:hover {
-  border-color: var(--sage);
-  color: var(--sage-dark);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .btn-ghost-light {
   background: transparent;
-  color: var(--white);
+  color: var(--ink-on-dark);
   border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
@@ -348,7 +427,7 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ── Dot indicator ───────────────────────────────────────── */
+/* Dot indicator. */
 .btn-dot {
   width: 6px;
   height: 6px;
@@ -358,23 +437,23 @@ button {
   flex-shrink: 0;
 }
 
-/* ── Surface helpers ─────────────────────────────────────── */
+/* Surface helpers. */
 .surface-dark {
-  background: var(--dark);
-  color: var(--white);
+  background: var(--surface-dark);
+  color: var(--ink-on-dark);
 }
 
 .surface-off-white {
   background: var(--off-white);
-  color: var(--dark);
+  color: var(--ink);
 }
 
 .surface-paper {
   background: var(--paper);
-  color: var(--dark);
+  color: var(--ink);
 }
 
-/* ── Noise overlay (fractalNoise texture on dark surfaces) ── */
+/* Noise overlay (fractalNoise texture on dark surfaces). */
 .noise-overlay {
   position: relative;
 }
@@ -391,7 +470,7 @@ button {
   background-size: 256px;
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/* Responsive. */
 @media (max-width: 809px) {
   .section {
     padding: var(--s-16) var(--pad-x);
