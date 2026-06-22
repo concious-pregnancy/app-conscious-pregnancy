@@ -32,15 +32,18 @@
     "sanity:publish-drafts": "node scripts/publish-drafts.mjs"
   },
   "dependencies": {
+    "@apideck/agent-analytics": "^0.9.0",
     "@gsap/react": "^2.1.2",
     "@portabletext/react": "^3.1.0",
     "@portabletext/types": "^4.0.2",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
+    "@sentry/nextjs": "^10.58.0",
     "gsap": "^3.14.2",
     "lenis": "^1.3.21",
     "next": "^16.2.2",
     "next-sanity": "^12.4.0",
+    "posthog-js": "^1.386.8",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "sanity": "^5.23.0"
