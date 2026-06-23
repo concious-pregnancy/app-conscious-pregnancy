@@ -84,3 +84,21 @@ Required env vars: `BREVO_API_KEY`, `BREVO_LIST_ID`, `BREVO_NOTIFY_FROM_EMAIL`, 
 ## App invariants
 
 _Fill in with one-liners a new engineer would be surprised by; e.g., "all routes are statically generated", "provider data is not fetched at request time", "SEO meta lives in X not Y"._
+
+## Cursor Cloud specific instructions
+
+- **Package manager is Bun, not npm.** Despite the `npm run ...` examples above, the lockfile is `frontend/bun.lock` and CI uses `bun install --frozen-lockfile`. Run all scripts as `bun run <script>` (or `bun test`) from `frontend/`. The startup update script installs Bun (to `~/.bun/bin`) and runs `bun install`.
+- **Bun PATH gotcha:** Bun lives at `~/.bun/bin/bun`. Interactive login shells pick it up via `~/.bashrc`, but non-interactive shells may not. If `bun` is "not found", run `export PATH="$HOME/.bun/bin:$PATH"` first.
+- **Run the app:** `cd frontend && bun dev` serves the Next.js site at http://localhost:3000 (Turbopack, hot reload). Studio (Sanity) is embedded at `/studio`.
+- **Sanity env vars are required and supplied via the Cloud Agent environment (Secrets panel), not `.env.local`.** The site fetches Sanity content at request time with no fallback, so without these vars page rendering throws a 500. Next.js reads `NEXT_PUBLIC_*` straight from the process environment, so the injected secrets are picked up by `bun dev` with no env file needed. The values are the public ones used in CI (`.github/workflows/ci.yml`):
+
+  ```
+  NEXT_PUBLIC_SANITY_PROJECT_ID=ih14cr70
+  NEXT_PUBLIC_SANITY_DATASET=production
+  NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+  ```
+
+  If running outside the Cloud Agent (or the secrets are missing), either export these in your shell or drop them into a gitignored `frontend/.env.local`.
+
+- **Optional integrations (Brevo, Sentry, PostHog) are unconfigured by default** and degrade gracefully for browsing. The contact/subscribe forms (`POST /api/contact`, `POST /api/subscribe`) return HTTP 500 without `BREVO_API_KEY`, so exercising form submission end-to-end needs Brevo secrets.
+- **Quality checks** (run from `frontend/`): `bun run lint`, `bun run format`, `bun run knip`, `bun run typecheck`, `bun test`. Do not run `bun run build` locally; CI verifies it.
