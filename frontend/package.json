@@ -12,6 +12,7 @@
     "format:fix": "oxfmt --config ./.oxfmtrc.json --ignore-path ../.gitignore --write .",
     "knip": "knip",
     "knip:fix": "knip --fix",
+    "check:sitemap": "bun run scripts/check-sitemap-coverage.ts",
     "typecheck": "tsgo --noEmit",
     "test": "bun test",
     "test:e2e": "playwright test",
