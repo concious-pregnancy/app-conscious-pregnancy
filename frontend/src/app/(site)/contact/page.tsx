@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Contact from "@/components/Contact";
+import Locations from "@/components/Locations";
 import Footer from "@/components/Footer";
 import { client } from "@/lib/sanity/client";
 import { contactSectionQuery } from "@/lib/sanity/queries";
@@ -29,6 +30,7 @@ export default async function ContactPage() {
       <Nav />
       <main>
         <Contact content={contactContent} />
+        <Locations />
       </main>
       <Footer />
     </>

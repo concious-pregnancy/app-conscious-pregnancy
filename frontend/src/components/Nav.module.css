@@ -80,24 +80,13 @@
   align-items: center;
 }
 
-/* Mode toggle as a menu row. Hidden by default (the top-bar .modeToggleSlot
-   covers desktop + tablet); only shown inside the open mobile menu at the
-   phone breakpoint where the top-bar toggle is hidden. */
-.menuToggleItem {
+/* Menu-only rows (Contact + mode toggle). Hidden by default on desktop, where
+   the top-bar CTA and .modeToggleSlot cover them. Shown once the nav collapses
+   to the single mobile layout at <=1000px (see the mobile block below), so
+   there is no in-between state with a hamburger AND a top-bar toggle. */
+.menuToggleItem,
+.menuCtaItem {
   display: none;
-}
-
-@media (max-width: 700px) {
-  /* Hide the top-bar toggle on phone so the nav doesn't get crowded. It
-     moves into the open mobile menu instead (see .menuToggleItem). */
-  .modeToggleSlot {
-    display: none;
-  }
-  .menuToggleItem {
-    display: flex;
-    justify-content: center;
-    padding: 1rem 0 0.25rem;
-  }
 }
 
 .cta {
@@ -190,9 +179,11 @@
   }
 }
 
-/* Tablet + phone: collapse to logo + hamburger. The 5-item desktop link
-   row + CTA doesn't fit until ~1100px wide, so iPad Mini (768) and most
-   tablets need the mobile pattern. */
+/* Mobile: the single non-desktop layout. Below 1000px the 3-item link row +
+   CTA + toggle no longer fit, so everything collapses to logo + hamburger.
+   The top-bar toggle and CTA hide here and move into the open menu (Contact +
+   mode toggle), so there is exactly one desktop state and one mobile state,
+   with no tablet in-between. */
 @media (max-width: 1000px) {
   .links {
     display: none;
@@ -219,8 +210,19 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .cta {
+  .cta,
+  .modeToggleSlot {
     display: none;
+  }
+
+  .menuCtaItem {
+    display: block;
+  }
+
+  .menuToggleItem {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 0.25rem;
   }
 
   .menuBtn {

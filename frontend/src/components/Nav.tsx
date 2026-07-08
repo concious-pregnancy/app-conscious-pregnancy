@@ -40,6 +40,13 @@ export default async function Nav() {
     return true;
   });
 
+  // The contact form moved from a home-page #contact section to its own
+  // /contact route. Older Sanity content still carries the legacy hash anchor
+  // (#contact / /#contact), which now points at nothing. Normalize it so both
+  // the desktop CTA and the mobile Contact menu item land on the live route.
+  const rawCtaHref = data?.ctaHref?.trim() || DEFAULTS.ctaHref;
+  const ctaHref = /^\/?#contact$/.test(rawCtaHref) ? "/contact" : rawCtaHref;
+
   return (
     <NavClient
       brandWordPrimary={data?.brandWordPrimary?.trim() || DEFAULTS.brandWordPrimary}
@@ -47,7 +54,7 @@ export default async function Nav() {
       brandAriaLabel={data?.brandAriaLabel?.trim() || DEFAULTS.brandAriaLabel}
       navLinks={navLinks}
       ctaLabel={data?.ctaLabel?.trim() || DEFAULTS.ctaLabel}
-      ctaHref={data?.ctaHref?.trim() || DEFAULTS.ctaHref}
+      ctaHref={ctaHref}
       mobileMenuLabel={data?.mobileMenuLabel?.trim() || DEFAULTS.mobileMenuLabel}
     />
   );

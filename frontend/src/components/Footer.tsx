@@ -61,12 +61,31 @@ export default async function Footer() {
     const h = href?.trim() ?? "";
     return h !== "" && h !== "#";
   };
-  const column1 = (
-    data?.sitemapColumn1?.length ? data.sitemapColumn1 : DEFAULTS.sitemapColumn1
-  ).filter((l) => isLiveHref(l.href));
-  const column2 = (
-    data?.sitemapColumn2?.length ? data.sitemapColumn2 : DEFAULTS.sitemapColumn2
-  ).filter((l) => isLiveHref(l.href));
+
+  // Repair legacy hrefs stored in Sanity from before Contact/About became their
+  // own routes. The existing footer document still carries "#contact" and
+  // "#credentials" (both now dead) plus bare "#about"/"#services" anchors that
+  // only resolve on "/". Normalizing here means the fix holds without editing
+  // the client's dataset. Kept in sync with the DEFAULTS above.
+  const normalizeHref = (href: string): string => {
+    const h = href.trim();
+    if (/^\/?#contact$/.test(h)) return "/contact";
+    if (/^\/?#credentials$/.test(h)) return "/about";
+    // Bare home-section anchors need a leading "/" so they work from any page
+    // (e.g. "#about" from /contact would target the nonexistent /contact#about).
+    if (h.startsWith("#")) return `/${h}`;
+    return h;
+  };
+
+  const prepare = (links: FooterLink[]) =>
+    links.filter((l) => isLiveHref(l.href)).map((l) => ({ ...l, href: normalizeHref(l.href) }));
+
+  const column1 = prepare(
+    data?.sitemapColumn1?.length ? data.sitemapColumn1 : DEFAULTS.sitemapColumn1,
+  );
+  const column2 = prepare(
+    data?.sitemapColumn2?.length ? data.sitemapColumn2 : DEFAULTS.sitemapColumn2,
+  );
 
   return (
     <FooterClient
