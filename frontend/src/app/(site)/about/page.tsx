@@ -17,6 +17,7 @@ import {
   aboutFaqQuery,
   aboutCtaQuery,
 } from "@/lib/sanity/queries";
+import { FLAGS } from "@/flags";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -213,43 +214,45 @@ export default async function AboutPage() {
         </section>
 
         {/* Team */}
-        <section className={`${s.section} ${s.sectionOffWhite}`}>
-          <div className={s.sectionInner}>
-            <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
-              <LeafMark />
-              <span className="t-label t-label-eyebrow">{ts.eyebrow ?? "Our team"}</span>
-              <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
-                {ts.title ?? "The People Who"} <em>{ts.titleEm ?? "Walk Beside You."}</em>
-              </h2>
-              <p className={s.twoColBody} style={{ marginTop: "1.5rem", marginInline: "auto" }}>
-                {ts.sub ??
-                  "ClearPath is more than a service, each member of our team is here to listen, guide, and support you at your own pace."}
-              </p>
+        {!FLAGS.OMIT_ABOUT_SECTIONS.team && (
+          <section className={`${s.section} ${s.sectionOffWhite}`}>
+            <div className={s.sectionInner}>
+              <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
+                <LeafMark />
+                <span className="t-label t-label-eyebrow">{ts.eyebrow ?? "Our team"}</span>
+                <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
+                  {ts.title ?? "The People Who"} <em>{ts.titleEm ?? "Walk Beside You."}</em>
+                </h2>
+                <p className={s.twoColBody} style={{ marginTop: "1.5rem", marginInline: "auto" }}>
+                  {ts.sub ??
+                    "ClearPath is more than a service, each member of our team is here to listen, guide, and support you at your own pace."}
+                </p>
+              </div>
+              <div className={`${s.articleGrid} ${s.articleGrid3}`}>
+                {teamList.map(
+                  (
+                    member: { name: string; role: string; bio: string; image: string },
+                    idx: number,
+                  ) => (
+                    <article key={member.name} className={s.articleItem}>
+                      <BlobImage src={member.image} alt={`${member.name} portrait`} index={idx} />
+                      <span className="t-label" style={{ marginTop: "var(--s-3)" }}>
+                        {member.role}
+                      </span>
+                      <h3 className={s.articleTitle}>{member.name}</h3>
+                      <p className={s.articleExcerpt}>{member.bio}</p>
+                    </article>
+                  ),
+                )}
+              </div>
+              <div className={s.waveDivider} aria-hidden="true">
+                <LeafMark size={20} />
+                <LeafMark size={20} />
+                <LeafMark size={20} />
+              </div>
             </div>
-            <div className={`${s.articleGrid} ${s.articleGrid3}`}>
-              {teamList.map(
-                (
-                  member: { name: string; role: string; bio: string; image: string },
-                  idx: number,
-                ) => (
-                  <article key={member.name} className={s.articleItem}>
-                    <BlobImage src={member.image} alt={`${member.name} portrait`} index={idx} />
-                    <span className="t-label" style={{ marginTop: "var(--s-3)" }}>
-                      {member.role}
-                    </span>
-                    <h3 className={s.articleTitle}>{member.name}</h3>
-                    <p className={s.articleExcerpt}>{member.bio}</p>
-                  </article>
-                ),
-              )}
-            </div>
-            <div className={s.waveDivider} aria-hidden="true">
-              <LeafMark size={20} />
-              <LeafMark size={20} />
-              <LeafMark size={20} />
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Approach summary */}
         <section className={s.section}>
@@ -268,30 +271,32 @@ export default async function AboutPage() {
         </section>
 
         {/* Pebbles photo overlay */}
-        <section
-          className={s.photoOverlay}
-          style={{ "--photo-overlay-bg": `url(${pebblesImg})` } as React.CSSProperties}
-        >
-          <div className={s.photoOverlayContent}>
-            <span className="t-label t-label-eyebrow">
-              {p.eyebrow ?? "Real people. Real change."}
-            </span>
-            <blockquote>
-              {p.quote ??
-                "Every path is unique, the important thing is taking the next step, no matter how small."}
-            </blockquote>
-            <p className="t-label" style={{ marginTop: "var(--s-4)" }}>
-              {p.attribution ?? "Anna Keller · Therapist and Founder of ClearPath"}
-            </p>
-            <Link
-              href="/#contact"
-              className="btn btn-ghost-light"
-              style={{ marginTop: "var(--s-6)" }}
-            >
-              <span className="btn-dot" /> {p.ctaLabel ?? "Start your journey"}
-            </Link>
-          </div>
-        </section>
+        {!FLAGS.OMIT_ABOUT_SECTIONS.pebbles && (
+          <section
+            className={s.photoOverlay}
+            style={{ "--photo-overlay-bg": `url(${pebblesImg})` } as React.CSSProperties}
+          >
+            <div className={s.photoOverlayContent}>
+              <span className="t-label t-label-eyebrow">
+                {p.eyebrow ?? "Real people. Real change."}
+              </span>
+              <blockquote>
+                {p.quote ??
+                  "Every path is unique, the important thing is taking the next step, no matter how small."}
+              </blockquote>
+              <p className="t-label" style={{ marginTop: "var(--s-4)" }}>
+                {p.attribution ?? "Anna Keller · Therapist and Founder of ClearPath"}
+              </p>
+              <Link
+                href="/#contact"
+                className="btn btn-ghost-light"
+                style={{ marginTop: "var(--s-6)" }}
+              >
+                <span className="btn-dot" /> {p.ctaLabel ?? "Start your journey"}
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Featured story */}
         <section className={s.section}>
@@ -338,50 +343,54 @@ export default async function AboutPage() {
         </section>
 
         {/* FAQ */}
-        <section className={`${s.section} ${s.sectionPaper}`}>
-          <div className={s.sectionInner}>
-            <div className={s.twoCol}>
-              <div>
-                <LeafMark />
-                <span className="t-label t-label-eyebrow">{q.eyebrow ?? "FAQ"}</span>
-                <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                  {q.title ?? "Your questions."} <em>{q.titleEm ?? "Answered."}</em>
-                </h2>
-                <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
-                  {q.sub ?? "Not sure what to expect? These answers might help."}
-                </p>
-                {q.footnote && (
-                  <p className="t-body-sm" style={{ marginTop: "var(--s-4)", maxWidth: "40ch" }}>
-                    {q.footnote}
+        {!FLAGS.OMIT_ABOUT_SECTIONS.faq && (
+          <section className={`${s.section} ${s.sectionPaper}`}>
+            <div className={s.sectionInner}>
+              <div className={s.twoCol}>
+                <div>
+                  <LeafMark />
+                  <span className="t-label t-label-eyebrow">{q.eyebrow ?? "FAQ"}</span>
+                  <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+                    {q.title ?? "Your questions."} <em>{q.titleEm ?? "Answered."}</em>
+                  </h2>
+                  <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
+                    {q.sub ?? "Not sure what to expect? These answers might help."}
                   </p>
-                )}
-              </div>
-              <div className={s.faqList}>
-                {faqs.map((item) => (
-                  <div key={item.q} className={s.faqItem}>
-                    <h3 className={s.faqQ}>{item.q}</h3>
-                    <p className={s.faqA}>{item.a}</p>
-                  </div>
-                ))}
+                  {q.footnote && (
+                    <p className="t-body-sm" style={{ marginTop: "var(--s-4)", maxWidth: "40ch" }}>
+                      {q.footnote}
+                    </p>
+                  )}
+                </div>
+                <div className={s.faqList}>
+                  {faqs.map((item) => (
+                    <div key={item.q} className={s.faqItem}>
+                      <h3 className={s.faqQ}>{item.q}</h3>
+                      <p className={s.faqA}>{item.a}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Closing CTA */}
-        <section className={s.closingCta}>
-          <span className="t-label t-label-eyebrow">{c.eyebrow ?? "Begin Your Journey"}</span>
-          <h2 className={s.closingTitle}>
-            {c.title ?? "Ready to find"} <em>{c.titleEm ?? "your path?"}</em>
-          </h2>
-          <p className={s.closingBody}>
-            {c.body ??
-              "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes, it's about meaningful change, one clear step at a time."}
-          </p>
-          <Link href="/#contact" className="btn btn-primary">
-            <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
-          </Link>
-        </section>
+        {!FLAGS.OMIT_ABOUT_SECTIONS.closingCta && (
+          <section className={s.closingCta}>
+            <span className="t-label t-label-eyebrow">{c.eyebrow ?? "Begin Your Journey"}</span>
+            <h2 className={s.closingTitle}>
+              {c.title ?? "Ready to find"} <em>{c.titleEm ?? "your path?"}</em>
+            </h2>
+            <p className={s.closingBody}>
+              {c.body ??
+                "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes, it's about meaningful change, one clear step at a time."}
+            </p>
+            <Link href="/#contact" className="btn btn-primary">
+              <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
+            </Link>
+          </section>
+        )}
       </main>
       <Footer />
     </>

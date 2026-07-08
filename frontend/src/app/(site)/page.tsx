@@ -140,7 +140,9 @@ export default async function Home() {
         {!FLAGS.OMIT_SECTIONS.approach && <Approach content={approachContent} />}
         <Listen content={listenContent} />
         {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
-        <Journal articles={homeArticles} sectionContent={journalSectionContent} />
+        {!FLAGS.OMIT_SECTIONS.journal && (
+          <Journal articles={homeArticles} sectionContent={journalSectionContent} />
+        )}
         {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
         <FAQ items={faqs} sectionContent={faqSectionContent} />
         <Contact content={contactContent} />
