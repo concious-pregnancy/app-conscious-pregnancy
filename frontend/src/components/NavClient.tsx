@@ -121,6 +121,13 @@ export default function NavClient({
             </li>
           );
         })}
+        {/* Mode toggle lives in the menu on phones, where the top-bar toggle
+            is hidden. Gives the short menu a second row and keeps yin/yang
+            reachable on mobile. Hidden above the phone breakpoint (the
+            top-bar toggle covers those widths). */}
+        <li className={styles.menuToggleItem}>
+          <ModeToggle />
+        </li>
       </ul>
 
       <div className={styles.modeToggleSlot}>

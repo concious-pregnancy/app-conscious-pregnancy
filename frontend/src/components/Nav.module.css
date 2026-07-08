@@ -80,11 +80,23 @@
   align-items: center;
 }
 
+/* Mode toggle as a menu row. Hidden by default (the top-bar .modeToggleSlot
+   covers desktop + tablet); only shown inside the open mobile menu at the
+   phone breakpoint where the top-bar toggle is hidden. */
+.menuToggleItem {
+  display: none;
+}
+
 @media (max-width: 700px) {
-  /* Hide toggle on phone so the nav doesn't get crowded. Users can
-     still flip mode from the mobile menu in a later iteration. */
+  /* Hide the top-bar toggle on phone so the nav doesn't get crowded. It
+     moves into the open mobile menu instead (see .menuToggleItem). */
   .modeToggleSlot {
     display: none;
+  }
+  .menuToggleItem {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 0.25rem;
   }
 }
 
