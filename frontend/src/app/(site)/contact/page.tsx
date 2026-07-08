@@ -30,7 +30,7 @@ export default async function ContactPage() {
       <Nav />
       <main>
         <Contact content={contactContent} />
-        <Locations />
+        <Locations content={contactContent} />
       </main>
       <Footer />
     </>

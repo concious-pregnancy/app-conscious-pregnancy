@@ -6,6 +6,7 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { journalIndexPageQuery, journalArticlesFullQuery } from "@/lib/sanity/queries";
+import { normalizeHref } from "@/lib/href";
 import s from "@/components/PageScaffold.module.css";
 
 export const revalidate = 300;
@@ -140,7 +141,7 @@ export default async function JournalPage() {
   const ctaTitleEm = d.ctaTitleEm?.trim() || DEFAULTS.ctaTitleEm;
   const ctaBody = d.ctaBody?.trim() || DEFAULTS.ctaBody;
   const ctaLabel = d.ctaLabel?.trim() || DEFAULTS.ctaLabel;
-  const ctaHref = d.ctaHref?.trim() || DEFAULTS.ctaHref;
+  const ctaHref = normalizeHref(d.ctaHref?.trim() || DEFAULTS.ctaHref);
 
   const articles: Article[] = sanityArticles
     .map((a, i): Article | null => {

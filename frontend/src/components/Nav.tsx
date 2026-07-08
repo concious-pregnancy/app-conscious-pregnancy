@@ -1,5 +1,6 @@
 import { client } from "@/lib/sanity/client";
 import { navSectionQuery } from "@/lib/sanity/queries";
+import { normalizeHref } from "@/lib/href";
 import { FLAGS } from "@/flags";
 import NavClient, { type NavLink } from "./NavClient";
 
@@ -44,8 +45,7 @@ export default async function Nav() {
   // /contact route. Older Sanity content still carries the legacy hash anchor
   // (#contact / /#contact), which now points at nothing. Normalize it so both
   // the desktop CTA and the mobile Contact menu item land on the live route.
-  const rawCtaHref = data?.ctaHref?.trim() || DEFAULTS.ctaHref;
-  const ctaHref = /^\/?#contact$/.test(rawCtaHref) ? "/contact" : rawCtaHref;
+  const ctaHref = normalizeHref(data?.ctaHref?.trim() || DEFAULTS.ctaHref);
 
   return (
     <NavClient

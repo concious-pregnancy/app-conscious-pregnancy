@@ -1,5 +1,6 @@
 import { client } from "@/lib/sanity/client";
 import { footerSectionQuery } from "@/lib/sanity/queries";
+import { normalizeHref } from "@/lib/href";
 import FooterClient, { type FooterLink } from "./FooterClient";
 
 type FooterData = {
@@ -65,18 +66,8 @@ export default async function Footer() {
   // Repair legacy hrefs stored in Sanity from before Contact/About became their
   // own routes. The existing footer document still carries "#contact" and
   // "#credentials" (both now dead) plus bare "#about"/"#services" anchors that
-  // only resolve on "/". Normalizing here means the fix holds without editing
-  // the client's dataset. Kept in sync with the DEFAULTS above.
-  const normalizeHref = (href: string): string => {
-    const h = href.trim();
-    if (/^\/?#contact$/.test(h)) return "/contact";
-    if (/^\/?#credentials$/.test(h)) return "/about";
-    // Bare home-section anchors need a leading "/" so they work from any page
-    // (e.g. "#about" from /contact would target the nonexistent /contact#about).
-    if (h.startsWith("#")) return `/${h}`;
-    return h;
-  };
-
+  // only resolve on "/". Normalizing via the shared helper keeps the fix in
+  // code, so it holds without editing the client's dataset.
   const prepare = (links: FooterLink[]) =>
     links.filter((l) => isLiveHref(l.href)).map((l) => ({ ...l, href: normalizeHref(l.href) }));
 
