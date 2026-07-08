@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function MotionProvider() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useGSAP(
     () => {
@@ -277,7 +279,17 @@ export default function MotionProvider() {
         matchMedia.revert();
       };
     },
-    { scope: containerRef },
+    // Re-run on every route change. MotionProvider lives in the (site) layout,
+    // which persists across /, /about, /services, /journal, so without a
+    // pathname dependency this setup ran once against the FIRST page's DOM and
+    // held stale (or absent) refs after client navigation, leaving reveals and
+    // scrubbed sections (Listen, Real Stories, Philosophy) stuck in their
+    // initial hidden state. revertOnUpdate tears down the previous page's
+    // ScrollTriggers plus Lenis (via the cleanup above and useGSAP's context)
+    // and rebuilds everything against the newly-mounted DOM. Section logic that
+    // has been extracted into its own component (Process, Balance) is not
+    // affected here since those live in their own scoped contexts.
+    { scope: containerRef, dependencies: [pathname], revertOnUpdate: true },
   );
 
   return <div ref={containerRef} aria-hidden="true" style={{ display: "contents" }} />;

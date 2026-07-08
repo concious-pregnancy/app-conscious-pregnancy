@@ -20,20 +20,14 @@
   background-size: cover;
   background-position: center 55%;
   background-repeat: no-repeat;
+  /* Static framing scale. The continuous footerBreathe scale animation
+     was compositing a full-viewport image the whole time the footer was
+     on screen, which stuttered the scroll on entry (read as a freeze).
+     Removed per request; the fixed scale keeps the same framing. */
   transform: scale(1.03);
   transform-origin: center 55%;
-  animation: footerBreathe 30s ease-in-out infinite alternate;
   z-index: 0;
   pointer-events: none;
-}
-
-@keyframes footerBreathe {
-  0% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1.06);
-  }
 }
 
 .veil {
@@ -313,11 +307,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bg {
-    animation: none;
   }
 }
