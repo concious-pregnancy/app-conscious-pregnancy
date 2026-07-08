@@ -220,9 +220,15 @@
 }
 
 .ctaRow {
+  /* Stack in a column that shrinks to the wider button (fit-content) and
+     stretches both to match. Side by side the two labels don't fit the
+     aside column, so they used to wrap to separate lines at their own
+     content widths, which read as mismatched button sizes. */
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: fit-content;
   gap: 0.7rem;
-  flex-wrap: wrap;
 }
 
 .ctaBtn {
@@ -392,6 +398,7 @@
   .ctaRow {
     flex-direction: column;
     align-items: stretch;
+    width: auto;
   }
   .ctaBtn {
     justify-content: center;
