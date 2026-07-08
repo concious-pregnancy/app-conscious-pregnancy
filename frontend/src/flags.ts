@@ -7,6 +7,8 @@ export const FLAGS = {
     stats: true,
     // "Evidence, not opinion." journal/insights preview on the home page.
     journal: true,
+    // "Ready to find your path?" closing CTA on the home page.
+    ready: true,
   },
   // About page sections hidden for now. Flip to false to bring one back.
   OMIT_ABOUT_SECTIONS: {

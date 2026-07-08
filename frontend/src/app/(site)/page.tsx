@@ -135,7 +135,7 @@ export default async function Home() {
               : "/hero/hero-kimono.jpeg"
           }
         />
-        <Ready content={readyContent} />
+        {!FLAGS.OMIT_SECTIONS.ready && <Ready content={readyContent} />}
         <Pricing tiers={pricingTiers} sectionContent={pricingSectionContent} />
         {!FLAGS.OMIT_SECTIONS.approach && <Approach content={approachContent} />}
         <Listen content={listenContent} />
