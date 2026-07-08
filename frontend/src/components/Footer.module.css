@@ -86,7 +86,11 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--off-white);
+  /* Footer is a permanently-dark surface (navy image + veil) in both
+     modes. Pin to the fixed light ink token so these links stay legible
+     in yin. var(--off-white) flipped to navy in dark mode, which is why
+     they vanished. */
+  color: var(--ink-on-dark);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -160,11 +164,14 @@
 }
 
 .form button {
-  background: var(--surface-raised);
+  /* Fixed light pill on the always-dark footer. Raw tokens so it stays
+     the same cream pill in both modes (var(--surface-raised)/var(--dark)
+     flipped it to a low-contrast dark pill in yin). */
+  background: var(--c-cream-raised);
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  color: var(--dark);
+  color: var(--c-warm-black);
   font-family: var(--font-mono);
   font-weight: 600;
   font-size: 0.65rem;
@@ -183,7 +190,7 @@
 
 .form button:hover {
   background: var(--sage-light);
-  color: var(--dark);
+  color: var(--c-warm-black);
 }
 
 .arrow {

@@ -88,6 +88,14 @@
   --surface-dark: var(--c-navy);
   --surface-slate: var(--c-slate);
 
+  /* Nav backgrounds. The nav goes opaque once scrolled past the hero
+     (.lightBg) and the mobile menu drops a solid sheet. Both were
+     hardcoded white, so they never flipped in yin, leaving the active
+     link (cream) invisible on a white bar. Tokenized so yin remaps them
+     to translucent navy below. */
+  --nav-scrolled-bg: rgba(255, 255, 255, 0.96);
+  --nav-menu-bg: rgba(255, 255, 255, 0.97);
+
   --ink: var(--c-warm-black);
   --ink-muted: var(--c-ink-500);
   --ink-on-dark: #f4ecd8;
@@ -186,6 +194,9 @@ html[data-mode="yin"] {
   --surface: var(--c-navy);
   --surface-raised: var(--c-slate);
   --surface-slate: var(--c-slate-mid);
+
+  --nav-scrolled-bg: rgba(23, 31, 43, 0.96);
+  --nav-menu-bg: rgba(23, 31, 43, 0.97);
 
   --ink: var(--c-cream);
   --ink-muted: var(--c-mist);

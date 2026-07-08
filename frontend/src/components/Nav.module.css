@@ -118,7 +118,7 @@
 }
 
 .lightBg {
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--nav-scrolled-bg);
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--border);
 }
@@ -190,7 +190,7 @@
     right: 0;
     flex-direction: column;
     gap: 0;
-    background: rgba(255, 255, 255, 0.97);
+    background: var(--nav-menu-bg);
     backdrop-filter: blur(12px);
     padding: 1rem var(--pad-x);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);

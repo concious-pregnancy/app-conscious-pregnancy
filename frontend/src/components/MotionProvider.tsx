@@ -231,51 +231,12 @@ export default function MotionProvider() {
         });
       });
 
-      // ── Balance: scroll-driven light/dark swap (mobile + desktop) ──────
-      const balanceSection = document.querySelector<HTMLElement>('[data-section="balance"]');
-      const balanceStage = balanceSection?.querySelector<HTMLElement>("[data-balance-stage]");
-      const balancePanels = balanceSection
-        ? Array.from(balanceSection.querySelectorAll<HTMLElement>("[data-balance-panel]"))
-        : [];
-      const balanceToggle = balanceSection?.querySelector<HTMLElement>("[data-balance-toggle]");
-
-      if (balanceSection && balanceStage && balancePanels.length > 0) {
-        let userLocked: "light" | "dark" | null = null;
-        let lockTimer: number | null = null;
-
-        const setState = (state: "light" | "dark") => {
-          balanceStage.setAttribute("data-is-dark", state === "dark" ? "true" : "false");
-          balancePanels.forEach((p) => {
-            const active = p.getAttribute("data-balance-panel") === state;
-            p.setAttribute("data-is-active", active ? "true" : "false");
-          });
-        };
-
-        setState("light");
-
-        ScrollTrigger.create({
-          trigger: balanceSection,
-          start: "top top",
-          end: "bottom bottom",
-          onUpdate: (self) => {
-            if (userLocked) return;
-            setState(self.progress > 0.5 ? "dark" : "light");
-          },
-        });
-
-        if (balanceToggle) {
-          balanceToggle.addEventListener("click", () => {
-            const nextDark = balanceStage.getAttribute("data-is-dark") !== "true";
-            setState(nextDark ? "dark" : "light");
-            userLocked = nextDark ? "dark" : "light";
-            if (lockTimer) window.clearTimeout(lockTimer);
-            lockTimer = window.setTimeout(() => {
-              userLocked = null;
-              ScrollTrigger.refresh();
-            }, 2500);
-          });
-        }
-      }
+      // ── Balance: scroll-driven light/dark swap ────────────────────────
+      // Moved into the Balance component itself (src/components/Balance.tsx)
+      // so its ScrollTrigger + toggle listener lifecycle matches the Balance
+      // mount lifecycle. Previously this held stale panel DOM refs after a
+      // cross-route navigation (/about → /), leaving the remounted panels
+      // at opacity:0 with their reveal never firing. Same fix as Process.
 
       // ── Process: digit-only viewport-height slide ─────────────────────
       // Moved into the Process component itself (src/components/Process.tsx)
