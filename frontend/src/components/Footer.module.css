@@ -20,20 +20,14 @@
   background-size: cover;
   background-position: center 55%;
   background-repeat: no-repeat;
+  /* Static framing scale. The continuous footerBreathe scale animation
+     was compositing a full-viewport image the whole time the footer was
+     on screen, which stuttered the scroll on entry (read as a freeze).
+     Removed per request; the fixed scale keeps the same framing. */
   transform: scale(1.03);
   transform-origin: center 55%;
-  animation: footerBreathe 30s ease-in-out infinite alternate;
   z-index: 0;
   pointer-events: none;
-}
-
-@keyframes footerBreathe {
-  0% {
-    transform: scale(1.03);
-  }
-  100% {
-    transform: scale(1.06);
-  }
 }
 
 .veil {
@@ -86,7 +80,11 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--off-white);
+  /* Footer is a permanently-dark surface (navy image + veil) in both
+     modes. Pin to the fixed light ink token so these links stay legible
+     in yin. var(--off-white) flipped to navy in dark mode, which is why
+     they vanished. */
+  color: var(--ink-on-dark);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -160,11 +158,14 @@
 }
 
 .form button {
-  background: var(--white);
+  /* Fixed light pill on the always-dark footer. Raw tokens so it stays
+     the same cream pill in both modes (var(--surface-raised)/var(--dark)
+     flipped it to a low-contrast dark pill in yin). */
+  background: var(--c-cream-raised);
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  color: var(--dark);
+  color: var(--c-warm-black);
   font-family: var(--font-mono);
   font-weight: 600;
   font-size: 0.65rem;
@@ -183,7 +184,7 @@
 
 .form button:hover {
   background: var(--sage-light);
-  color: var(--dark);
+  color: var(--c-warm-black);
 }
 
 .arrow {
@@ -306,11 +307,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bg {
-    animation: none;
   }
 }

@@ -177,7 +177,15 @@ export const contactSectionQuery = groq`*[_type == "contactSection"][0] {
   sub,
   formHeading,
   trustLine,
-  submitLabel
+  submitLabel,
+  locationsLabel,
+  locationsHeading,
+  locationsSub,
+  locations[]{
+    city,
+    addressLine1,
+    addressLine2
+  }
 }`;
 
 export const philosophySectionQuery = groq`*[_type == "philosophySection"][0] {

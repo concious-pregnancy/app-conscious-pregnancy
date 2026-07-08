@@ -94,7 +94,7 @@ export const servicePageType = defineType({
       title: "CTA Button Link",
       type: "string",
       group: "cta",
-      initialValue: "/#contact",
+      initialValue: "/contact",
     }),
     defineField({
       name: "metaTitleSuffix",

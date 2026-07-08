@@ -50,7 +50,7 @@ export const navSectionType = defineType({
               name: "href",
               title: "Link",
               type: "string",
-              description: 'e.g. "/about", "/services", "/journal", "/#contact"',
+              description: 'e.g. "/about", "/services", "/journal", "/contact"',
             }),
           ],
           preview: { select: { title: "label", subtitle: "href" } },
@@ -69,7 +69,7 @@ export const navSectionType = defineType({
       title: "CTA Button Link",
       type: "string",
       group: "cta",
-      initialValue: "/#contact",
+      initialValue: "/contact",
     }),
     defineField({
       name: "mobileMenuLabel",

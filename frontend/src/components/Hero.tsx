@@ -131,11 +131,11 @@ export default function Hero({ content }: { content?: HeroContent }) {
             <p className={styles.sub}>{subheading}</p>
 
             <div className={styles.ctaRow}>
-              <a href="#contact" className={`btn btn-primary ${styles.ctaBtn}`}>
+              <a href="/contact" className={`btn btn-primary ${styles.ctaBtn}`}>
                 {primaryCta}
                 <span className="btn-dot" />
               </a>
-              <a href="#about" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
+              <a href="#pricing" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
                 {secondaryCta}
                 <span className="btn-dot" />
               </a>

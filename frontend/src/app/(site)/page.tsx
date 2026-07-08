@@ -14,7 +14,6 @@ import RealStories from "@/components/RealStories";
 import Journal from "@/components/Journal";
 import Stats from "@/components/Stats";
 import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
@@ -36,7 +35,6 @@ import {
   processSectionQuery,
   credentialsSectionQuery,
   readySectionQuery,
-  contactSectionQuery,
   philosophySectionQuery,
   approachSectionQuery,
 } from "@/lib/sanity/queries";
@@ -61,7 +59,6 @@ export default async function Home() {
     processContent,
     credentialsContent,
     readyContent,
-    contactContent,
     philosophyContent,
     approachContent,
   ] = await Promise.all([
@@ -82,7 +79,6 @@ export default async function Home() {
     client.fetch(processSectionQuery, {}, fetchOpts),
     client.fetch(credentialsSectionQuery, {}, fetchOpts),
     client.fetch(readySectionQuery, {}, fetchOpts),
-    client.fetch(contactSectionQuery, {}, fetchOpts),
     client.fetch(philosophySectionQuery, {}, fetchOpts),
     client.fetch(approachSectionQuery, {}, fetchOpts),
   ]);
@@ -135,15 +131,16 @@ export default async function Home() {
               : "/hero/hero-kimono.jpeg"
           }
         />
-        <Ready content={readyContent} />
+        {!FLAGS.OMIT_SECTIONS.ready && <Ready content={readyContent} />}
         <Pricing tiers={pricingTiers} sectionContent={pricingSectionContent} />
         {!FLAGS.OMIT_SECTIONS.approach && <Approach content={approachContent} />}
         <Listen content={listenContent} />
         {!FLAGS.OMIT_SECTIONS.realStories && <RealStories testimonial={testimonial} />}
-        <Journal articles={homeArticles} sectionContent={journalSectionContent} />
+        {!FLAGS.OMIT_SECTIONS.journal && (
+          <Journal articles={homeArticles} sectionContent={journalSectionContent} />
+        )}
         {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
         <FAQ items={faqs} sectionContent={faqSectionContent} />
-        <Contact content={contactContent} />
       </main>
       <Footer />
     </>

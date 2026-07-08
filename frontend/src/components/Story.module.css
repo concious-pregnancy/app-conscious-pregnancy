@@ -1,5 +1,5 @@
 .story {
-  background: var(--white);
+  background: var(--surface-raised);
   color: var(--dark);
   padding: 8rem var(--pad-x) 9rem;
 }

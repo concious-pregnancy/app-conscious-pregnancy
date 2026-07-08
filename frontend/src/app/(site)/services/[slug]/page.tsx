@@ -9,6 +9,7 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { serviceBySlugQuery, servicePageQuery, serviceSlugsQuery } from "@/lib/sanity/queries";
+import { normalizeHref } from "@/lib/href";
 import s from "@/components/PageScaffold.module.css";
 
 export const revalidate = 300;
@@ -74,7 +75,7 @@ const DEFAULTS = {
   ctaBody:
     "Discovery calls are free, hour-long, and unhurried. We talk about where you are, what you've tried, and whether this is the right fit before anything is booked.",
   ctaLabel: "Book a discovery call",
-  ctaHref: "/#contact",
+  ctaHref: "/contact",
   metaTitleSuffix: " | Services | Conscious Pregnancy",
 };
 
@@ -170,7 +171,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const ctaTitleEm = c.ctaTitleEm?.trim() || DEFAULTS.ctaTitleEm;
   const ctaBody = c.ctaBody?.trim() || DEFAULTS.ctaBody;
   const ctaLabel = c.ctaLabel?.trim() || DEFAULTS.ctaLabel;
-  const ctaHref = c.ctaHref?.trim() || DEFAULTS.ctaHref;
+  const ctaHref = normalizeHref(c.ctaHref?.trim() || DEFAULTS.ctaHref);
 
   const heroImage = imgUrl(service.image, 1800);
   const lead = service.lead?.trim() || service.body?.trim() || "";

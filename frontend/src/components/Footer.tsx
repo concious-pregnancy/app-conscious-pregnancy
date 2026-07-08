@@ -1,5 +1,6 @@
 import { client } from "@/lib/sanity/client";
 import { footerSectionQuery } from "@/lib/sanity/queries";
+import { normalizeHref } from "@/lib/href";
 import FooterClient, { type FooterLink } from "./FooterClient";
 
 type FooterData = {
@@ -28,23 +29,21 @@ const DEFAULTS = {
   signupButtonLabel: "Subscribe",
   signupSubmittingLabel: "Subscribing...",
   signupSuccessMessage: "You're on the list. Thank you.",
-  signupFineprint: "By signing up you agree to our {{privacy}}.",
+  signupFineprint: "A monthly note, nothing more. Unsubscribe anytime.",
   privacyHref: "#",
+  // Only links to real, rendered destinations. Contact is its own route now
+  // (/contact). The remaining entries are home-page section anchors, "/"-prefixed
+  // so they resolve from any page (a bare "#about" did nothing from /about).
+  // Placeholder and held-back links (Programs, Process, Discovery Call, Patient
+  // Portal, Instagram, Golden Life Wellness, Press, Privacy) were removed since
+  // those pages/features don't exist yet.
   sitemapColumn1: [
-    { label: "Approach", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Programs", href: "#pricing" },
-    { label: "Process", href: "#process" },
-    { label: "Discovery Call", href: "#contact" },
-    { label: "Patient Portal", href: "#" },
+    { label: "Approach", href: "/#about" },
+    { label: "Services", href: "/#services" },
   ] satisfies FooterLink[],
   sitemapColumn2: [
-    { label: "Contact", href: "#contact" },
-    { label: "Instagram", href: "#" },
-    { label: "Dr. Ashley Alden", href: "#credentials" },
-    { label: "Golden Life Wellness", href: "#" },
-    { label: "Press", href: "#" },
-    { label: "Privacy Policy", href: "#" },
+    { label: "Contact", href: "/contact" },
+    { label: "Dr. Ashley Alden", href: "/about" },
   ] satisfies FooterLink[],
   brandWordPrimary: "conscious",
   brandWordItalic: "pregnancy",
@@ -57,6 +56,28 @@ export default async function Footer() {
   const template = data?.copyrightTemplate?.trim() || DEFAULTS.copyrightTemplate;
   const copyrightLine = template.replace("{{year}}", String(new Date().getFullYear()));
 
+  // Drop links whose destination is a bare "#" or empty, regardless of whether
+  // they come from Sanity or the defaults, so no dead placeholder link ships.
+  const isLiveHref = (href: string) => {
+    const h = href?.trim() ?? "";
+    return h !== "" && h !== "#";
+  };
+
+  // Repair legacy hrefs stored in Sanity from before Contact/About became their
+  // own routes. The existing footer document still carries "#contact" and
+  // "#credentials" (both now dead) plus bare "#about"/"#services" anchors that
+  // only resolve on "/". Normalizing via the shared helper keeps the fix in
+  // code, so it holds without editing the client's dataset.
+  const prepare = (links: FooterLink[]) =>
+    links.filter((l) => isLiveHref(l.href)).map((l) => ({ ...l, href: normalizeHref(l.href) }));
+
+  const column1 = prepare(
+    data?.sitemapColumn1?.length ? data.sitemapColumn1 : DEFAULTS.sitemapColumn1,
+  );
+  const column2 = prepare(
+    data?.sitemapColumn2?.length ? data.sitemapColumn2 : DEFAULTS.sitemapColumn2,
+  );
+
   return (
     <FooterClient
       signupHeadline={data?.signupHeadline?.trim() || DEFAULTS.signupHeadline}
@@ -68,8 +89,8 @@ export default async function Footer() {
       signupSuccessMessage={data?.signupSuccessMessage?.trim() || DEFAULTS.signupSuccessMessage}
       signupFineprint={data?.signupFineprint?.trim() || DEFAULTS.signupFineprint}
       privacyHref={data?.privacyHref?.trim() || DEFAULTS.privacyHref}
-      sitemapColumn1={data?.sitemapColumn1?.length ? data.sitemapColumn1 : DEFAULTS.sitemapColumn1}
-      sitemapColumn2={data?.sitemapColumn2?.length ? data.sitemapColumn2 : DEFAULTS.sitemapColumn2}
+      sitemapColumn1={column1}
+      sitemapColumn2={column2}
       brandWordPrimary={data?.brandWordPrimary?.trim() || DEFAULTS.brandWordPrimary}
       brandWordItalic={data?.brandWordItalic?.trim() || DEFAULTS.brandWordItalic}
       copyrightLine={copyrightLine}

@@ -36,7 +36,7 @@ export default function Story({
           <h2 className={styles.h2}>{title}</h2>
           <p className={styles.body}>{body}</p>
           {body2 && <p className={styles.body}>{body2}</p>}
-          <a href="#contact" className={`btn ${styles.pill}`}>
+          <a href="/contact" className={`btn ${styles.pill}`}>
             {ctaLabel}
             <span className="btn-dot" />
           </a>

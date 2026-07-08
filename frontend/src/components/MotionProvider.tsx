@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function MotionProvider() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useGSAP(
     () => {
@@ -231,57 +233,18 @@ export default function MotionProvider() {
         });
       });
 
-      // ── Balance: scroll-driven light/dark swap (mobile + desktop) ──────
-      const balanceSection = document.querySelector<HTMLElement>('[data-section="balance"]');
-      const balanceStage = balanceSection?.querySelector<HTMLElement>("[data-balance-stage]");
-      const balancePanels = balanceSection
-        ? Array.from(balanceSection.querySelectorAll<HTMLElement>("[data-balance-panel]"))
-        : [];
-      const balanceToggle = balanceSection?.querySelector<HTMLElement>("[data-balance-toggle]");
-
-      if (balanceSection && balanceStage && balancePanels.length > 0) {
-        let userLocked: "light" | "dark" | null = null;
-        let lockTimer: number | null = null;
-
-        const setState = (state: "light" | "dark") => {
-          balanceStage.setAttribute("data-is-dark", state === "dark" ? "true" : "false");
-          balancePanels.forEach((p) => {
-            const active = p.getAttribute("data-balance-panel") === state;
-            p.setAttribute("data-is-active", active ? "true" : "false");
-          });
-        };
-
-        setState("light");
-
-        ScrollTrigger.create({
-          trigger: balanceSection,
-          start: "top top",
-          end: "bottom bottom",
-          onUpdate: (self) => {
-            if (userLocked) return;
-            setState(self.progress > 0.5 ? "dark" : "light");
-          },
-        });
-
-        if (balanceToggle) {
-          balanceToggle.addEventListener("click", () => {
-            const nextDark = balanceStage.getAttribute("data-is-dark") !== "true";
-            setState(nextDark ? "dark" : "light");
-            userLocked = nextDark ? "dark" : "light";
-            if (lockTimer) window.clearTimeout(lockTimer);
-            lockTimer = window.setTimeout(() => {
-              userLocked = null;
-              ScrollTrigger.refresh();
-            }, 2500);
-          });
-        }
-      }
+      // ── Balance: scroll-driven light/dark swap ────────────────────────
+      // Moved into the Balance component itself (src/components/Balance.tsx)
+      // so its ScrollTrigger + toggle listener lifecycle matches the Balance
+      // mount lifecycle. Previously this held stale panel DOM refs after a
+      // cross-route navigation (/about → /), leaving the remounted panels
+      // at opacity:0 with their reveal never firing. Same fix as Process.
 
       // ── Process: digit-only viewport-height slide ─────────────────────
       // Moved into the Process component itself (src/components/Process.tsx)
       // so its ScrollTrigger lifecycle matches the Process mount lifecycle.
       // Previous implementation here held stale digit DOM refs after a
-      // cross-route navigation (/journal → /#contact) since MotionProvider
+      // cross-route navigation (/journal → /contact) since MotionProvider
       // never unmounts on route change while Process does.
 
       // ── Philosophy: word-by-word reveal, driven by ScrollTrigger ───────
@@ -316,7 +279,17 @@ export default function MotionProvider() {
         matchMedia.revert();
       };
     },
-    { scope: containerRef },
+    // Re-run on every route change. MotionProvider lives in the (site) layout,
+    // which persists across /, /about, /services, /journal, so without a
+    // pathname dependency this setup ran once against the FIRST page's DOM and
+    // held stale (or absent) refs after client navigation, leaving reveals and
+    // scrubbed sections (Listen, Real Stories, Philosophy) stuck in their
+    // initial hidden state. revertOnUpdate tears down the previous page's
+    // ScrollTriggers plus Lenis (via the cleanup above and useGSAP's context)
+    // and rebuilds everything against the newly-mounted DOM. Section logic that
+    // has been extracted into its own component (Process, Balance) is not
+    // affected here since those live in their own scoped contexts.
+    { scope: containerRef, dependencies: [pathname], revertOnUpdate: true },
   );
 
   return <div ref={containerRef} aria-hidden="true" style={{ display: "contents" }} />;

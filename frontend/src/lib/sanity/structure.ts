@@ -151,14 +151,6 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title("14. FAQ (Items)")
                 .child(S.documentTypeList("faq").title("FAQ Items")),
-              S.listItem()
-                .title("15. Contact")
-                .child(
-                  S.document()
-                    .title("Contact")
-                    .schemaType("contactSection")
-                    .documentId("contactSection-singleton"),
-                ),
             ]),
         ),
       S.divider(),
@@ -344,5 +336,14 @@ export const structure: StructureResolver = (S) =>
                 .title("All Articles")
                 .child(S.documentTypeList("journalArticle").title("Journal Articles")),
             ]),
+        ),
+      S.divider(),
+      S.listItem()
+        .title("Contact Page")
+        .child(
+          S.document()
+            .title("Contact Page")
+            .schemaType("contactSection")
+            .documentId("contactSection-singleton"),
         ),
     ]);

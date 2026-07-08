@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ModeToggle from "./ModeToggle";
 import styles from "./Nav.module.css";
 
 export type NavLink = { label: string; href: string };
@@ -33,19 +34,43 @@ export default function NavClient({
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    // Nav-over-footer color flip. Driven by IntersectionObserver so nothing
+    // runs on each scroll frame as the tall footer enters. The old code read
+    // footer.offsetTop on every scroll tick, which forces a synchronous layout
+    // every frame and stutters the scroll right where the 100svh footer (with
+    // its scaled background + veil) comes in. The flip still happens, and the
+    // natural pause as you settle into the footer is untouched.
+    const footer = document.getElementById("footer");
+    const NAV_H = 64;
+    let footerObserver: IntersectionObserver | null = null;
+    const makeFooterObserver = () => {
+      footerObserver?.disconnect();
+      if (!footer) return;
+      // Shrink the observer root to a 1px line at y=NAV_H. The footer only
+      // intersects that line once its top edge scrolls above the nav, i.e.
+      // exactly when the nav is sitting over the footer.
+      const bottomInset = Math.max(0, window.innerHeight - (NAV_H + 1));
+      footerObserver = new IntersectionObserver(([entry]) => setOverFooter(entry.isIntersecting), {
+        rootMargin: `-${NAV_H}px 0px -${bottomInset}px 0px`,
+        threshold: 0,
+      });
+      footerObserver.observe(footer);
+    };
+    makeFooterObserver();
+    const onResize = () => makeFooterObserver();
+    window.addEventListener("resize", onResize);
+
+    // Off the home page the nav always sits on a light background.
     if (!isHome) {
       setLightBg(true);
-      const onScroll = () => {
-        const footer = document.getElementById("footer");
-        if (footer) {
-          setOverFooter(window.scrollY + 64 >= footer.offsetTop);
-        }
+      return () => {
+        footerObserver?.disconnect();
+        window.removeEventListener("resize", onResize);
       };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-      return () => window.removeEventListener("scroll", onScroll);
     }
 
+    // Home: flip to the light-background treatment once the hero photo has
+    // scrolled past / the Balance section has gone dark.
     const stage = document.querySelector<HTMLElement>("[data-balance-stage]");
 
     const syncLightBg = () => {
@@ -59,15 +84,7 @@ export default function NavClient({
       setLightBg(balanceLight || pastBalance);
     };
 
-    const onScroll = () => {
-      syncLightBg();
-      const footer = document.getElementById("footer");
-      if (footer) {
-        setOverFooter(window.scrollY + 64 >= footer.offsetTop);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", syncLightBg, { passive: true });
     syncLightBg();
 
     let observer: MutationObserver | null = null;
@@ -77,7 +94,9 @@ export default function NavClient({
     }
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      footerObserver?.disconnect();
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", syncLightBg);
       observer?.disconnect();
     };
   }, [isHome, pathname]);
@@ -120,7 +139,25 @@ export default function NavClient({
             </li>
           );
         })}
+        {/* Contact lives in the menu on mobile, where the top-bar "Begin Your
+            Journey" CTA is hidden. Desktop keeps the CTA, so this row only
+            shows once the nav has collapsed to the mobile layout. */}
+        <li className={styles.menuCtaItem}>
+          <Link href={ctaHref} onClick={() => setMenuOpen(false)}>
+            Contact
+          </Link>
+        </li>
+        {/* Mode toggle lives in the menu on mobile, where the top-bar toggle
+            is hidden. Keeps yin/yang reachable once the nav collapses. Hidden
+            on desktop (the top-bar toggle covers those widths). */}
+        <li className={styles.menuToggleItem}>
+          <ModeToggle />
+        </li>
       </ul>
+
+      <div className={styles.modeToggleSlot}>
+        <ModeToggle />
+      </div>
 
       <Link href={ctaHref} className={`btn btn-primary ${styles.cta}`}>
         <span className="btn-dot" />

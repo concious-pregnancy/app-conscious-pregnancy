@@ -57,7 +57,7 @@ export default function Process({ content }: { content?: ProcessContent }) {
   // /journal → / navigation, leaving the new mount's digits with no
   // transforms applied — they all stacked at y:0. The user could reproduce
   // this by clicking "Begin your journey" from /journal (which jumps to
-  // /#contact) and scrolling back up to the Process section.
+  // /contact) and scrolling back up to the Process section.
   useGSAP(
     () => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -129,7 +129,7 @@ export default function Process({ content }: { content?: ProcessContent }) {
 
       // Compute the initial digit from current scroll position. Critical when
       // the page mounts mid-scroll (cross-route navigation that lands at an
-      // anchor like /#contact) — without this the initial state assumes
+      // anchor like /contact) — without this the initial state assumes
       // current=0, then ScrollTrigger fires its first update with progress~1
       // and the rapid 0→3 transition is what triggered the original race.
       const computeIdx = (): number => {

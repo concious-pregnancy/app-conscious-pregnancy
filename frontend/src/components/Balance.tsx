@@ -1,4 +1,14 @@
+"use client";
+
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import styles from "./Balance.module.css";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 type BalanceContent = {
   invitationEyebrow?: string;
@@ -27,8 +37,74 @@ export default function Balance({ content }: { content?: BalanceContent }) {
     "In TCM, the palace is prepared before the new life takes up residence. The 90-day preconception window is that preparation. What you bring into conception, physically, emotionally, energetically, becomes the very first environment your child knows.";
   const palaceCtaLabel = content?.palaceCtaLabel ?? "Start Your Journey Together";
 
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scoped to sectionRef so the ScrollTrigger + toggle listener created here
+  // are torn down when Balance unmounts (route change away from /) and rebuilt
+  // on remount. This logic used to live in MotionProvider, which never unmounts
+  // on route change, so after /about → / navigation it held stale references to
+  // the OLD panel nodes. The freshly-mounted panels never got data-is-active,
+  // so they stayed at opacity:0 (text never animated in). Same fix pattern as
+  // Process.
+  useGSAP(
+    () => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion) return;
+      const section = sectionRef.current;
+      if (!section) return;
+
+      const stage = section.querySelector<HTMLElement>("[data-balance-stage]");
+      const panels = Array.from(section.querySelectorAll<HTMLElement>("[data-balance-panel]"));
+      const toggle = section.querySelector<HTMLElement>("[data-balance-toggle]");
+      if (!stage || panels.length === 0) return;
+
+      let userLocked: "light" | "dark" | null = null;
+      let lockTimer: number | null = null;
+
+      const setState = (state: "light" | "dark") => {
+        stage.setAttribute("data-is-dark", state === "dark" ? "true" : "false");
+        panels.forEach((p) => {
+          const active = p.getAttribute("data-balance-panel") === state;
+          p.setAttribute("data-is-active", active ? "true" : "false");
+        });
+      };
+
+      setState("light");
+
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          if (userLocked) return;
+          setState(self.progress > 0.5 ? "dark" : "light");
+        },
+      });
+
+      const onToggleClick = () => {
+        const nextDark = stage.getAttribute("data-is-dark") !== "true";
+        setState(nextDark ? "dark" : "light");
+        userLocked = nextDark ? "dark" : "light";
+        if (lockTimer) window.clearTimeout(lockTimer);
+        lockTimer = window.setTimeout(() => {
+          userLocked = null;
+          ScrollTrigger.refresh();
+        }, 2500);
+      };
+
+      toggle?.addEventListener("click", onToggleClick);
+
+      return () => {
+        if (lockTimer) window.clearTimeout(lockTimer);
+        toggle?.removeEventListener("click", onToggleClick);
+        trigger.kill();
+      };
+    },
+    { scope: sectionRef },
+  );
+
   return (
-    <section id="about" data-section="balance" className={styles.balance}>
+    <section ref={sectionRef} id="about" data-section="balance" className={styles.balance}>
       <div className={styles.stage} data-balance-stage>
         <div className={styles.arcs} aria-hidden="true">
           <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
@@ -96,7 +172,7 @@ export default function Balance({ content }: { content?: BalanceContent }) {
             <h2 className={styles.h2}>{palaceHeading}</h2>
             <p className={styles.body}>{palaceBody}</p>
             <div className={styles.cta}>
-              <a href="#contact" className="btn btn-ghost-light">
+              <a href="/contact" className="btn btn-ghost">
                 {palaceCtaLabel}
                 <span className="btn-dot" />
               </a>

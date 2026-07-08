@@ -28,7 +28,7 @@ export default function RealStories({ testimonial }: { testimonial: Testimonial 
             <p className={styles.body} data-real-stories-body>
               {body}
             </p>
-            <a href="#contact" className={`btn ${styles.pill}`} data-real-stories-pill>
+            <a href="/contact" className={`btn ${styles.pill}`} data-real-stories-pill>
               {ctaLabel}
               <span className="btn-dot" />
             </a>
