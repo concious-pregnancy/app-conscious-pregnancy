@@ -169,7 +169,7 @@
   }
 
   .lightBg.overFooter .cta {
-    background: var(--white) !important;
+    background: var(--surface-raised) !important;
     color: var(--dark) !important;
   }
 

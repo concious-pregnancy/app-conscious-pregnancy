@@ -160,7 +160,7 @@
 }
 
 .form button {
-  background: var(--white);
+  background: var(--surface-raised);
   border: none;
   border-radius: 999px;
   cursor: pointer;

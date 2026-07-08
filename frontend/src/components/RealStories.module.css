@@ -1,5 +1,5 @@
 .story {
-  background: var(--white);
+  background: var(--surface-raised);
   color: var(--dark);
   position: relative;
   /* tall outer container drives the scroll-tied tweens */

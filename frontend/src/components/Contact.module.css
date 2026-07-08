@@ -1,5 +1,5 @@
 .contact {
-  background: var(--white);
+  background: var(--surface-raised);
   color: var(--dark);
   padding: var(--s16) var(--pad-x);
 }
