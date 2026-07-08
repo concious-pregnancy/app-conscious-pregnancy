@@ -153,7 +153,7 @@ export default async function ServicesPage() {
                   ))}
                 </div>
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className="btn btn-ghost-light"
                   style={{ alignSelf: "flex-start", marginTop: "var(--s-4)" }}
                 >
@@ -244,7 +244,7 @@ export default async function ServicesPage() {
                     ))}
                   </ul>
                   <Link
-                    href="/#contact"
+                    href="/contact"
                     className="btn btn-primary"
                     style={{ marginTop: "var(--s-6)", alignSelf: "flex-start" }}
                   >
@@ -330,7 +330,7 @@ export default async function ServicesPage() {
             {c.body ??
               "Whether you're starting fresh, returning, or exploring options, we're here."}
           </p>
-          <Link href="/#contact" className="btn btn-primary">
+          <Link href="/contact" className="btn btn-primary">
             <span className="btn-dot" /> {c.ctaLabel ?? "Book a session"}
           </Link>
         </section>

@@ -82,7 +82,7 @@ export default function Services({
                   </h3>
                   <div className={styles.cardFoot}>
                     <span className={styles.trigram}>{s.trigram}</span>
-                    <a href={s.slug?.current ? `/services/${s.slug.current}` : "#contact"}>
+                    <a href={s.slug?.current ? `/services/${s.slug.current}` : "/contact"}>
                       Read More
                     </a>
                   </div>

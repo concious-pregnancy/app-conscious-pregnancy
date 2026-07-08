@@ -116,7 +116,7 @@ export const journalArticlePageType = defineType({
       title: "CTA Button Link",
       type: "string",
       group: "cta",
-      initialValue: "/#contact",
+      initialValue: "/contact",
     }),
 
     // SEO

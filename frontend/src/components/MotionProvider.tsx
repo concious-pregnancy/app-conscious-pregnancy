@@ -244,7 +244,7 @@ export default function MotionProvider() {
       // Moved into the Process component itself (src/components/Process.tsx)
       // so its ScrollTrigger lifecycle matches the Process mount lifecycle.
       // Previous implementation here held stale digit DOM refs after a
-      // cross-route navigation (/journal → /#contact) since MotionProvider
+      // cross-route navigation (/journal → /contact) since MotionProvider
       // never unmounts on route change while Process does.
 
       // ── Philosophy: word-by-word reveal, driven by ScrollTrigger ───────

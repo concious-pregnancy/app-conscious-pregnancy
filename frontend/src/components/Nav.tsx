@@ -23,7 +23,7 @@ const DEFAULTS = {
     { label: "Journal", href: "/journal" },
   ] satisfies NavLink[],
   ctaLabel: "Begin Your Journey",
-  ctaHref: "/#contact",
+  ctaHref: "/contact",
   mobileMenuLabel: "Menu",
 };
 

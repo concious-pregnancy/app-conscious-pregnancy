@@ -288,7 +288,7 @@ export default async function AboutPage() {
                 {p.attribution ?? "Anna Keller · Therapist and Founder of ClearPath"}
               </p>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="btn btn-ghost-light"
                 style={{ marginTop: "var(--s-6)" }}
               >
@@ -386,7 +386,7 @@ export default async function AboutPage() {
               {c.body ??
                 "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes, it's about meaningful change, one clear step at a time."}
             </p>
-            <Link href="/#contact" className="btn btn-primary">
+            <Link href="/contact" className="btn btn-primary">
               <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
             </Link>
           </section>

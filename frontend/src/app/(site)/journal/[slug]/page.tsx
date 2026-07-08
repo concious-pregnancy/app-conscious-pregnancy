@@ -87,7 +87,7 @@ const DEFAULTS = {
   ctaBody:
     "Discovery calls are free, hour-long, and unhurried. We talk about where you are, what you've tried, and whether this is the right fit before anything is booked.",
   ctaLabel: "Book a discovery call",
-  ctaHref: "/#contact",
+  ctaHref: "/contact",
   metaTitleSuffix: " | Journal | Conscious Pregnancy",
 };
 

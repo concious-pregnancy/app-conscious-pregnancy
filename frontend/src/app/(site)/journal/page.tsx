@@ -70,7 +70,7 @@ const DEFAULTS = {
   ctaBody:
     "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes.",
   ctaLabel: "Start your journey",
-  ctaHref: "/#contact",
+  ctaHref: "/contact",
   metaTitle: "Journal | Conscious Pregnancy",
   metaDescription:
     "Articles, tools, and insights to help you find clarity, balance, and direction.",

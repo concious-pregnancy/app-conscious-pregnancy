@@ -30,18 +30,19 @@ const DEFAULTS = {
   signupSuccessMessage: "You're on the list. Thank you.",
   signupFineprint: "A monthly note, nothing more. Unsubscribe anytime.",
   privacyHref: "#",
-  // Only links to real, rendered destinations. The home-section anchors are
-  // "/"-prefixed so they resolve from any page (a bare "#contact" did nothing
-  // from /about). Placeholder and held-back links (Programs, Process, Discovery
-  // Call, Patient Portal, Instagram, Golden Life Wellness, Press, Privacy) were
-  // removed since those pages/features don't exist yet.
+  // Only links to real, rendered destinations. Contact is its own route now
+  // (/contact). The remaining entries are home-page section anchors, "/"-prefixed
+  // so they resolve from any page (a bare "#about" did nothing from /about).
+  // Placeholder and held-back links (Programs, Process, Discovery Call, Patient
+  // Portal, Instagram, Golden Life Wellness, Press, Privacy) were removed since
+  // those pages/features don't exist yet.
   sitemapColumn1: [
     { label: "Approach", href: "/#about" },
     { label: "Services", href: "/#services" },
   ] satisfies FooterLink[],
   sitemapColumn2: [
-    { label: "Contact", href: "/#contact" },
-    { label: "Dr. Ashley Alden", href: "/#credentials" },
+    { label: "Contact", href: "/contact" },
+    { label: "Dr. Ashley Alden", href: "/about" },
   ] satisfies FooterLink[],
   brandWordPrimary: "conscious",
   brandWordItalic: "pregnancy",

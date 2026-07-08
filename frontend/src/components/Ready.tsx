@@ -21,7 +21,7 @@ export default function Ready({ content }: { content?: ReadyContent }) {
   const trustLabel = content?.trustLabel ?? "Trusted by 80+ clients";
   const ratingText = content?.ratingText ?? "Excellent 4.9 out of 5";
   const chatIntro = content?.chatIntro ?? "Prefer to chat first?";
-  const chatEmail = content?.chatEmail ?? "#contact";
+  const chatEmail = content?.chatEmail ?? "/contact";
 
   return (
     <section id="ready" data-section="ready" className={styles.ready}>
@@ -50,7 +50,7 @@ export default function Ready({ content }: { content?: ReadyContent }) {
             <em>{headingEm}</em>
           </h2>
           <p className={styles.sub}>{sub}</p>
-          <a href="#contact" className={`btn ${styles.pill}`}>
+          <a href="/contact" className={`btn ${styles.pill}`}>
             {ctaLabel}
             <span className="btn-dot" />
           </a>

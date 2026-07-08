@@ -172,7 +172,7 @@ export default function Balance({ content }: { content?: BalanceContent }) {
             <h2 className={styles.h2}>{palaceHeading}</h2>
             <p className={styles.body}>{palaceBody}</p>
             <div className={styles.cta}>
-              <a href="#contact" className="btn btn-ghost-light">
+              <a href="/contact" className="btn btn-ghost">
                 {palaceCtaLabel}
                 <span className="btn-dot" />
               </a>

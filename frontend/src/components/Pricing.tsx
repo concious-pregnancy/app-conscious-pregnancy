@@ -172,7 +172,7 @@ export default function Pricing({
               </ul>
             )}
             <div className={styles.cta}>
-              <a href="#contact" className={`btn ${styles.tierBtn}`}>
+              <a href="/contact" className={`btn ${styles.tierBtn}`}>
                 {ctaLabel}
                 <span className="btn-dot" />
               </a>
