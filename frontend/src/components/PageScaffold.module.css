@@ -75,6 +75,28 @@
   align-self: start;
 }
 
+/* About-page-only hero variant: title stacks above a full-width, large
+   lead paragraph instead of pairing it with a small top-right teaser. */
+.heroInnerStacked {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  position: relative;
+  z-index: 1;
+}
+
+.heroLeadLarge {
+  font-family: var(--font-sans);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 56ch;
+  margin-top: var(--s-8);
+}
+
 /* ── Generic section wrapper ─────────────────────────────────── */
 .section {
   padding: clamp(64px, 9vw, 128px) var(--pad-x);
@@ -142,6 +164,17 @@
 
 .sectionDark .twoColBody {
   color: rgba(255, 255, 255, 0.78);
+}
+
+.twoColBodyLead {
+  color: var(--dark);
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.sectionDark .twoColBodyLead {
+  color: var(--white);
 }
 
 /* ── Service / article card grid ─────────────────────────────── */

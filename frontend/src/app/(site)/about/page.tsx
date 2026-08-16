@@ -55,6 +55,19 @@ function imgUrl(image: SanityImage, fallback: string): string {
   return image?.asset?._ref ? urlFor(image).width(1600).url() : fallback;
 }
 
+// Breaks a long body string into a bold opening sentence plus a couple of
+// shorter paragraphs so long-form copy doesn't read as one dense block.
+function splitIntroBody(body: string): { lead: string; rest: string[] } {
+  const sentences = body.match(/[^.!?]+[.!?]+(?:\s+|$)/g)?.map((sentence) => sentence.trim()) ?? [
+    body,
+  ];
+  const [lead, ...rest] = sentences;
+  if (!lead) return { lead: body, rest: [] };
+  const mid = Math.ceil(rest.length / 2);
+  const paragraphs = [rest.slice(0, mid).join(" "), rest.slice(mid).join(" ")].filter(Boolean);
+  return { lead, rest: paragraphs };
+}
+
 function LeafMark({ size = 24 }: { size?: number }) {
   return (
     <img
@@ -124,6 +137,10 @@ export default async function AboutPage() {
         ];
 
   const pebblesImg = imgUrl(p.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`);
+  const introBody =
+    i.body ??
+    "At ClearPath, we believe every journey is unique, and so is the support it deserves. Our role is to walk beside you, offering clarity, compassion, and practical guidance as you navigate life's challenges.";
+  const { lead: introLead, rest: introRest } = splitIntroBody(introBody);
 
   return (
     <>
@@ -142,16 +159,14 @@ export default async function AboutPage() {
               <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
             </svg>
           </div>
-          <div className={s.heroInner}>
-            <div className={s.heroLeft}>
-              <h1 className={s.heroTitle}>
-                {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
-              </h1>
-              <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-                {h.eyebrow ?? "About"}
-              </span>
-            </div>
-            <p className={s.heroLead}>
+          <div className={s.heroInnerStacked}>
+            <h1 className={s.heroTitle}>
+              {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
+            </h1>
+            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
+              {h.eyebrow ?? "About"}
+            </span>
+            <p className={s.heroLeadLarge}>
               {h.lead ??
                 "Find out who we are, what we stand for, and how we can support your journey."}
             </p>
@@ -169,28 +184,14 @@ export default async function AboutPage() {
                   {i.title ?? "We start by"} <em>{i.titleEm ?? "listening,"}</em> really listening.
                 </h2>
               </div>
-              <p className={s.twoColBody}>
-                {i.body ??
-                  "At ClearPath, we believe every journey is unique, and so is the support it deserves. Our role is to walk beside you, offering clarity, compassion, and practical guidance as you navigate life's challenges."}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Founder intro */}
-        <section className={s.section}>
-          <div className={s.sectionInner}>
-            <LeafMark />
-            <span className="t-label t-label-eyebrow">{f.eyebrow ?? "Meet our founder"}</span>
-            <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
-              {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
-            </h2>
-            <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
-              {founderBody.map((para, idx) => (
-                <p key={idx} style={idx > 0 ? { marginTop: "1rem" } : undefined}>
-                  {para}
-                </p>
-              ))}
+              <div className={s.twoColBody}>
+                <p className={s.twoColBodyLead}>{introLead}</p>
+                {introRest.map((para, idx) => (
+                  <p key={idx} style={{ marginTop: "1rem" }}>
+                    {para}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -210,6 +211,24 @@ export default async function AboutPage() {
             <p className="t-label" style={{ marginTop: "var(--s-3)", color: "var(--muted)" }}>
               {f.quoteAttribution ?? "Anna Keller"}
             </p>
+          </div>
+        </section>
+
+        {/* Founder intro */}
+        <section className={s.section}>
+          <div className={s.sectionInner}>
+            <LeafMark />
+            <span className="t-label t-label-eyebrow">{f.eyebrow ?? "Meet our founder"}</span>
+            <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
+              {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
+            </h2>
+            <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
+              {founderBody.map((para, idx) => (
+                <p key={idx} style={idx > 0 ? { marginTop: "1rem" } : undefined}>
+                  {para}
+                </p>
+              ))}
+            </div>
           </div>
         </section>
 
