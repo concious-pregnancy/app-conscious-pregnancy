@@ -60,6 +60,14 @@ export const serviceType = defineType({
       description: "I Ching trigram character, e.g. ☵",
     }),
     defineField({
+      name: "points",
+      title: "Panel Points",
+      type: "array",
+      group: "card",
+      of: [{ type: "string" }],
+      description: "Short bullet list (about 4 items) shown on the services-page panel.",
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",

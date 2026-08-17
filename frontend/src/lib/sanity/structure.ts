@@ -164,76 +164,33 @@ export const structure: StructureResolver = (S) =>
                 .title("1. Hero")
                 .child(
                   S.document()
-                    .title("About — Hero")
+                    .title("About: Hero")
                     .schemaType("aboutHero")
                     .documentId("aboutHero-singleton"),
                 ),
               S.listItem()
-                .title("2. Intro")
+                .title("2. Intro (3 bands, render after Hero, after Founder, and at page end)")
                 .child(
                   S.document()
-                    .title("About — Intro")
+                    .title("About: Intro")
                     .schemaType("aboutIntro")
                     .documentId("aboutIntro-singleton"),
                 ),
               S.listItem()
-                .title("3. Founder")
+                .title("3. Founder (My Story)")
                 .child(
                   S.document()
-                    .title("About — Founder")
+                    .title("About: Founder")
                     .schemaType("aboutFounder")
                     .documentId("aboutFounder-singleton"),
                 ),
               S.listItem()
-                .title("4. Team (Section Header)")
+                .title("4. Story (My Path)")
                 .child(
                   S.document()
-                    .title("About — Team Section")
-                    .schemaType("aboutTeamSection")
-                    .documentId("aboutTeamSection-singleton"),
-                ),
-              S.listItem()
-                .title("4. Team (Members)")
-                .child(S.documentTypeList("teamMember").title("Team Members")),
-              S.listItem()
-                .title("5. Approach")
-                .child(
-                  S.document()
-                    .title("About — Approach")
-                    .schemaType("aboutApproach")
-                    .documentId("aboutApproach-singleton"),
-                ),
-              S.listItem()
-                .title("6. Pebbles")
-                .child(
-                  S.document()
-                    .title("About — Pebbles")
-                    .schemaType("aboutPebbles")
-                    .documentId("aboutPebbles-singleton"),
-                ),
-              S.listItem()
-                .title("7. Story")
-                .child(
-                  S.document()
-                    .title("About — Story")
+                    .title("About: Story")
                     .schemaType("aboutStory")
                     .documentId("aboutStory-singleton"),
-                ),
-              S.listItem()
-                .title("8. FAQ")
-                .child(
-                  S.document()
-                    .title("About — FAQ")
-                    .schemaType("aboutFaq")
-                    .documentId("aboutFaq-singleton"),
-                ),
-              S.listItem()
-                .title("9. CTA")
-                .child(
-                  S.document()
-                    .title("About — CTA")
-                    .schemaType("aboutCta")
-                    .documentId("aboutCta-singleton"),
                 ),
             ]),
         ),
@@ -253,45 +210,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId("servicesHero-singleton"),
                 ),
               S.listItem()
-                .title("2. Service Blocks")
-                .child(S.documentTypeList("servicesBlock").title("Service Blocks")),
-              S.listItem()
-                .title("3. Stats")
+                .title("2. CTA")
                 .child(
                   S.document()
-                    .title("Services — Stats")
-                    .schemaType("servicesStats")
-                    .documentId("servicesStats-singleton"),
-                ),
-              S.listItem()
-                .title("4. Pricing")
-                .child(
-                  S.document()
-                    .title("Services — Pricing")
-                    .schemaType("servicesPricing")
-                    .documentId("servicesPricing-singleton"),
-                ),
-              S.listItem()
-                .title("5. Story")
-                .child(
-                  S.document()
-                    .title("Services — Story")
-                    .schemaType("servicesStory")
-                    .documentId("servicesStory-singleton"),
-                ),
-              S.listItem()
-                .title("6. FAQ")
-                .child(
-                  S.document()
-                    .title("Services — FAQ")
-                    .schemaType("servicesFaq")
-                    .documentId("servicesFaq-singleton"),
-                ),
-              S.listItem()
-                .title("7. CTA")
-                .child(
-                  S.document()
-                    .title("Services — CTA")
+                    .title("Services CTA")
                     .schemaType("servicesCta")
                     .documentId("servicesCta-singleton"),
                 ),

@@ -208,11 +208,13 @@ export const aboutHeroQuery = groq`*[_type == "aboutHero"][0] {
 }`;
 
 export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
-  eyebrow, title, titleEm, body
+  eyebrow, title, titleEm, body,
+  bands[] { eyebrow, title, body, highlightedBody, image, surface }
 }`;
 
 export const aboutFounderQuery = groq`*[_type == "aboutFounder"][0] {
-  eyebrow, title, titleEm, body, image, quote, quoteAttribution
+  eyebrow, title, titleEm, body, image, quote, quoteAttribution,
+  chapters[] { label, title, body }
 }`;
 
 export const aboutTeamSectionQuery = groq`*[_type == "aboutTeamSection"][0] {
@@ -223,16 +225,15 @@ export const teamMembersQuery = groq`*[_type == "teamMember"] | order(order asc)
   _id, name, role, bio, image
 }`;
 
-export const aboutApproachQuery = groq`*[_type == "aboutApproach"][0] {
-  title, titleEm, body
-}`;
-
 export const aboutPebblesQuery = groq`*[_type == "aboutPebbles"][0] {
   eyebrow, quote, attribution, ctaLabel, image
 }`;
 
 export const aboutStoryQuery = groq`*[_type == "aboutStory"][0] {
-  eyebrow, title, titleEm, body, ctaLabel, imageBack, imageFront
+  eyebrow, title, titleEm, body, highlightedBody, ctaLabel, imageBack, imageFront,
+  facts[] { value, label },
+  pullQuotes[] { quote, attribution },
+  outsideClinic
 }`;
 
 export const aboutFaqQuery = groq`*[_type == "aboutFaq"][0] {
@@ -249,24 +250,10 @@ export const servicesHeroQuery = groq`*[_type == "servicesHero"][0] {
   eyebrow, titleLine1, titleEm, lead
 }`;
 
-export const servicesBlocksQuery = groq`*[_type == "servicesBlock"] | order(order asc) {
-  _id, eyebrow, title, titleEm, image, paragraphs, ctaLabel, order
-}`;
-
-export const servicesStatsQuery = groq`*[_type == "servicesStats"][0] {
-  title, titleEm, body, stats[] { value, label }
-}`;
-
-export const servicesPricingQuery = groq`*[_type == "servicesPricing"][0] {
-  eyebrow, title, titleEm, sub, tiers[] { name, blurb, features }
-}`;
-
-export const servicesStoryQuery = groq`*[_type == "servicesStory"][0] {
-  eyebrow, title, titleEm, body, image, ctaLabel
-}`;
-
-export const servicesFaqQuery = groq`*[_type == "servicesFaq"][0] {
-  eyebrow, title, titleEm, sub, footnote, items[] { q, a }
+// Full-bleed service panels on /services, in card order.
+export const servicesPanelsQuery = groq`*[_type == "service"] | order(order asc) {
+  _id, title, titleLine2, eyebrow, body, points, image, imageAlt, trigram, slug,
+  lead, detailBody
 }`;
 
 export const servicesCtaQuery = groq`*[_type == "servicesCta"][0] {

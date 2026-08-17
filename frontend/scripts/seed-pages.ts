@@ -200,190 +200,28 @@ async function buildTeamMembers() {
 }
 
 /* ── Services sections ───────────────────────────────────────────── */
+// Per-service panel content (trigram, points, detailBody essays) is seeded
+// separately by scripts/seed-services-redesign.ts, mirroring the 4 real
+// service docs plus 5 new ones. Only the hero + closing CTA singletons live
+// here, since those are the two servicesX sections the redesign kept.
 async function buildServicesSections() {
   return [
     {
       _type: "servicesHero",
       _id: "servicesHero-singleton",
       eyebrow: "Services",
-      titleLine1: "Every Step",
-      titleEm: "of Your Journey.",
-      lead: "Explore our therapy and coaching options tailored to your goals, pace, and needs.",
-    },
-    {
-      _type: "servicesStats",
-      _id: "servicesStats-singleton",
-      title: "From first steps to",
-      titleEm: "lasting change,",
-      body: "Behind every number is a story of progress. These milestones capture the work, dedication, and care we bring to each step of the journey.",
-      stats: [
-        { _key: "s1", value: "450+", label: "Therapy sessions completed" },
-        { _key: "s2", value: "80+", label: "Clients supported" },
-        { _key: "s3", value: "9+", label: "Years of professional experience" },
-        { _key: "s4", value: "25+", label: "Programs and tools offered" },
-      ],
-    },
-    {
-      _type: "servicesPricing",
-      _id: "servicesPricing-singleton",
-      eyebrow: "Our prices",
-      title: "Support that fits",
-      titleEm: "your pace.",
-      sub: "A first session is often just a conversation, a starting point. From there, you choose the pace and depth of support that feels right for you.",
-      tiers: [
-        {
-          _key: "t1",
-          name: "Starter",
-          blurb: "Explore therapy at your own pace.",
-          features: [
-            "Dedicated therapist",
-            "Online or in-person",
-            "Personalized goal-setting",
-            "Client portal access",
-          ],
-        },
-        {
-          _key: "t2",
-          name: "Growth",
-          blurb: "Ongoing support for continued growth.",
-          features: [
-            "Everything in Starter",
-            "More flexible scheduling",
-            "Progress tracking",
-            "Extra resources",
-          ],
-        },
-        {
-          _key: "t3",
-          name: "Complete",
-          blurb: "Consistent support with full access.",
-          features: [
-            "All Growth features",
-            "Extended sessions",
-            "Priority booking",
-            "Direct therapist messaging",
-          ],
-        },
-      ],
-    },
-    {
-      _type: "servicesStory",
-      _id: "servicesStory-singleton",
-      eyebrow: "Real people. Real change.",
-      title: "Rewriting success on",
-      titleEm: "his own terms.",
-      body: "James was 38, thriving in a competitive field, at least on paper. Inside, he felt exhausted and disconnected from the life he'd worked so hard to build. Even when he hit his goals, the satisfaction was fleeting, quickly replaced by the pressure to reach the next milestone.",
-      image: await uploadImg("services/92gLXvk1EhQjqbfE6arrIJRsBGY.jpg"),
-      ctaLabel: "Read full story",
-    },
-    {
-      _type: "servicesFaq",
-      _id: "servicesFaq-singleton",
-      eyebrow: "FAQ",
-      title: "Your questions.",
-      titleEm: "Answered.",
-      sub: "Not sure what to expect? These answers might help you feel more confident as you begin.",
-      footnote: "Didn't find your answer? Send us a message, we'll respond with care and clarity.",
-      items: [
-        {
-          q: "How do I know if therapy is right for me?",
-          a: "Therapy isn't just for crises. It's for anyone curious about growth, clarity, or navigating life's changes with more support and self-awareness.",
-        },
-        {
-          q: "What can I expect from the first session?",
-          a: "The first session is a gentle starting point. You'll talk with your therapist about what brings you here, what you're hoping for, and what feels comfortable for you right now.",
-        },
-        {
-          q: "Do you offer both online and in-person sessions?",
-          a: "Yes. Whether you prefer meeting face-to-face or from the comfort of home, we offer flexible options to meet you where you are.",
-        },
-        {
-          q: "How often should I come to therapy?",
-          a: "There's no one-size-fits-all answer. Some people come weekly, others bi-weekly or monthly. You and your therapist will decide what feels right based on your needs and pace.",
-        },
-        {
-          q: "Is everything I share kept private?",
-          a: "Yes. Your sessions are completely confidential, except in very rare cases related to safety. Your privacy is always a priority.",
-        },
-        {
-          q: "What if I don't know what to talk about?",
-          a: "That's okay. You don't need to have it all figured out. Sometimes just showing up is the most important first step, and your therapist will guide you from there.",
-        },
-      ],
+      titleLine1: "Prepping the",
+      titleEm: "Palace.",
+      lead: "Functional and Eastern medicine, somatic healing, and nutritional biochemistry, working together to prepare both partners for conception, pregnancy, and birth.",
     },
     {
       _type: "servicesCta",
       _id: "servicesCta-singleton",
-      eyebrow: "Book a session",
-      title: "Support starts with a",
-      titleEm: "simple step.",
-      body: "Whether you're starting fresh, returning for ongoing support, or simply exploring your options, we're here to meet you where you are. Use the form to book a session that feels right for you.",
-      ctaLabel: "Book a session",
-    },
-  ];
-}
-
-async function buildServicesBlocks() {
-  const a = await uploadImg("services/X1KAS3BPHbN4rR5FN8CCVsSUhM.jpg");
-  const b = await uploadImg("services/lZn0EEipDdK6TqFQ685W86d6r9M.jpg");
-  const c = await uploadImg("services/Ux4Is85LWxm9dXetoVhxJWLGhLI.jpg");
-  const d = await uploadImg("services/rQkdR79nheYY38OKZhh8pENppw.jpg");
-  return [
-    {
-      _type: "servicesBlock",
-      _id: "servicesBlock-mindfulness",
-      eyebrow: "Service · 01",
-      title: "Mindfulness &",
-      titleEm: "Stress Support",
-      image: a,
-      paragraphs: [
-        "Stress, anxiety, and overwhelm can leave you feeling disconnected from yourself and your life. Our mindfulness-based sessions are designed to help you slow down, breathe, and reconnect. You'll learn practical techniques to build resilience, manage emotional triggers, and develop a calmer, more centered mind.",
-        "We draw on proven practices like guided meditation, grounding exercises, and mindful reflection to help you find balance, both in the moment and in your daily life. Ideal for anyone seeking more peace, presence, and emotional stability.",
-      ],
-      ctaLabel: "Book a session",
-      order: 1,
-    },
-    {
-      _type: "servicesBlock",
-      _id: "servicesBlock-individual-therapy",
-      eyebrow: "Service · 02",
-      title: "Individual",
-      titleEm: "Therapy",
-      image: b,
-      paragraphs: [
-        "Sometimes you need a safe, private space to talk openly and work through what's on your mind. Our one-on-one therapy sessions focus on emotional clarity, deeper self-understanding, and healing. Whether you're facing life transitions, relationship difficulties, or personal challenges, we'll work together to explore patterns, process experiences, and strengthen your emotional well-being.",
-        "Sessions are tailored to your pace and needs, blending evidence-based approaches with compassionate, practical support.",
-      ],
-      ctaLabel: "Book a session",
-      order: 2,
-    },
-    {
-      _type: "servicesBlock",
-      _id: "servicesBlock-clarity-consult",
-      eyebrow: "Service · 03",
-      title: "Clarity",
-      titleEm: "Consult",
-      image: c,
-      paragraphs: [
-        "When you need direction fast, a Clarity Consult offers a focused space to step back and reassess. In these short-term, goal-driven sessions, we help you pinpoint what's holding you back, clarify your priorities, and map a practical next step.",
-        "Perfect for making a big decision, resetting your goals, or addressing a specific challenge without committing to long-term therapy. You'll leave with new insight, a clearer mind, and an actionable plan to move forward.",
-      ],
-      ctaLabel: "Book a session",
-      order: 3,
-    },
-    {
-      _type: "servicesBlock",
-      _id: "servicesBlock-life-coaching",
-      eyebrow: "Service · 04",
-      title: "Life",
-      titleEm: "Coaching",
-      image: d,
-      paragraphs: [
-        "Life coaching is for those ready to create change and take action. Whether you want to build confidence, strengthen motivation, or find a stronger sense of direction, we work with you to set clear goals and break them into achievable steps. Coaching is future-focused, it's about moving forward, staying accountable, and unlocking your potential.",
-        "Through guided reflection, strategic planning, and ongoing support, we'll help you create the momentum needed to reach the life you want.",
-      ],
-      ctaLabel: "Book a session",
-      order: 4,
+      eyebrow: "Begin Your Journey",
+      title: "Ready to prepare",
+      titleEm: "the palace?",
+      body: "Discovery calls are free, hour-long, and unhurried. We talk about where you are, what you've tried, and whether this is the right fit before anything is booked.",
+      ctaLabel: "Book a discovery call",
     },
   ];
 }
@@ -510,9 +348,8 @@ async function seed() {
   const aboutSections = await buildAboutSections();
   console.log("\n[2/5] Team members...");
   const teamMembers = await buildTeamMembers();
-  console.log("\n[3/5] Services sections + blocks...");
+  console.log("\n[3/5] Services sections...");
   const servicesSections = await buildServicesSections();
-  const servicesBlocks = await buildServicesBlocks();
   console.log("\n[4/5] Journal sections + articles...");
   const journalSections = await buildJournalSections();
   const journalArticles = await buildJournalArticles();
@@ -521,7 +358,6 @@ async function seed() {
     ...aboutSections,
     ...teamMembers,
     ...servicesSections,
-    ...servicesBlocks,
     ...journalSections,
     ...journalArticles,
   ];

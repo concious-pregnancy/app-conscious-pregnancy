@@ -23,7 +23,7 @@ export const FLAGS = {
   },
   // Nav links hidden while their destination pages are held back.
   OMIT_NAV_LINKS: {
-    services: true,
+    services: false,
     journal: true,
   },
 } as const;
