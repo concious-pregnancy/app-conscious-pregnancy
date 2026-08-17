@@ -135,7 +135,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 {primaryCta}
                 <span className="btn-dot" />
               </a>
-              <a href="#pricing" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
+              <a href="/services" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
                 {secondaryCta}
                 <span className="btn-dot" />
               </a>

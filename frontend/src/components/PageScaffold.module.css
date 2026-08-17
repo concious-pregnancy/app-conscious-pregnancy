@@ -344,6 +344,47 @@
   max-width: 18ch;
 }
 
+/* Light-surface variant (about "My Path" facts rail, sits directly on
+   the page surface rather than inside a .sectionDark wrapper). */
+.statsGridLight {
+  border-top: 1px solid var(--border);
+}
+
+.statsGridLight .statCell {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.statsGridLight .statValue {
+  color: var(--sage-dark);
+}
+
+.statsGridLight .statLabel {
+  color: var(--muted);
+}
+
+/* Vertical facts rail (about "My Path" right column: stacked stats +
+   outside-clinic list, no imagery). */
+.factsRail {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.factsRailItem {
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.factsRailItem .statValue {
+  color: var(--sage-dark);
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.factsRailItem .statLabel {
+  color: var(--muted);
+}
+
 /* ── FAQ ─────────────────────────────────────────────────────── */
 .faqList {
   display: flex;
@@ -773,6 +814,45 @@
   margin: 0;
 }
 
+.servicePhotoContent .t-label {
+  color: var(--sage-light);
+}
+
+.servicePhotoTrigram {
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--sage-light);
+}
+
+.servicePhotoPoints {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.servicePhotoPoints li {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+.servicePhotoPoints li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 8px;
+  height: 1px;
+  background: var(--sage-light);
+}
+
 /* ── Hero wisp line decoration (about + services + journal) ────── */
 .heroWisp {
   position: absolute;
@@ -985,4 +1065,204 @@
   line-height: 1.65;
   color: var(--muted);
   max-width: 52ch;
+}
+
+/* ── Alternating day/night bands (about intro) ──────────────────── */
+/* Uses raw --c-navy/--c-cream tokens rather than the semantic
+   --dark/--paper aliases, so the alternation stays fixed regardless
+   of the site-wide yin (day/night) mode toggle. */
+.bandSection {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.band {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-8);
+  align-items: center;
+  padding: clamp(64px, 9vw, 128px) var(--pad-x);
+}
+
+@media (min-width: 900px) {
+  .band {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-16);
+  }
+  .bandReverse > :first-child {
+    order: 2;
+  }
+}
+
+.bandNight {
+  background: var(--c-navy);
+  color: var(--c-cream);
+}
+
+.bandDay {
+  background: var(--c-cream);
+  color: var(--c-warm-black);
+}
+
+.bandNight .bandBody {
+  color: rgba(243, 235, 216, 0.78);
+}
+
+.bandDay .bandBody {
+  color: var(--c-ink-500);
+}
+
+.bandTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  max-width: 16ch;
+  color: inherit;
+}
+
+.bandTitle em {
+  font-style: italic;
+}
+
+.bandNight .bandTitle em {
+  color: var(--c-gold-bright);
+}
+
+.bandDay .bandTitle em {
+  color: var(--c-gold-dark);
+}
+
+.bandBody {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 52ch;
+  margin-top: var(--s-6);
+}
+
+.bandHighlight {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  line-height: 1.4;
+  max-width: 32ch;
+  margin-top: var(--s-8);
+}
+
+.bandNight .bandHighlight {
+  color: var(--c-gold-light);
+}
+
+.bandDay .bandHighlight {
+  color: var(--c-gold-dark);
+}
+
+/* Gold-highlighted pull paragraph within prose (e.g. Featured story / My Path).
+   Uses --sage-light (semantic), not the raw --c-gold-* tokens, so it flips with
+   yin/yang mode like the rest of this section (unlike the fixed-surface bands).
+   Sized and bracketed like a pull quote (see .t-quote) so it reads as its own
+   moment in the prose, not just another paragraph. */
+.storyHighlight {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--sage-light);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: var(--s-6) 0;
+}
+
+.bandMedia {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+
+/* ── Service detail modal (Learn more, /services panels) ────────── */
+.serviceModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 20, 16, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-6);
+  overflow-y: auto;
+}
+
+/* Modal is always a light cream card, on top of either theme, so text
+   colors are pinned to the raw warm-ink tokens instead of the semantic
+   --dark/--sage tokens (which flip to cream-on-dark in yin mode and
+   would wash out against this fixed light background). */
+.serviceModalContent {
+  position: relative;
+  width: 100%;
+  max-width: 42rem;
+  max-height: calc(100vh - var(--s-16));
+  overflow-y: auto;
+  background: var(--c-cream-raised);
+  color: var(--c-warm-black);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: clamp(32px, 6vw, 64px);
+  margin: auto;
+}
+
+.serviceModalClose {
+  position: sticky;
+  top: 0;
+  left: 100%;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: var(--s-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--c-driftwood);
+  background: var(--c-cream);
+  color: var(--c-warm-black);
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.serviceModalTrigram {
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--c-gold-dark);
+  display: block;
+  margin-bottom: var(--s-3);
+}
+
+.serviceModalTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  color: var(--c-warm-black);
+  margin: 0 0 var(--s-6);
+}
+
+.serviceModalBody {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--c-warm-black);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.serviceModalBody p {
+  margin: 0;
 }

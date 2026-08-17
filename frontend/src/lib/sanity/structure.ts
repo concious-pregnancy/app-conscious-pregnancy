@@ -253,45 +253,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId("servicesHero-singleton"),
                 ),
               S.listItem()
-                .title("2. Service Blocks")
-                .child(S.documentTypeList("servicesBlock").title("Service Blocks")),
-              S.listItem()
-                .title("3. Stats")
+                .title("2. CTA")
                 .child(
                   S.document()
-                    .title("Services — Stats")
-                    .schemaType("servicesStats")
-                    .documentId("servicesStats-singleton"),
-                ),
-              S.listItem()
-                .title("4. Pricing")
-                .child(
-                  S.document()
-                    .title("Services — Pricing")
-                    .schemaType("servicesPricing")
-                    .documentId("servicesPricing-singleton"),
-                ),
-              S.listItem()
-                .title("5. Story")
-                .child(
-                  S.document()
-                    .title("Services — Story")
-                    .schemaType("servicesStory")
-                    .documentId("servicesStory-singleton"),
-                ),
-              S.listItem()
-                .title("6. FAQ")
-                .child(
-                  S.document()
-                    .title("Services — FAQ")
-                    .schemaType("servicesFaq")
-                    .documentId("servicesFaq-singleton"),
-                ),
-              S.listItem()
-                .title("7. CTA")
-                .child(
-                  S.document()
-                    .title("Services — CTA")
+                    .title("Services CTA")
                     .schemaType("servicesCta")
                     .documentId("servicesCta-singleton"),
                 ),

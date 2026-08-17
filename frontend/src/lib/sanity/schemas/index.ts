@@ -32,11 +32,6 @@ import { teamMemberType } from "./teamMember";
 
 // Services-page sections
 import { servicesHeroType } from "./servicesHero";
-import { servicesBlockType } from "./servicesBlock";
-import { servicesStatsType } from "./servicesStats";
-import { servicesPricingType } from "./servicesPricing";
-import { servicesStoryType } from "./servicesStory";
-import { servicesFaqType } from "./servicesFaq";
 import { servicesCtaType } from "./servicesCta";
 
 // Journal page (layout singletons that wrap the journalArticle collection)
@@ -87,11 +82,6 @@ export const schemaTypes = [
 
   // Services page
   servicesHeroType,
-  servicesBlockType,
-  servicesStatsType,
-  servicesPricingType,
-  servicesStoryType,
-  servicesFaqType,
   servicesCtaType,
 
   // Journal page layout

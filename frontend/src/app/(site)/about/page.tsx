@@ -11,7 +11,6 @@ import {
   aboutFounderQuery,
   aboutTeamSectionQuery,
   teamMembersQuery,
-  aboutApproachQuery,
   aboutPebblesQuery,
   aboutStoryQuery,
   aboutFaqQuery,
@@ -68,6 +67,45 @@ function splitIntroBody(body: string): { lead: string; rest: string[] } {
   return { lead, rest: paragraphs };
 }
 
+type Band = {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  highlightedBody?: string;
+  image?: SanityImage;
+  surface?: string;
+};
+
+// idx is the band's position in aboutIntro.bands[], used for the "/ 0N" eyebrow
+// suffix and the surface/reverse alternation, independent of where on the page
+// the band actually renders (band 2 renders out of array order, after "My Story").
+function BandSection({ band, idx }: { band: Band; idx: number }) {
+  const isNight = (band.surface ?? (idx % 2 === 1 ? "navy" : "cream")) === "navy";
+  return (
+    <div
+      className={[s.band, isNight ? s.bandNight : s.bandDay, idx % 2 === 1 ? s.bandReverse : ""]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <div>
+        <span className="t-label t-label-eyebrow">
+          {band.eyebrow} {`/ ${String(idx + 1).padStart(2, "0")}`}
+        </span>
+        <h2 className={s.bandTitle} style={{ marginTop: "1rem" }}>
+          {band.title}
+        </h2>
+        <p className={s.bandBody}>{band.body}</p>
+        {band.highlightedBody && <p className={s.bandHighlight}>{band.highlightedBody}</p>}
+      </div>
+      <img
+        src={imgUrl(band.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`)}
+        alt=""
+        className={s.bandMedia}
+      />
+    </div>
+  );
+}
+
 function LeafMark({ size = 24 }: { size?: number }) {
   return (
     <img
@@ -82,25 +120,22 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [hero, intro, founder, teamSection, team, approach, pebbles, story, faq, cta] =
-    await Promise.all([
-      client.fetch(aboutHeroQuery, {}, opts),
-      client.fetch(aboutIntroQuery, {}, opts),
-      client.fetch(aboutFounderQuery, {}, opts),
-      client.fetch(aboutTeamSectionQuery, {}, opts),
-      client.fetch(teamMembersQuery, {}, opts),
-      client.fetch(aboutApproachQuery, {}, opts),
-      client.fetch(aboutPebblesQuery, {}, opts),
-      client.fetch(aboutStoryQuery, {}, opts),
-      client.fetch(aboutFaqQuery, {}, opts),
-      client.fetch(aboutCtaQuery, {}, opts),
-    ]);
+  const [hero, intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
+    client.fetch(aboutHeroQuery, {}, opts),
+    client.fetch(aboutIntroQuery, {}, opts),
+    client.fetch(aboutFounderQuery, {}, opts),
+    client.fetch(aboutTeamSectionQuery, {}, opts),
+    client.fetch(teamMembersQuery, {}, opts),
+    client.fetch(aboutPebblesQuery, {}, opts),
+    client.fetch(aboutStoryQuery, {}, opts),
+    client.fetch(aboutFaqQuery, {}, opts),
+    client.fetch(aboutCtaQuery, {}, opts),
+  ]);
 
   const h = hero ?? {};
   const i = intro ?? {};
   const f = founder ?? {};
   const ts = teamSection ?? {};
-  const a = approach ?? {};
   const p = pebbles ?? {};
   const st = story ?? {};
   const q = faq ?? {};
@@ -122,6 +157,14 @@ export default async function AboutPage() {
           "ClearPath was founded by Anna Keller, a therapist with over 15 years of experience helping people navigate life's turning points. Her work is grounded in the belief that clarity and change come from small, intentional steps, and that no one should walk their path alone.",
           "Anna started ClearPath to create a welcoming, non-judgmental space where people could slow down, reflect, and find their next direction with confidence and care.",
         ];
+  const founderChapters: { label?: string; title?: string; body?: string }[] = f.chapters ?? [];
+  // founderBody[0] can hold the full multi-paragraph bio as one \n-joined string
+  // (legacy data entry); the chaptered view only wants the first paragraph as its lead.
+  const founderLead = founderBody[0]?.split("\n")[0];
+  const storyFacts: { value?: string; label?: string }[] = st.facts ?? [];
+  const storyPullQuotes: { quote?: string; attribution?: string }[] = st.pullQuotes ?? [];
+  const storyOutsideClinic: string[] = st.outsideClinic ?? [];
+  const introBands: Band[] = i.bands ?? [];
   const faqs: { q: string; a: string }[] =
     q.items && q.items.length > 0
       ? q.items
@@ -141,6 +184,12 @@ export default async function AboutPage() {
     i.body ??
     "At ClearPath, we believe every journey is unique, and so is the support it deserves. Our role is to walk beside you, offering clarity, compassion, and practical guidance as you navigate life's challenges.";
   const { lead: introLead, rest: introRest } = splitIntroBody(introBody);
+  const storyBody: string =
+    st.body ??
+    "When Daniel and Marisa first came in, they weren't on the verge of breaking up, but they felt more like roommates than partners.";
+  // storyBody's paragraphs are separated by real newlines (not sentence-regex splittable,
+  // since T.C.M./L.Ac. abbreviation periods would fragment the naive splitIntroBody split).
+  const [storyLead, ...storyRest] = storyBody.split("\n").filter(Boolean);
 
   return (
     <>
@@ -173,48 +222,39 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* Intro */}
-        <section className={`${s.section} ${s.sectionPaper}`}>
-          <div className={s.sectionInner}>
-            <div className={s.twoCol}>
-              <div>
-                <LeafMark />
-                <span className="t-label t-label-eyebrow">{i.eyebrow ?? "The Way We Help"}</span>
-                <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                  {i.title ?? "We start by"} <em>{i.titleEm ?? "listening,"}</em> really listening.
-                </h2>
-              </div>
-              <div className={s.twoColBody}>
-                <p className={s.twoColBodyLead}>{introLead}</p>
-                {introRest.map((para, idx) => (
-                  <p key={idx} style={{ marginTop: "1rem" }}>
-                    {para}
-                  </p>
-                ))}
+        {/* Intro (band 2 moves after "My Story," band 3 moves after "My Path") */}
+        {introBands.length > 0 ? (
+          <section className={s.bandSection}>
+            {introBands.map((band, idx) =>
+              idx === 1 || idx === 2 ? null : <BandSection key={idx} band={band} idx={idx} />,
+            )}
+          </section>
+        ) : (
+          <section className={`${s.section} ${s.sectionPaper}`}>
+            <div className={s.sectionInner}>
+              <div className={s.twoCol}>
+                <div>
+                  <LeafMark />
+                  <span className="t-label t-label-eyebrow">{i.eyebrow ?? "The Way We Help"}</span>
+                  <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+                    {i.title ?? "We start by"}{" "}
+                    <em>{i.titleEm ?? "listening, really listening."}</em>
+                  </h2>
+                </div>
+                <div className={s.twoColBody}>
+                  <p className={s.twoColBodyLead}>{introLead}</p>
+                  {introRest.map((para, idx) => (
+                    <p key={idx} style={{ marginTop: "1rem" }}>
+                      {para}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* Founder full-bleed portrait + quote */}
-        <section className={s.fullBleedSplit}>
-          <img
-            src={imgUrl(f.image, `${IMG}/1OD7wXOtYnqOi7RvvRqTnSC8o.jpg`)}
-            alt="Anna Keller"
-            className={s.fullBleedSplitImg}
-          />
-          <div className={s.fullBleedSplitContent}>
-            <blockquote className="t-quote" style={{ maxWidth: "22ch" }}>
-              {f.quote ??
-                "Therapy isn't about fixing people, it's about walking beside them as they discover their own way forward."}
-            </blockquote>
-            <p className="t-label" style={{ marginTop: "var(--s-3)", color: "var(--muted)" }}>
-              {f.quoteAttribution ?? "Anna Keller"}
-            </p>
-          </div>
-        </section>
-
-        {/* Founder intro */}
+        {/* Founder intro / chaptered story */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             <LeafMark />
@@ -222,15 +262,75 @@ export default async function AboutPage() {
             <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
               {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
             </h2>
-            <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
-              {founderBody.map((para, idx) => (
-                <p key={idx} style={idx > 0 ? { marginTop: "1rem" } : undefined}>
-                  {para}
-                </p>
-              ))}
-            </div>
+            {founderChapters.length > 0 ? (
+              <>
+                {founderLead && (
+                  <p
+                    className={s.twoColBodyLead}
+                    style={{ marginTop: "var(--s-6)", maxWidth: "42ch" }}
+                  >
+                    {founderLead}
+                  </p>
+                )}
+                <div className={s.stickySection} style={{ marginTop: "var(--s-12)" }}>
+                  <div className={s.stickyHead}>
+                    <span className="t-label" style={{ color: "var(--muted)" }}>
+                      In this story
+                    </span>
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        marginTop: "var(--s-4)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "var(--s-2)",
+                      }}
+                    >
+                      {founderChapters.map((chapter, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={`#chapter-${idx + 1}`}
+                            className="t-body-sm"
+                            style={{ color: "var(--muted)" }}
+                          >
+                            {chapter.label ?? `Chapter ${idx + 1}`}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <ol className={s.stepList} style={{ listStyle: "none" }}>
+                    {founderChapters.map((chapter, idx) => (
+                      <li key={idx} id={`chapter-${idx + 1}`} className={s.stepItem}>
+                        <span className={s.stepNumber}>{String(idx + 1).padStart(2, "0")}</span>
+                        <div>
+                          <h3 className={s.stepTitle}>{chapter.title}</h3>
+                          <p className={s.stepBody}>{chapter.body}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </>
+            ) : (
+              <div className={s.twoColBody} style={{ marginTop: "var(--s-8)", maxWidth: "60ch" }}>
+                {founderBody.map((para, idx) => (
+                  <p key={idx} style={idx > 0 ? { marginTop: "1rem" } : undefined}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
         </section>
+
+        {/* Intro band 2, "No generic protocol, no national average," moved
+            here (after My Story) per redesign feedback, out of its array order. */}
+        {introBands.length > 1 && (
+          <section className={s.bandSection}>
+            <BandSection band={introBands[1]} idx={1} />
+          </section>
+        )}
 
         {/* Team */}
         {!FLAGS.OMIT_ABOUT_SECTIONS.team && (
@@ -273,22 +373,6 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Approach summary */}
-        <section className={s.section}>
-          <div className={s.sectionInner}>
-            <div className={s.twoCol}>
-              <h2 className={s.twoColTitle}>
-                {a.title ?? "Support grounded in"} <em>{a.titleEm ?? "experience,"}</em> guided by
-                clarity, and built for lasting change.
-              </h2>
-              <p className={s.twoColBody}>
-                {a.body ??
-                  "Our sessions create space for that change to happen. We take time to understand your needs, offer structure where it helps, and support your direction, not ours."}
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* Pebbles photo overlay */}
         {!FLAGS.OMIT_ABOUT_SECTIONS.pebbles && (
           <section
@@ -317,7 +401,7 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Featured story */}
+        {/* Featured story / My Path (editorial spread) */}
         <section className={s.section}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
@@ -329,35 +413,89 @@ export default async function AboutPage() {
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                   {st.title ?? "Finding each other"} <em>{st.titleEm ?? "again."}</em>
                 </h2>
-                <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
-                  {st.body ??
-                    "When Daniel and Marisa first came in, they weren't on the verge of breaking up, but they felt more like roommates than partners."}
-                </p>
-                <Link
-                  href="#"
-                  className="btn btn-ghost"
-                  style={{ marginTop: "var(--s-6)", alignSelf: "flex-start" }}
+                <p
+                  className={s.twoColBodyLead}
+                  style={{ marginTop: "var(--s-6)", maxWidth: "56ch" }}
                 >
-                  <span className="btn-dot" /> {st.ctaLabel ?? "Read full story"}
-                </Link>
+                  {storyLead}
+                </p>
+                {storyRest.flatMap((para, idx) => {
+                  const els = [
+                    <p
+                      key={`p-${idx}`}
+                      className={s.twoColBody}
+                      style={{ marginTop: "var(--s-4)" }}
+                    >
+                      {para}
+                    </p>,
+                  ];
+                  // Highlighted paragraph sits right after the "My path has since
+                  // expanded..." paragraph in Sanity's original body order (idx 1
+                  // of storyRest), the spot it occupied before being split out.
+                  if (idx === 1 && st.highlightedBody) {
+                    els.push(
+                      <p
+                        key={`hl-${idx}`}
+                        className={s.storyHighlight}
+                        style={{ marginTop: "var(--s-4)" }}
+                      >
+                        {st.highlightedBody}
+                      </p>,
+                    );
+                  }
+                  return els;
+                })}
               </div>
-              <div className={s.offsetPair}>
-                <div className={s.offsetPairBack}>
-                  <img
-                    src={imgUrl(st.imageBack, `${IMG}/0tyXlpa0soVzPMq44gbKMcP680.jpg`)}
-                    alt="Couple together"
-                    className={s.offsetPairImg}
-                  />
-                </div>
-                <div className={s.offsetPairFront}>
-                  <img
-                    src={imgUrl(st.imageFront, `${IMG}/wQLwxTlAvuy2tWEdKj8oaawUp0s.jpg`)}
-                    alt="Close portrait"
-                    className={s.offsetPairImg}
-                  />
-                </div>
+              <div className={s.factsRail}>
+                {storyFacts.map((fact, idx) => (
+                  <div key={idx} className={s.factsRailItem}>
+                    <span className={s.statValue}>{fact.value}</span>
+                    <span className={s.statLabel}>{fact.label}</span>
+                  </div>
+                ))}
+                {storyOutsideClinic.length > 0 && (
+                  <div className={s.factsRailItem}>
+                    <span className="t-label">Outside the clinic</span>
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        marginTop: "var(--s-3)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "var(--s-2)",
+                      }}
+                    >
+                      {storyOutsideClinic.map((item, idx) => (
+                        <li key={idx} className="t-body-sm">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
+            {storyPullQuotes.length > 0 && (
+              <div style={{ marginTop: "var(--s-12)", maxWidth: "56ch" }}>
+                {storyPullQuotes.map((pq, idx) => (
+                  <blockquote
+                    key={idx}
+                    className="t-quote"
+                    style={idx > 0 ? { marginTop: "var(--s-8)" } : undefined}
+                  >
+                    {pq.quote}
+                    {pq.attribution && (
+                      <footer
+                        className="t-label"
+                        style={{ marginTop: "var(--s-3)", fontStyle: "normal" }}
+                      >
+                        {pq.attribution}
+                      </footer>
+                    )}
+                  </blockquote>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -408,6 +546,14 @@ export default async function AboutPage() {
             <Link href="/contact" className="btn btn-primary">
               <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
             </Link>
+          </section>
+        )}
+
+        {/* Intro band 3, "Science and energetics, working as one," renders
+            last, just before the footer, out of its array order. */}
+        {introBands.length > 2 && (
+          <section className={s.bandSection}>
+            <BandSection band={introBands[2]} idx={2} />
           </section>
         )}
       </main>
