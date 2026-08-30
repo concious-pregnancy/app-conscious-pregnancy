@@ -99,6 +99,16 @@
   gap: 1rem;
 }
 
+/* A <legend> isn't a flex participant even inside a flex fieldset, so
+   .fieldset's `gap` never applies to the space below it; formHeading's
+   shared -0.5rem margin-bottom (tuned for the <p> usage elsewhere in this
+   form) leaves the legend crammed against the option pills. Override with
+   the full 1.75rem the form uses between other field groups, since no
+   gap will add to it here. */
+.fieldset .formHeading {
+  margin-bottom: 1.75rem;
+}
+
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;

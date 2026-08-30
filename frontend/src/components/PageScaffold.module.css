@@ -748,6 +748,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  scroll-margin-top: var(--nav-h);
 }
 
 .servicePhotoBlock::before {
@@ -1068,9 +1069,14 @@
 }
 
 /* ── Alternating day/night bands (about intro) ──────────────────── */
-/* Uses raw --c-navy/--c-cream tokens rather than the semantic
-   --dark/--paper aliases, so the alternation stays fixed regardless
-   of the site-wide yin (day/night) mode toggle. */
+/* Backgrounds use the mode-aware --off-white/--paper pair, but which one
+   reads as "lighter" flips between modes (Yang: off-white/cream is
+   lighter than paper/parchment; Yin: paper/slate is lighter than
+   off-white/navy). bandNight is always the lighter of the pair, bandDay
+   the darker, so each class is scoped per html[data-mode] to resolve to
+   the correct token for that mode. Text/accent colors use --dark/--muted/
+   --sage directly (unscoped) since those already flip polarity correctly
+   per mode on their own, same pattern as .storyHighlight below. */
 .bandSection {
   display: grid;
   grid-template-columns: 1fr;
@@ -1082,6 +1088,7 @@
   gap: var(--s-8);
   align-items: center;
   padding: clamp(64px, 9vw, 128px) var(--pad-x);
+  color: var(--dark);
 }
 
 @media (min-width: 900px) {
@@ -1094,22 +1101,20 @@
   }
 }
 
-.bandNight {
-  background: var(--c-navy);
-  color: var(--c-cream);
+html[data-mode="yang"] .bandDay {
+  background: var(--paper);
 }
 
-.bandDay {
-  background: var(--c-cream);
-  color: var(--c-warm-black);
+html[data-mode="yang"] .bandNight {
+  background: var(--off-white);
 }
 
-.bandNight .bandBody {
-  color: rgba(243, 235, 216, 0.78);
+html[data-mode="yin"] .bandDay {
+  background: var(--off-white);
 }
 
-.bandDay .bandBody {
-  color: var(--c-ink-500);
+html[data-mode="yin"] .bandNight {
+  background: var(--paper);
 }
 
 .bandTitle {
@@ -1124,14 +1129,7 @@
 
 .bandTitle em {
   font-style: italic;
-}
-
-.bandNight .bandTitle em {
-  color: var(--c-gold-bright);
-}
-
-.bandDay .bandTitle em {
-  color: var(--c-gold-dark);
+  color: var(--sage);
 }
 
 .bandBody {
@@ -1140,6 +1138,7 @@
   line-height: 1.7;
   max-width: 52ch;
   margin-top: var(--s-6);
+  color: var(--muted);
 }
 
 .bandHighlight {
@@ -1149,14 +1148,7 @@
   line-height: 1.4;
   max-width: 32ch;
   margin-top: var(--s-8);
-}
-
-.bandNight .bandHighlight {
-  color: var(--c-gold-light);
-}
-
-.bandDay .bandHighlight {
-  color: var(--c-gold-dark);
+  color: var(--sage);
 }
 
 /* Gold-highlighted pull paragraph within prose (e.g. Featured story / My Path).

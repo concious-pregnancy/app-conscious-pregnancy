@@ -16,6 +16,7 @@ export type ServicePanelDoc = {
   imageUrl: string;
   lead?: string;
   detailBody?: PortableTextBlock[];
+  slug?: { current?: string };
 };
 
 const portableComponents: PortableTextComponents = {
@@ -62,6 +63,7 @@ export default function ServicePanels({ panels }: { panels: ServicePanelDoc[] })
       {panels.map((svc, idx) => (
         <section
           key={svc._id}
+          id={svc.slug?.current}
           className={s.servicePhotoBlock}
           style={{ "--service-bg": `url(${svc.imageUrl})` } as React.CSSProperties}
         >
