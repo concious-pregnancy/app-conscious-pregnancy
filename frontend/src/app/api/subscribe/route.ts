@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { sendNotificationEmail, upsertContact } from "@/lib/brevo";
+import { upsertSubscriber } from "@/lib/mailerlite";
+import { sendNotificationEmail } from "@/lib/resend-notify";
 
 interface SubscribePayload {
   source: "footer";
@@ -29,26 +30,24 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await upsertContact({
+    await upsertSubscriber({
       email: json.email,
-      attributes: { SOURCE: json.source },
+      fields: { lead_source: json.source },
     });
 
-    if (result.created) {
-      const safeEmail = escapeHtml(json.email);
-      await sendNotificationEmail({
-        subject: `New Conscious Pregnancy subscriber: ${json.email}`,
-        replyToEmail: json.email,
-        htmlContent: `
-          <p>Someone just subscribed via the footer.</p>
-          <p><strong>Email:</strong> ${safeEmail}</p>
-          <hr>
-          <p style="color:#666;font-size:12px">Hit Reply to respond directly.</p>
-        `,
-      });
-    }
+    const safeEmail = escapeHtml(json.email);
+    await sendNotificationEmail({
+      subject: `New Conscious Pregnancy subscriber: ${json.email}`,
+      replyToEmail: json.email,
+      htmlContent: `
+        <p>Someone just subscribed via the footer.</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        <hr>
+        <p style="color:#666;font-size:12px">Hit Reply to respond directly.</p>
+      `,
+    });
 
-    return NextResponse.json({ ok: true, created: result.created });
+    return NextResponse.json({ ok: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
