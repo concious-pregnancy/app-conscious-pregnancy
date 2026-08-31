@@ -116,6 +116,19 @@
   background: var(--paper);
 }
 
+/* Mode-aware "darker of the pair" background for plain (non-band) sections
+   like "My Story" and "My Path", same lighter/darker semantics as
+   .bandDay/.bandNight below (see that comment) so a section between two
+   light bands reads as the alternating dark step in both Yang and Yin.
+   Text colors are untouched: --dark/--muted/--sage already flip polarity
+   per mode on their own, same as the band text. */
+html[data-mode="yang"] .sectionAltDark {
+  background: var(--paper);
+}
+html[data-mode="yin"] .sectionAltDark {
+  background: var(--off-white);
+}
+
 .sectionOffWhite {
   background: var(--off-white);
 }

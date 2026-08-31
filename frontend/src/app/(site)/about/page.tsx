@@ -6,7 +6,6 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
-  aboutHeroQuery,
   aboutIntroQuery,
   aboutFounderQuery,
   aboutTeamSectionQuery,
@@ -120,8 +119,7 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [hero, intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
-    client.fetch(aboutHeroQuery, {}, opts),
+  const [intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
     client.fetch(aboutIntroQuery, {}, opts),
     client.fetch(aboutFounderQuery, {}, opts),
     client.fetch(aboutTeamSectionQuery, {}, opts),
@@ -132,7 +130,6 @@ export default async function AboutPage() {
     client.fetch(aboutCtaQuery, {}, opts),
   ]);
 
-  const h = hero ?? {};
   const i = intro ?? {};
   const f = founder ?? {};
   const ts = teamSection ?? {};
@@ -195,33 +192,6 @@ export default async function AboutPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
-        <section className={s.hero}>
-          <div className={s.heroWisp} aria-hidden="true">
-            <svg
-              viewBox="0 0 1516 443"
-              preserveAspectRatio="none"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            >
-              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
-            </svg>
-          </div>
-          <div className={s.heroInnerStacked}>
-            <h1 className={s.heroTitle}>
-              {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
-            </h1>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-              {h.eyebrow ?? "About"}
-            </span>
-            <p className={s.heroLeadLarge}>
-              {h.lead ??
-                "Find out who we are, what we stand for, and how we can support your journey."}
-            </p>
-          </div>
-        </section>
-
         {/* Intro (band 2 moves after "My Story," band 3 moves after "My Path") */}
         {introBands.length > 0 ? (
           <section className={s.bandSection}>
@@ -234,7 +204,6 @@ export default async function AboutPage() {
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <LeafMark />
                   <span className="t-label t-label-eyebrow">{i.eyebrow ?? "The Way We Help"}</span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                     {i.title ?? "We start by"}{" "}
@@ -254,10 +223,9 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Founder intro / chaptered story */}
-        <section className={s.section}>
+        {/* Founder intro / chaptered story ("My Story") */}
+        <section className={`${s.section} ${s.sectionAltDark}`}>
           <div className={s.sectionInner}>
-            <LeafMark />
             <span className="t-label t-label-eyebrow">{f.eyebrow ?? "Meet our founder"}</span>
             <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
               {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
@@ -337,7 +305,6 @@ export default async function AboutPage() {
           <section className={`${s.section} ${s.sectionOffWhite}`}>
             <div className={s.sectionInner}>
               <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
-                <LeafMark />
                 <span className="t-label t-label-eyebrow">{ts.eyebrow ?? "Our team"}</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
                   {ts.title ?? "The People Who"} <em>{ts.titleEm ?? "Walk Beside You."}</em>
@@ -402,11 +369,10 @@ export default async function AboutPage() {
         )}
 
         {/* Featured story / My Path (editorial spread) */}
-        <section className={s.section}>
+        <section className={`${s.section} ${s.sectionAltDark}`}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
-                <LeafMark />
                 <span className="t-label t-label-eyebrow">
                   {st.eyebrow ?? "Real people. Real change."}
                 </span>
@@ -505,7 +471,6 @@ export default async function AboutPage() {
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <LeafMark />
                   <span className="t-label t-label-eyebrow">{q.eyebrow ?? "FAQ"}</span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                     {q.title ?? "Your questions."} <em>{q.titleEm ?? "Answered."}</em>
