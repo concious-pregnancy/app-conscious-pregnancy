@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { sendNotificationEmail, upsertContact } from "@/lib/brevo";
+import { upsertSubscriber } from "@/lib/mailerlite";
+import { sendNotificationEmail } from "@/lib/resend-notify";
 
 interface ContactPayload {
   firstName: string;
@@ -45,22 +46,19 @@ export async function POST(request: NextRequest) {
   const stageList = (json.stage ?? []).join(", ");
   const trimmedMessage = (json.message ?? "").slice(0, 1500);
 
-  // Brevo SMS attribute requires 00-prefixed international format (matches eyeboga pattern).
-  const smsValue = json.phone ? json.phone.replace(/^\+/, "00") : "";
-
-  const attributes: Record<string, string> = {
-    FIRSTNAME: json.firstName,
-    LASTNAME: json.lastName,
-    SOURCE: "homepage_contact",
+  const fields: Record<string, string> = {
+    name: json.firstName,
+    last_name: json.lastName,
+    lead_source: "homepage_contact",
   };
-  if (smsValue) attributes.SMS = smsValue;
-  if (stageList) attributes.STAGE = stageList;
-  if (trimmedMessage) attributes.MESSAGE = trimmedMessage;
+  if (json.phone) fields.phone = json.phone;
+  if (stageList) fields.stage = stageList;
+  if (trimmedMessage) fields.message = trimmedMessage;
 
   try {
-    const result = await upsertContact({
+    await upsertSubscriber({
       email: json.email,
-      attributes,
+      fields,
     });
 
     const safeMessage = escapeHtml(trimmedMessage).replace(/\n/g, "<br>");
@@ -86,7 +84,7 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ ok: true, created: result.created });
+    return NextResponse.json({ ok: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });

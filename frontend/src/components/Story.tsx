@@ -7,6 +7,7 @@ interface StoryProps {
   body: string;
   body2?: string;
   ctaLabel?: string;
+  ctaHref?: string;
   image: string;
   image2?: string;
   imageAlt?: string;
@@ -20,6 +21,7 @@ export default function Story({
   body,
   body2,
   ctaLabel = "Read Full Story",
+  ctaHref = "/contact",
   image,
   image2,
   imageAlt = "Conscious Pregnancy client story",
@@ -36,7 +38,7 @@ export default function Story({
           <h2 className={styles.h2}>{title}</h2>
           <p className={styles.body}>{body}</p>
           {body2 && <p className={styles.body}>{body2}</p>}
-          <a href="/contact" className={`btn ${styles.pill}`}>
+          <a href={ctaHref} className={`btn ${styles.pill}`}>
             {ctaLabel}
             <span className="btn-dot" />
           </a>

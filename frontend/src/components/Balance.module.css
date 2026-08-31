@@ -28,6 +28,22 @@
   background-image: none;
 }
 
+/* Yang (day) only: the Invitation panel used to stay transparent here,
+   letting the Hero's dark photo bleed through, which read as a dark
+   section on an otherwise light page. Match it to the Services section
+   ("Four lenses on one preparation") directly below instead. Yin keeps
+   the original transparent/photo-bleed effect. The dark-state rule is
+   re-declared scoped to Yang right after so it keeps strictly higher
+   specificity (one more attribute selector) than this one, leaving the
+   Palace panel's background untouched in both modes. */
+html[data-mode="yang"] .stage {
+  background: var(--paper);
+}
+
+html[data-mode="yang"] .stage[data-is-dark="true"] {
+  background: var(--off-white);
+}
+
 /* Grain overlay rides above the gradient. Stronger on the atmospheric state. */
 .stage::after {
   content: "";
@@ -119,6 +135,15 @@
 .panelLight .body {
   color: rgba(255, 255, 255, 0.72);
 }
+
+/* Yang only: panelLight now sits on the opaque --paper background above,
+   not the dark Hero photo, so its text needs to switch to dark ink. */
+html[data-mode="yang"] .panelLight .h2 {
+  color: var(--dark);
+}
+html[data-mode="yang"] .panelLight .body {
+  color: var(--muted);
+}
 .panelDark .h2 {
   color: var(--dark);
 }
@@ -196,6 +221,12 @@
 }
 
 .stage[data-is-dark="true"] .toggleLabel {
+  color: var(--dark);
+}
+
+/* Yang only: the default (light/Invitation) toggle label sat on the dark
+   Hero photo before; now it sits on the opaque --paper background. */
+html[data-mode="yang"] .toggleLabel {
   color: var(--dark);
 }
 

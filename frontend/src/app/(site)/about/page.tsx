@@ -6,7 +6,6 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
-  aboutHeroQuery,
   aboutIntroQuery,
   aboutFounderQuery,
   aboutTeamSectionQuery,
@@ -15,6 +14,7 @@ import {
   aboutStoryQuery,
   aboutFaqQuery,
   aboutCtaQuery,
+  servicesCtaQuery,
 } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
 import s from "@/components/PageScaffold.module.css";
@@ -76,10 +76,18 @@ type Band = {
   surface?: string;
 };
 
-// idx is the band's position in aboutIntro.bands[], used for the "/ 0N" eyebrow
-// suffix and the surface/reverse alternation, independent of where on the page
-// the band actually renders (band 2 renders out of array order, after "My Story").
-function BandSection({ band, idx }: { band: Band; idx: number }) {
+// idx is the band's position in aboutIntro.bands[], used for the surface/reverse
+// alternation, independent of where on the page the band actually renders
+// (band 2 renders out of array order, after "My Story").
+function BandSection({
+  band,
+  idx,
+  showCredentials,
+}: {
+  band: Band;
+  idx: number;
+  showCredentials?: boolean;
+}) {
   const isNight = (band.surface ?? (idx % 2 === 1 ? "navy" : "cream")) === "navy";
   return (
     <div
@@ -88,14 +96,13 @@ function BandSection({ band, idx }: { band: Band; idx: number }) {
         .join(" ")}
     >
       <div>
-        <span className="t-label t-label-eyebrow">
-          {band.eyebrow} {`/ ${String(idx + 1).padStart(2, "0")}`}
-        </span>
+        <span className="t-label t-label-eyebrow">{band.eyebrow}</span>
         <h2 className={s.bandTitle} style={{ marginTop: "1rem" }}>
           {band.title}
         </h2>
         <p className={s.bandBody}>{band.body}</p>
         {band.highlightedBody && <p className={s.bandHighlight}>{band.highlightedBody}</p>}
+        {showCredentials && <p className={s.bandCredentials}>L.Ac., DACM, MTOM, Dip. of O.M.</p>}
       </div>
       <img
         src={imgUrl(band.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`)}
@@ -120,19 +127,19 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [hero, intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
-    client.fetch(aboutHeroQuery, {}, opts),
-    client.fetch(aboutIntroQuery, {}, opts),
-    client.fetch(aboutFounderQuery, {}, opts),
-    client.fetch(aboutTeamSectionQuery, {}, opts),
-    client.fetch(teamMembersQuery, {}, opts),
-    client.fetch(aboutPebblesQuery, {}, opts),
-    client.fetch(aboutStoryQuery, {}, opts),
-    client.fetch(aboutFaqQuery, {}, opts),
-    client.fetch(aboutCtaQuery, {}, opts),
-  ]);
+  const [intro, founder, teamSection, team, pebbles, story, faq, cta, servicesCta] =
+    await Promise.all([
+      client.fetch(aboutIntroQuery, {}, opts),
+      client.fetch(aboutFounderQuery, {}, opts),
+      client.fetch(aboutTeamSectionQuery, {}, opts),
+      client.fetch(teamMembersQuery, {}, opts),
+      client.fetch(aboutPebblesQuery, {}, opts),
+      client.fetch(aboutStoryQuery, {}, opts),
+      client.fetch(aboutFaqQuery, {}, opts),
+      client.fetch(aboutCtaQuery, {}, opts),
+      client.fetch(servicesCtaQuery, {}, opts),
+    ]);
 
-  const h = hero ?? {};
   const i = intro ?? {};
   const f = founder ?? {};
   const ts = teamSection ?? {};
@@ -140,6 +147,7 @@ export default async function AboutPage() {
   const st = story ?? {};
   const q = faq ?? {};
   const c = cta ?? {};
+  const sc = servicesCta ?? {};
 
   const teamList =
     team && team.length > 0
@@ -195,38 +203,13 @@ export default async function AboutPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
-        <section className={s.hero}>
-          <div className={s.heroWisp} aria-hidden="true">
-            <svg
-              viewBox="0 0 1516 443"
-              preserveAspectRatio="none"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            >
-              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
-            </svg>
-          </div>
-          <div className={s.heroInnerStacked}>
-            <h1 className={s.heroTitle}>
-              {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
-            </h1>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-              {h.eyebrow ?? "About"}
-            </span>
-            <p className={s.heroLeadLarge}>
-              {h.lead ??
-                "Find out who we are, what we stand for, and how we can support your journey."}
-            </p>
-          </div>
-        </section>
-
         {/* Intro (band 2 moves after "My Story," band 3 moves after "My Path") */}
         {introBands.length > 0 ? (
           <section className={s.bandSection}>
             {introBands.map((band, idx) =>
-              idx === 1 || idx === 2 ? null : <BandSection key={idx} band={band} idx={idx} />,
+              idx === 1 || idx === 2 ? null : (
+                <BandSection key={idx} band={band} idx={idx} showCredentials={idx === 0} />
+              ),
             )}
           </section>
         ) : (
@@ -234,7 +217,6 @@ export default async function AboutPage() {
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <LeafMark />
                   <span className="t-label t-label-eyebrow">{i.eyebrow ?? "The Way We Help"}</span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                     {i.title ?? "We start by"}{" "}
@@ -254,10 +236,9 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Founder intro / chaptered story */}
-        <section className={s.section}>
+        {/* Founder intro / chaptered story ("My Story") */}
+        <section className={`${s.section} ${s.sectionAltDark}`}>
           <div className={s.sectionInner}>
-            <LeafMark />
             <span className="t-label t-label-eyebrow">{f.eyebrow ?? "Meet our founder"}</span>
             <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
               {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
@@ -337,7 +318,6 @@ export default async function AboutPage() {
           <section className={`${s.section} ${s.sectionOffWhite}`}>
             <div className={s.sectionInner}>
               <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
-                <LeafMark />
                 <span className="t-label t-label-eyebrow">{ts.eyebrow ?? "Our team"}</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
                   {ts.title ?? "The People Who"} <em>{ts.titleEm ?? "Walk Beside You."}</em>
@@ -402,11 +382,10 @@ export default async function AboutPage() {
         )}
 
         {/* Featured story / My Path (editorial spread) */}
-        <section className={s.section}>
+        <section className={`${s.section} ${s.sectionAltDark}`}>
           <div className={s.sectionInner}>
             <div className={s.twoCol}>
               <div>
-                <LeafMark />
                 <span className="t-label t-label-eyebrow">
                   {st.eyebrow ?? "Real people. Real change."}
                 </span>
@@ -505,7 +484,6 @@ export default async function AboutPage() {
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <LeafMark />
                   <span className="t-label t-label-eyebrow">{q.eyebrow ?? "FAQ"}</span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                     {q.title ?? "Your questions."} <em>{q.titleEm ?? "Answered."}</em>
@@ -549,13 +527,20 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Intro band 3, "Science and energetics, working as one," renders
-            last, just before the footer, out of its array order. */}
-        {introBands.length > 2 && (
-          <section className={s.bandSection}>
-            <BandSection band={introBands[2]} idx={2} />
-          </section>
-        )}
+        {/* Closing CTA, matching the Services page's final section. */}
+        <section className={s.closingCta}>
+          <span className="t-label t-label-eyebrow">{sc.eyebrow ?? "Book a session"}</span>
+          <h2 className={s.closingTitle}>
+            {sc.title ?? "Support starts with a"} <em>{sc.titleEm ?? "simple step."}</em>
+          </h2>
+          <p className={s.closingBody}>
+            {sc.body ??
+              "Whether you're starting fresh, returning, or exploring options, we're here."}
+          </p>
+          <Link href="/contact" className="btn btn-primary">
+            <span className="btn-dot" /> {sc.ctaLabel ?? "Book a session"}
+          </Link>
+        </section>
       </main>
       <Footer />
     </>

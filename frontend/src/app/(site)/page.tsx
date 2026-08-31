@@ -120,6 +120,7 @@ export default async function Home() {
             "Her practice brings together functional lab analysis, acupuncture, nervous system regulation, and trauma-informed bodywork into a single, integrated model. The result is care that addresses root causes rather than isolated symptoms, preparing the whole person for conception, pregnancy, and beyond."
           }
           ctaLabel={credentialsContent?.ctaLabel ?? "Learn More About Ashley"}
+          ctaHref="/about"
           image={
             credentialsContent?.image?.asset
               ? urlFor(credentialsContent.image).width(1200).url()

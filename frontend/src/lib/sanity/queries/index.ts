@@ -69,7 +69,8 @@ export const serviceExtrasQuery = groq`*[_type == "serviceExtra"] | order(order 
   _id,
   trigram,
   title,
-  body
+  body,
+  "slug": *[_type == "service" && (title + " " + titleLine2) == ^.title][0].slug
 }`;
 
 export const servicesSectionQuery = groq`*[_type == "servicesSection"][0] {
@@ -115,7 +116,6 @@ export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
   headlineLine2,
   subheading,
   primaryCtaLabel,
-  secondaryCtaLabel,
   credentials,
   footLabel
 }`;
@@ -203,10 +203,6 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
 
 /* ── About-page section queries ────────────────────────────────── */
 
-export const aboutHeroQuery = groq`*[_type == "aboutHero"][0] {
-  eyebrow, titleLine1, titleEm, lead
-}`;
-
 export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
   eyebrow, title, titleEm, body,
   bands[] { eyebrow, title, body, highlightedBody, image, surface }
@@ -245,10 +241,6 @@ export const aboutCtaQuery = groq`*[_type == "aboutCta"][0] {
 }`;
 
 /* ── Services-page section queries ─────────────────────────────── */
-
-export const servicesHeroQuery = groq`*[_type == "servicesHero"][0] {
-  eyebrow, titleLine1, titleEm, lead
-}`;
 
 // Full-bleed service panels on /services, in card order.
 export const servicesPanelsQuery = groq`*[_type == "service"] | order(order asc) {

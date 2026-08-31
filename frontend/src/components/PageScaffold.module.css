@@ -116,6 +116,19 @@
   background: var(--paper);
 }
 
+/* Mode-aware "darker of the pair" background for plain (non-band) sections
+   like "My Story" and "My Path", same lighter/darker semantics as
+   .bandDay/.bandNight below (see that comment) so a section between two
+   light bands reads as the alternating dark step in both Yang and Yin.
+   Text colors are untouched: --dark/--muted/--sage already flip polarity
+   per mode on their own, same as the band text. */
+html[data-mode="yang"] .sectionAltDark {
+  background: var(--paper);
+}
+html[data-mode="yin"] .sectionAltDark {
+  background: var(--off-white);
+}
+
 .sectionOffWhite {
   background: var(--off-white);
 }
@@ -439,6 +452,13 @@
   padding: clamp(80px, 12vw, 144px) var(--pad-x);
 }
 
+/* In yin mode the section has no explicit background, so it falls through
+   to the navy page ground, same navy as .sectionAltDark right above it.
+   Lift it onto the lighter slate surface so it reads as its own section. */
+html[data-mode="yin"] .closingCta {
+  background: var(--surface-raised);
+}
+
 .closingTitle {
   font-family: var(--font-serif);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -748,6 +768,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  scroll-margin-top: var(--nav-h);
 }
 
 .servicePhotoBlock::before {
@@ -1068,9 +1089,14 @@
 }
 
 /* ── Alternating day/night bands (about intro) ──────────────────── */
-/* Uses raw --c-navy/--c-cream tokens rather than the semantic
-   --dark/--paper aliases, so the alternation stays fixed regardless
-   of the site-wide yin (day/night) mode toggle. */
+/* Backgrounds use the mode-aware --off-white/--paper pair, but which one
+   reads as "lighter" flips between modes (Yang: off-white/cream is
+   lighter than paper/parchment; Yin: paper/slate is lighter than
+   off-white/navy). bandNight is always the lighter of the pair, bandDay
+   the darker, so each class is scoped per html[data-mode] to resolve to
+   the correct token for that mode. Text/accent colors use --dark/--muted/
+   --sage directly (unscoped) since those already flip polarity correctly
+   per mode on their own, same pattern as .storyHighlight below. */
 .bandSection {
   display: grid;
   grid-template-columns: 1fr;
@@ -1082,6 +1108,7 @@
   gap: var(--s-8);
   align-items: center;
   padding: clamp(64px, 9vw, 128px) var(--pad-x);
+  color: var(--dark);
 }
 
 @media (min-width: 900px) {
@@ -1094,22 +1121,20 @@
   }
 }
 
-.bandNight {
-  background: var(--c-navy);
-  color: var(--c-cream);
+html[data-mode="yang"] .bandDay {
+  background: var(--paper);
 }
 
-.bandDay {
-  background: var(--c-cream);
-  color: var(--c-warm-black);
+html[data-mode="yang"] .bandNight {
+  background: var(--off-white);
 }
 
-.bandNight .bandBody {
-  color: rgba(243, 235, 216, 0.78);
+html[data-mode="yin"] .bandDay {
+  background: var(--off-white);
 }
 
-.bandDay .bandBody {
-  color: var(--c-ink-500);
+html[data-mode="yin"] .bandNight {
+  background: var(--paper);
 }
 
 .bandTitle {
@@ -1124,14 +1149,7 @@
 
 .bandTitle em {
   font-style: italic;
-}
-
-.bandNight .bandTitle em {
-  color: var(--c-gold-bright);
-}
-
-.bandDay .bandTitle em {
-  color: var(--c-gold-dark);
+  color: var(--sage);
 }
 
 .bandBody {
@@ -1140,6 +1158,7 @@
   line-height: 1.7;
   max-width: 52ch;
   margin-top: var(--s-6);
+  color: var(--muted);
 }
 
 .bandHighlight {
@@ -1149,14 +1168,17 @@
   line-height: 1.4;
   max-width: 32ch;
   margin-top: var(--s-8);
+  color: var(--sage);
 }
 
-.bandNight .bandHighlight {
-  color: var(--c-gold-light);
-}
-
-.bandDay .bandHighlight {
-  color: var(--c-gold-dark);
+.bandCredentials {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: var(--s-6);
+  color: var(--sage);
 }
 
 /* Gold-highlighted pull paragraph within prose (e.g. Featured story / My Path).
@@ -1195,20 +1217,21 @@
   justify-content: center;
   padding: var(--s-6);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-/* Modal is always a light cream card, on top of either theme, so text
-   colors are pinned to the raw warm-ink tokens instead of the semantic
-   --dark/--sage tokens (which flip to cream-on-dark in yin mode and
-   would wash out against this fixed light background). */
+/* Modal surface follows the site's semantic tokens, so it flips to a
+   dark card with light text in yin mode instead of staying pinned to
+   a fixed light background. */
 .serviceModalContent {
   position: relative;
   width: 100%;
   max-width: 42rem;
   max-height: calc(100vh - var(--s-16));
   overflow-y: auto;
-  background: var(--c-cream-raised);
-  color: var(--c-warm-black);
+  overscroll-behavior: contain;
+  background: var(--surface-raised);
+  color: var(--ink);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   padding: clamp(32px, 6vw, 64px);
@@ -1223,9 +1246,9 @@
   height: 2.5rem;
   margin-bottom: var(--s-4);
   border-radius: var(--radius-pill);
-  border: 1px solid var(--c-driftwood);
-  background: var(--c-cream);
-  color: var(--c-warm-black);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--ink);
   font-family: var(--font-sans);
   font-size: 1.25rem;
   line-height: 1;
@@ -1238,7 +1261,7 @@
 .serviceModalTrigram {
   font-size: 1.8rem;
   line-height: 1;
-  color: var(--c-gold-dark);
+  color: var(--primary);
   display: block;
   margin-bottom: var(--s-3);
 }
@@ -1249,7 +1272,7 @@
   line-height: 1.05;
   letter-spacing: -0.03em;
   font-weight: 400;
-  color: var(--c-warm-black);
+  color: var(--ink);
   margin: 0 0 var(--s-6);
 }
 
@@ -1257,7 +1280,7 @@
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.75;
-  color: var(--c-warm-black);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: var(--s-4);

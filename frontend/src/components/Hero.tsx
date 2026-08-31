@@ -65,7 +65,6 @@ type HeroContent = {
   headlineLine2?: string;
   subheading?: string;
   primaryCtaLabel?: string;
-  secondaryCtaLabel?: string;
   credentials?: string;
   footLabel?: string;
 } | null;
@@ -78,7 +77,6 @@ export default function Hero({ content }: { content?: HeroContent }) {
     content?.subheading ??
     "A whole-body, whole-partnership approach to preparing for one of the most profound experiences of your life. What you bring into conception shapes the world your child enters.";
   const primaryCta = content?.primaryCtaLabel ?? "Start the Journey";
-  const secondaryCta = content?.secondaryCtaLabel ?? "The Approach";
   const credentials = content?.credentials ?? "Dr. Ashley Alden · DACM · L.Ac.";
   const footLabel = content?.footLabel ?? "Four lenses · one preparation";
 
@@ -133,10 +131,6 @@ export default function Hero({ content }: { content?: HeroContent }) {
             <div className={styles.ctaRow}>
               <a href="/contact" className={`btn btn-primary ${styles.ctaBtn}`}>
                 {primaryCta}
-                <span className="btn-dot" />
-              </a>
-              <a href="/services" className={`btn btn-ghost-light ${styles.ctaBtn}`}>
-                {secondaryCta}
                 <span className="btn-dot" />
               </a>
             </div>

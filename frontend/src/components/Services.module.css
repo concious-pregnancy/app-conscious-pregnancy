@@ -75,6 +75,9 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .col:nth-child(1) .card {
@@ -176,7 +179,7 @@
   letter-spacing: 0;
 }
 
-.cardFoot a {
+.cardFoot .readMore {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -184,16 +187,16 @@
   transition: color 0.3s;
 }
 
-.card:hover ~ * .cardFoot a,
-.card:hover .cardFoot a {
+.card:hover ~ * .cardFoot .readMore,
+.card:hover .cardFoot .readMore {
   color: rgba(255, 255, 255, 0.85);
 }
 
-.col:hover .cardFoot a {
+.col:hover .cardFoot .readMore {
   color: rgba(255, 255, 255, 0.85);
 }
 
-.cardFoot a::after {
+.cardFoot .readMore::after {
   content: "→";
   font-family: var(--font-sans);
   font-size: 0.85rem;
@@ -259,9 +262,18 @@
 }
 
 .stripItem {
+  display: block;
   padding: 2rem 1.5rem 2rem 0;
   border-right: 1px solid rgba(46, 50, 49, 0.1);
   padding-right: 1.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.3s;
+}
+
+.stripItem:hover {
+  opacity: 0.7;
 }
 
 .stripItem:last-child {
