@@ -29,7 +29,6 @@ export default function Contact({ content }: { content?: ContactContent }) {
     content?.sub ??
     "Fill out the form and we will reach out within 24 hours to schedule your discovery call. We will talk through where you are, what you want to optimize, and whether this program is the right fit.";
   const formHeading = content?.formHeading ?? "Tell us about you.";
-  const trustLine = content?.trustLine ?? "Trusted by 80+ clients";
   const submitLabel = content?.submitLabel ?? "Request a Discovery Call";
 
   const [submitting, setSubmitting] = useState(false);
@@ -84,10 +83,9 @@ export default function Contact({ content }: { content?: ContactContent }) {
           </p>
 
           <div className={styles.trust}>
-            <p className={styles.trustLine}>{trustLine}</p>
             <p className={styles.trustContact}>
               Prefer to chat first?{" "}
-              <a href="mailto:hello@consciouspregnancy.care" className={styles.trustLink}>
+              <a href="mailto:ashley@goldenlife.care" className={styles.trustLink}>
                 Send us an email
               </a>{" "}
               or connect with us on social.

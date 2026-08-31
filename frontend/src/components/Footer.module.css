@@ -187,13 +187,10 @@
   color: var(--c-warm-black);
 }
 
+/* Dot indicator, removed from all buttons per design feedback (matches
+   .btn-dot in globals.css). */
 .arrow {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sage);
-  flex-shrink: 0;
+  display: none;
 }
 
 .fineprint {
@@ -265,14 +262,12 @@
   gap: 0.55rem;
 }
 
-.mark::before {
-  content: "";
+.markTrigram {
   display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sage);
-  transform: translateY(-2px);
+  color: var(--sage-light);
+  flex-shrink: 0;
+  position: relative;
+  top: 0.1em;
 }
 
 .mark em {

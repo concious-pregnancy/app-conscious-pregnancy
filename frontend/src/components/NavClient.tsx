@@ -121,7 +121,7 @@ export default function NavClient({
           <rect x="0" y="19" width="14" height="2" />
           <rect x="20" y="19" width="14" height="2" />
         </svg>
-        {brandWordPrimary}&mdash;{brandWordItalic}
+        {brandWordPrimary} <em>{brandWordItalic}</em>
       </Link>
 
       <ul className={`${styles.links} ${menuOpen ? styles.linksOpen : ""}`}>
