@@ -90,7 +90,7 @@ async function main() {
     founderEyebrow: founder?.eyebrow,
     founderTitle: founder?.title,
     founderTitleEm: founder?.titleEm,
-    founderBody: founder?.body,
+    founderBody: (founder?.body ?? []).filter((p: string) => p.trim().length > 0),
     founderChapters: founder?.chapters,
 
     teamEyebrow: teamSection?.eyebrow,
