@@ -18,20 +18,10 @@ import { contactSectionType } from "./contactSection";
 import { philosophySectionType } from "./philosophySection";
 import { approachSectionType } from "./approachSection";
 
-// About-page sections (each is its own document, mirroring the homepage pattern)
-import { aboutHeroType } from "./aboutHero";
-import { aboutIntroType } from "./aboutIntro";
-import { aboutFounderType } from "./aboutFounder";
-import { aboutTeamSectionType } from "./aboutTeamSection";
-import { aboutApproachType } from "./aboutApproach";
-import { aboutPebblesType } from "./aboutPebbles";
-import { aboutStoryType } from "./aboutStory";
-import { aboutFaqType } from "./aboutFaq";
-import { aboutCtaType } from "./aboutCta";
-import { teamMemberType } from "./teamMember";
+// About page: one consolidated document, grouped by on-page section
+import { aboutPageType } from "./aboutPage";
 
 // Services-page sections
-import { servicesHeroType } from "./servicesHero";
 import { servicesCtaType } from "./servicesCta";
 
 // Journal page (layout singletons that wrap the journalArticle collection)
@@ -69,19 +59,9 @@ export const schemaTypes = [
   approachSectionType,
 
   // About page
-  aboutHeroType,
-  aboutIntroType,
-  aboutFounderType,
-  aboutTeamSectionType,
-  aboutApproachType,
-  aboutPebblesType,
-  aboutStoryType,
-  aboutFaqType,
-  aboutCtaType,
-  teamMemberType,
+  aboutPageType,
 
   // Services page
-  servicesHeroType,
   servicesCtaType,
 
   // Journal page layout

@@ -201,43 +201,30 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
   sub
 }`;
 
-/* ── About-page section queries ────────────────────────────────── */
+/* ── About page (one consolidated document, grouped by on-page section) ── */
 
-export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
-  eyebrow, title, titleEm, body,
-  bands[] { eyebrow, title, body, highlightedBody, image, surface }
-}`;
+export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
+  introEyebrow, introTitle, introTitleEm, introBody,
+  introBandBeforeFounder { eyebrow, title, body, highlightedBody, image, surface },
+  introBandAfterFounder { eyebrow, title, body, highlightedBody, image, surface },
 
-export const aboutFounderQuery = groq`*[_type == "aboutFounder"][0] {
-  eyebrow, title, titleEm, body, image, quote, quoteAttribution,
-  chapters[] { label, title, body }
-}`;
+  founderEyebrow, founderTitle, founderTitleEm, founderBody,
+  founderChapters[] { label, title, body },
 
-export const aboutTeamSectionQuery = groq`*[_type == "aboutTeamSection"][0] {
-  eyebrow, title, titleEm, sub
-}`;
+  teamEyebrow, teamTitle, teamTitleEm, teamSub,
+  teamMembers[] { name, role, bio, image },
 
-export const teamMembersQuery = groq`*[_type == "teamMember"] | order(order asc) {
-  _id, name, role, bio, image
-}`;
+  pebblesEyebrow, pebblesQuote, pebblesAttribution, pebblesCtaLabel, pebblesImage,
 
-export const aboutPebblesQuery = groq`*[_type == "aboutPebbles"][0] {
-  eyebrow, quote, attribution, ctaLabel, image
-}`;
+  storyEyebrow, storyTitle, storyTitleEm, storyBody, storyHighlightedBody,
+  storyFacts[] { value, label },
+  storyPullQuotes[] { quote, attribution },
+  storyOutsideClinic,
 
-export const aboutStoryQuery = groq`*[_type == "aboutStory"][0] {
-  eyebrow, title, titleEm, body, highlightedBody, ctaLabel, imageBack, imageFront,
-  facts[] { value, label },
-  pullQuotes[] { quote, attribution },
-  outsideClinic
-}`;
+  faqEyebrow, faqTitle, faqTitleEm, faqSub, faqFootnote,
+  faqItems[] { q, a },
 
-export const aboutFaqQuery = groq`*[_type == "aboutFaq"][0] {
-  eyebrow, title, titleEm, sub, footnote, items[] { q, a }
-}`;
-
-export const aboutCtaQuery = groq`*[_type == "aboutCta"][0] {
-  eyebrow, title, titleEm, body, ctaLabel
+  ctaEyebrow, ctaTitle, ctaTitleEm, ctaBody, ctaLabel
 }`;
 
 /* ── Services-page section queries ─────────────────────────────── */
