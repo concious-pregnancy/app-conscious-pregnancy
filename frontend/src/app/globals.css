@@ -507,14 +507,11 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* Dot indicator. */
+/* Dot indicator, removed from all buttons per design feedback. Hidden here
+   rather than stripped from every <span className="btn-dot" /> call site
+   (two dozen+ across the app) so there's one place to reverse it. */
 .btn-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.85;
-  flex-shrink: 0;
+  display: none;
 }
 
 /* Surface helpers. */
