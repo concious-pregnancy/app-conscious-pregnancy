@@ -532,9 +532,6 @@ export default async function AboutPage() {
             <h1 className={s.heroTitle}>
               {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
             </h1>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-              {h.eyebrow ?? "About"}
-            </span>
             <p className={s.heroLeadLarge}>
               {h.lead ??
                 "Find out who we are, what we stand for, and how we can support your journey."}
