@@ -210,6 +210,18 @@
     border-bottom: 1px solid var(--border);
   }
 
+  /* Reuse the row's own border-bottom as the active indicator instead of
+     the desktop ::after underline, which floats 6px below the text and
+     lands misaligned with the gray dividers already separating every
+     mobile menu row. */
+  .linksOpen a.activeLink {
+    border-bottom-color: currentColor;
+  }
+
+  .linksOpen a.activeLink::after {
+    content: none;
+  }
+
   .cta,
   .modeToggleSlot {
     display: none;

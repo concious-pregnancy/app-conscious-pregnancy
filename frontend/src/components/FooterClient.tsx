@@ -107,8 +107,7 @@ export default function FooterClient({
                     required
                   />
                   <button type="submit" disabled={submitting} aria-busy={submitting}>
-                    {submitting ? signupSubmittingLabel : signupButtonLabel}{" "}
-                    <span className={styles.arrow} />
+                    {submitting ? signupSubmittingLabel : signupButtonLabel}
                   </button>
                 </form>
                 {error ? (
@@ -140,6 +139,20 @@ export default function FooterClient({
         </div>
         <div className={styles.bot}>
           <div className={styles.mark}>
+            <svg
+              className={styles.markTrigram}
+              viewBox="0 0 34 22"
+              width="22"
+              height="15"
+              aria-hidden="true"
+              fill="currentColor"
+            >
+              <rect x="0" y="1" width="34" height="2" />
+              <rect x="0" y="10" width="14" height="2" />
+              <rect x="20" y="10" width="14" height="2" />
+              <rect x="0" y="19" width="14" height="2" />
+              <rect x="20" y="19" width="14" height="2" />
+            </svg>
             {brandWordPrimary} <em>{brandWordItalic}</em>
           </div>
           <div className={styles.meta}>
