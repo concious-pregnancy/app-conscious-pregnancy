@@ -50,11 +50,15 @@ export default function ServicePanels({ panels }: { panels: ServicePanelDoc[] })
       if (e.key === "Escape") setOpenId(null);
     };
     document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
+    const html = document.documentElement;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    html.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
+      html.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
     };
   }, [active]);
 
@@ -119,6 +123,7 @@ export default function ServicePanels({ panels }: { panels: ServicePanelDoc[] })
             role="dialog"
             aria-modal="true"
             aria-labelledby="service-modal-title"
+            data-lenis-prevent
           >
             <button
               type="button"

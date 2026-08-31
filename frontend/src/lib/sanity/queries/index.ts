@@ -69,7 +69,8 @@ export const serviceExtrasQuery = groq`*[_type == "serviceExtra"] | order(order 
   _id,
   trigram,
   title,
-  body
+  body,
+  "slug": *[_type == "service" && (title + " " + titleLine2) == ^.title][0].slug
 }`;
 
 export const servicesSectionQuery = groq`*[_type == "servicesSection"][0] {
@@ -115,7 +116,6 @@ export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
   headlineLine2,
   subheading,
   primaryCtaLabel,
-  secondaryCtaLabel,
   credentials,
   footLabel
 }`;

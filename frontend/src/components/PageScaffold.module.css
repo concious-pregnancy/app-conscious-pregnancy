@@ -452,6 +452,13 @@ html[data-mode="yin"] .sectionAltDark {
   padding: clamp(80px, 12vw, 144px) var(--pad-x);
 }
 
+/* In yin mode the section has no explicit background, so it falls through
+   to the navy page ground, same navy as .sectionAltDark right above it.
+   Lift it onto the lighter slate surface so it reads as its own section. */
+html[data-mode="yin"] .closingCta {
+  background: var(--surface-raised);
+}
+
 .closingTitle {
   font-family: var(--font-serif);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -1210,20 +1217,21 @@ html[data-mode="yin"] .bandNight {
   justify-content: center;
   padding: var(--s-6);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-/* Modal is always a light cream card, on top of either theme, so text
-   colors are pinned to the raw warm-ink tokens instead of the semantic
-   --dark/--sage tokens (which flip to cream-on-dark in yin mode and
-   would wash out against this fixed light background). */
+/* Modal surface follows the site's semantic tokens, so it flips to a
+   dark card with light text in yin mode instead of staying pinned to
+   a fixed light background. */
 .serviceModalContent {
   position: relative;
   width: 100%;
   max-width: 42rem;
   max-height: calc(100vh - var(--s-16));
   overflow-y: auto;
-  background: var(--c-cream-raised);
-  color: var(--c-warm-black);
+  overscroll-behavior: contain;
+  background: var(--surface-raised);
+  color: var(--ink);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   padding: clamp(32px, 6vw, 64px);
@@ -1238,9 +1246,9 @@ html[data-mode="yin"] .bandNight {
   height: 2.5rem;
   margin-bottom: var(--s-4);
   border-radius: var(--radius-pill);
-  border: 1px solid var(--c-driftwood);
-  background: var(--c-cream);
-  color: var(--c-warm-black);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--ink);
   font-family: var(--font-sans);
   font-size: 1.25rem;
   line-height: 1;
@@ -1253,7 +1261,7 @@ html[data-mode="yin"] .bandNight {
 .serviceModalTrigram {
   font-size: 1.8rem;
   line-height: 1;
-  color: var(--c-gold-dark);
+  color: var(--primary);
   display: block;
   margin-bottom: var(--s-3);
 }
@@ -1264,7 +1272,7 @@ html[data-mode="yin"] .bandNight {
   line-height: 1.05;
   letter-spacing: -0.03em;
   font-weight: 400;
-  color: var(--c-warm-black);
+  color: var(--ink);
   margin: 0 0 var(--s-6);
 }
 
@@ -1272,7 +1280,7 @@ html[data-mode="yin"] .bandNight {
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.75;
-  color: var(--c-warm-black);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: var(--s-4);

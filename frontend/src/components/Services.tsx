@@ -18,6 +18,7 @@ type ServiceExtra = {
   trigram: string;
   title: string;
   body: string;
+  slug?: { current?: string };
 };
 
 type ServicesSection = {
@@ -60,8 +61,9 @@ export default function Services({
       <div className={styles.grid}>
         {services.map((s) => {
           const imgUrl = s.image?.asset ? urlFor(s.image).width(800).auto("format").url() : "";
+          const href = s.slug?.current ? `/services#${s.slug.current}` : "/services";
           return (
-            <div key={s._id} className={styles.col} data-stagger>
+            <a key={s._id} href={href} className={styles.col} data-stagger>
               <article
                 className={styles.card}
                 style={
@@ -82,26 +84,27 @@ export default function Services({
                   </h3>
                   <div className={styles.cardFoot}>
                     <span className={styles.trigram}>{s.trigram}</span>
-                    <a href={s.slug?.current ? `/services#${s.slug.current}` : "/services"}>
-                      Read More
-                    </a>
+                    <span className={styles.readMore}>Read More</span>
                   </div>
                 </div>
               </article>
               <p className={styles.body}>{s.body}</p>
-            </div>
+            </a>
           );
         })}
       </div>
 
       <div className={styles.strip}>
-        {extras.map((e) => (
-          <div key={e._id} className={styles.stripItem}>
-            <span className={styles.stripTrigram}>{e.trigram}</span>
-            <h4 className={styles.stripTitle}>{e.title}</h4>
-            <p className={styles.stripBody}>{e.body}</p>
-          </div>
-        ))}
+        {extras.map((e) => {
+          const href = e.slug?.current ? `/services#${e.slug.current}` : "/services";
+          return (
+            <a key={e._id} href={href} className={styles.stripItem}>
+              <span className={styles.stripTrigram}>{e.trigram}</span>
+              <h4 className={styles.stripTitle}>{e.title}</h4>
+              <p className={styles.stripBody}>{e.body}</p>
+            </a>
+          );
+        })}
       </div>
     </section>
   );
