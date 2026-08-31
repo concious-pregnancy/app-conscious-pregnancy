@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ServicePanels, { type ServicePanelDoc } from "@/components/ServicePanels";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
-import { servicesHeroQuery, servicesPanelsQuery, servicesCtaQuery } from "@/lib/sanity/queries";
+import { servicesPanelsQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = {
@@ -25,13 +25,11 @@ function imgUrl(image: SanityImage, fallback: string): string {
 
 export default async function ServicesPage() {
   const opts = { cache: "no-store" } as const;
-  const [hero, panels, cta] = await Promise.all([
-    client.fetch(servicesHeroQuery, {}, opts),
+  const [panels, cta] = await Promise.all([
     client.fetch<ServicePanelQueryDoc[]>(servicesPanelsQuery, {}, opts),
     client.fetch(servicesCtaQuery, {}, opts),
   ]);
 
-  const h = hero ?? {};
   const c = cta ?? {};
   const servicePanels: ServicePanelDoc[] = (panels ?? []).map((svc) => {
     const { image, ...rest } = svc;
@@ -45,33 +43,6 @@ export default async function ServicesPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Hero */}
-        <section className={s.hero}>
-          <div className={s.heroWisp} aria-hidden="true">
-            <svg
-              viewBox="0 0 1516 443"
-              preserveAspectRatio="none"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            >
-              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
-            </svg>
-          </div>
-          <div className={s.heroInnerStacked}>
-            <h1 className={s.heroTitle}>
-              {h.titleLine1 ?? "Every Step"} <em>{h.titleEm ?? "of Your Journey."}</em>
-            </h1>
-            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
-              {h.eyebrow ?? "Services"}
-            </span>
-            <p className={s.heroLeadLarge}>
-              {h.lead ??
-                "Explore our therapy and coaching options tailored to your goals, pace, and needs."}
-            </p>
-          </div>
-        </section>
-
         {/* Service panels: full-bleed dark photographic per service */}
         <ServicePanels panels={servicePanels} />
 

@@ -6,7 +6,6 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
-  aboutHeroQuery,
   aboutIntroQuery,
   aboutFounderQuery,
   aboutTeamSectionQuery,
@@ -15,6 +14,7 @@ import {
   aboutStoryQuery,
   aboutFaqQuery,
   aboutCtaQuery,
+  servicesCtaQuery,
 } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
 import s from "@/components/PageScaffold.module.css";
@@ -127,19 +127,19 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [hero, intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
-    client.fetch(aboutHeroQuery, {}, opts),
-    client.fetch(aboutIntroQuery, {}, opts),
-    client.fetch(aboutFounderQuery, {}, opts),
-    client.fetch(aboutTeamSectionQuery, {}, opts),
-    client.fetch(teamMembersQuery, {}, opts),
-    client.fetch(aboutPebblesQuery, {}, opts),
-    client.fetch(aboutStoryQuery, {}, opts),
-    client.fetch(aboutFaqQuery, {}, opts),
-    client.fetch(aboutCtaQuery, {}, opts),
-  ]);
+  const [intro, founder, teamSection, team, pebbles, story, faq, cta, servicesCta] =
+    await Promise.all([
+      client.fetch(aboutIntroQuery, {}, opts),
+      client.fetch(aboutFounderQuery, {}, opts),
+      client.fetch(aboutTeamSectionQuery, {}, opts),
+      client.fetch(teamMembersQuery, {}, opts),
+      client.fetch(aboutPebblesQuery, {}, opts),
+      client.fetch(aboutStoryQuery, {}, opts),
+      client.fetch(aboutFaqQuery, {}, opts),
+      client.fetch(aboutCtaQuery, {}, opts),
+      client.fetch(servicesCtaQuery, {}, opts),
+    ]);
 
-  const h = hero ?? {};
   const i = intro ?? {};
   const f = founder ?? {};
   const ts = teamSection ?? {};
@@ -147,6 +147,7 @@ export default async function AboutPage() {
   const st = story ?? {};
   const q = faq ?? {};
   const c = cta ?? {};
+  const sc = servicesCta ?? {};
 
   const teamList =
     team && team.length > 0
@@ -526,28 +527,19 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Prepping the Palace CTA, moved here from the top of the page. */}
-        <section className={s.hero}>
-          <div className={s.heroWisp} aria-hidden="true">
-            <svg
-              viewBox="0 0 1516 443"
-              preserveAspectRatio="none"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-            >
-              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
-            </svg>
-          </div>
-          <div className={s.heroInnerStacked}>
-            <h1 className={s.heroTitle}>
-              {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
-            </h1>
-            <p className={s.heroLeadLarge}>
-              {h.lead ??
-                "Find out who we are, what we stand for, and how we can support your journey."}
-            </p>
-          </div>
+        {/* Closing CTA, matching the Services page's final section. */}
+        <section className={s.closingCta}>
+          <span className="t-label t-label-eyebrow">{sc.eyebrow ?? "Book a session"}</span>
+          <h2 className={s.closingTitle}>
+            {sc.title ?? "Support starts with a"} <em>{sc.titleEm ?? "simple step."}</em>
+          </h2>
+          <p className={s.closingBody}>
+            {sc.body ??
+              "Whether you're starting fresh, returning, or exploring options, we're here."}
+          </p>
+          <Link href="/contact" className="btn btn-primary">
+            <span className="btn-dot" /> {sc.ctaLabel ?? "Book a session"}
+          </Link>
         </section>
       </main>
       <Footer />

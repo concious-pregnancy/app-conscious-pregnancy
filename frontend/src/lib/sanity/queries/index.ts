@@ -203,10 +203,6 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
 
 /* ── About-page section queries ────────────────────────────────── */
 
-export const aboutHeroQuery = groq`*[_type == "aboutHero"][0] {
-  eyebrow, titleLine1, titleEm, lead
-}`;
-
 export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
   eyebrow, title, titleEm, body,
   bands[] { eyebrow, title, body, highlightedBody, image, surface }
@@ -245,10 +241,6 @@ export const aboutCtaQuery = groq`*[_type == "aboutCta"][0] {
 }`;
 
 /* ── Services-page section queries ─────────────────────────────── */
-
-export const servicesHeroQuery = groq`*[_type == "servicesHero"][0] {
-  eyebrow, titleLine1, titleEm, lead
-}`;
 
 // Full-bleed service panels on /services, in card order.
 export const servicesPanelsQuery = groq`*[_type == "service"] | order(order asc) {
