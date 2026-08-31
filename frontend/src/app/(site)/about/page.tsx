@@ -5,17 +5,7 @@ import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
-import {
-  aboutIntroQuery,
-  aboutFounderQuery,
-  aboutTeamSectionQuery,
-  teamMembersQuery,
-  aboutPebblesQuery,
-  aboutStoryQuery,
-  aboutFaqQuery,
-  aboutCtaQuery,
-  servicesCtaQuery,
-} from "@/lib/sanity/queries";
+import { aboutPageQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
 import s from "@/components/PageScaffold.module.css";
 
@@ -76,9 +66,8 @@ type Band = {
   surface?: string;
 };
 
-// idx is the band's position in aboutIntro.bands[], used for the surface/reverse
-// alternation, independent of where on the page the band actually renders
-// (band 2 renders out of array order, after "My Story").
+// idx controls the surface/reverse alternation between the two named band fields
+// (introBandBeforeFounder renders first, introBandAfterFounder after "My Story").
 function BandSection({
   band,
   idx,
@@ -132,74 +121,47 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [intro, founder, teamSection, team, pebbles, story, faq, cta, servicesCta] =
-    await Promise.all([
-      client.fetch(aboutIntroQuery, {}, opts),
-      client.fetch(aboutFounderQuery, {}, opts),
-      client.fetch(aboutTeamSectionQuery, {}, opts),
-      client.fetch(teamMembersQuery, {}, opts),
-      client.fetch(aboutPebblesQuery, {}, opts),
-      client.fetch(aboutStoryQuery, {}, opts),
-      client.fetch(aboutFaqQuery, {}, opts),
-      client.fetch(aboutCtaQuery, {}, opts),
-      client.fetch(servicesCtaQuery, {}, opts),
-    ]);
+  const [aboutPage, servicesCta] = await Promise.all([
+    client.fetch(aboutPageQuery, {}, opts),
+    client.fetch(servicesCtaQuery, {}, opts),
+  ]);
 
-  const i = intro ?? {};
-  const f = founder ?? {};
-  const ts = teamSection ?? {};
-  const p = pebbles ?? {};
-  const st = story ?? {};
-  const q = faq ?? {};
-  const c = cta ?? {};
+  const a = aboutPage ?? {};
   const sc = servicesCta ?? {};
 
-  const teamList =
-    team && team.length > 0
-      ? team.map((m: { name?: string; role?: string; bio?: string; image?: SanityImage }) => ({
-          name: m.name ?? "",
-          role: m.role ?? "Therapist",
-          bio: m.bio ?? "",
-          image: imgUrl(m.image, fallbackTeam[0].image),
-        }))
+  const teamList: { name: string; role: string; bio: string; image: string }[] =
+    a.teamMembers && a.teamMembers.length > 0
+      ? a.teamMembers.map(
+          (m: { name?: string; role?: string; bio?: string; image?: SanityImage }) => ({
+            name: m.name ?? "",
+            role: m.role ?? "Therapist",
+            bio: m.bio ?? "",
+            image: imgUrl(m.image, fallbackTeam[0].image),
+          }),
+        )
       : fallbackTeam;
-  const founderBody: string[] =
-    f.body && f.body.length > 0
-      ? f.body
-      : [
-          "ClearPath was founded by Anna Keller, a therapist with over 15 years of experience helping people navigate life's turning points. Her work is grounded in the belief that clarity and change come from small, intentional steps, and that no one should walk their path alone.",
-          "Anna started ClearPath to create a welcoming, non-judgmental space where people could slow down, reflect, and find their next direction with confidence and care.",
-        ];
-  const founderChapters: { label?: string; title?: string; body?: string }[] = f.chapters ?? [];
+  const founderBody: string[] = a.founderBody && a.founderBody.length > 0 ? a.founderBody : [];
+  const founderChapters: { label?: string; title?: string; body?: string }[] =
+    a.founderChapters ?? [];
   // founderBody[0] can hold the full multi-paragraph bio as one \n-joined string
   // (legacy data entry); the chaptered view only wants the first paragraph as its lead.
   const founderLead = founderBody[0]?.split("\n")[0];
-  const storyFacts: { value?: string; label?: string }[] = st.facts ?? [];
-  const storyPullQuotes: { quote?: string; attribution?: string }[] = st.pullQuotes ?? [];
-  const storyOutsideClinic: string[] = st.outsideClinic ?? [];
-  const introBands: Band[] = i.bands ?? [];
-  const faqs: { q: string; a: string }[] =
-    q.items && q.items.length > 0
-      ? q.items
-      : [
-          {
-            q: "How do I know if therapy is right for me?",
-            a: "Therapy isn't just for crises. It's for anyone curious about growth, clarity, or navigating life's changes with more support and self-awareness.",
-          },
-          {
-            q: "What can I expect from the first session?",
-            a: "The first session is a gentle starting point. You'll talk with your therapist about what brings you here, what you're hoping for, and what feels comfortable for you right now.",
-          },
-        ];
+  const storyFacts: { value?: string; label?: string }[] = a.storyFacts ?? [];
+  const storyPullQuotes: { quote?: string; attribution?: string }[] = a.storyPullQuotes ?? [];
+  const storyOutsideClinic: string[] = a.storyOutsideClinic ?? [];
+  const bandBeforeFounder: Band = a.introBandBeforeFounder ?? {};
+  const bandAfterFounder: Band = a.introBandAfterFounder ?? {};
+  const hasIntroBand = Boolean(
+    bandBeforeFounder.title || bandBeforeFounder.body || bandBeforeFounder.eyebrow,
+  );
+  const faqs: { q: string; a: string }[] = a.faqItems && a.faqItems.length > 0 ? a.faqItems : [];
 
-  const pebblesImg = imgUrl(p.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`);
+  const pebblesImg = imgUrl(a.pebblesImage, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`);
   const introBody =
-    i.body ??
-    "At ClearPath, we believe every journey is unique, and so is the support it deserves. Our role is to walk beside you, offering clarity, compassion, and practical guidance as you navigate life's challenges.";
+    a.introBody ??
+    "At Conscious Pregnancy, every journey is unique, and so is the support it deserves.";
   const { lead: introLead, rest: introRest } = splitIntroBody(introBody);
-  const storyBody: string =
-    st.body ??
-    "When Daniel and Marisa first came in, they weren't on the verge of breaking up, but they felt more like roommates than partners.";
+  const storyBody: string = a.storyBody ?? "";
   // storyBody's paragraphs are separated by real newlines (not sentence-regex splittable,
   // since T.C.M./L.Ac. abbreviation periods would fragment the naive splitIntroBody split).
   const [storyLead, ...storyRest] = storyBody.split("\n").filter(Boolean);
@@ -208,24 +170,22 @@ export default async function AboutPage() {
     <>
       <Nav />
       <main className={s.pageMain}>
-        {/* Intro (band 2 moves after "My Story," band 3 moves after "My Path") */}
-        {introBands.length > 0 ? (
+        {/* Intro (band renders here; second band moves after "My Story") */}
+        {hasIntroBand ? (
           <section className={s.bandSection}>
-            {introBands.map((band, idx) =>
-              idx === 1 || idx === 2 ? null : (
-                <BandSection key={idx} band={band} idx={idx} showCredentials={idx === 0} />
-              ),
-            )}
+            <BandSection band={bandBeforeFounder} idx={0} showCredentials />
           </section>
         ) : (
           <section className={`${s.section} ${s.sectionPaper}`}>
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <span className="t-label t-label-eyebrow">{i.eyebrow ?? "The Way We Help"}</span>
+                  <span className="t-label t-label-eyebrow">
+                    {a.introEyebrow ?? "The Way We Help"}
+                  </span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                    {i.title ?? "We start by"}{" "}
-                    <em>{i.titleEm ?? "listening, really listening."}</em>
+                    {a.introTitle ?? "We start by"}{" "}
+                    <em>{a.introTitleEm ?? "listening, really listening."}</em>
                   </h2>
                 </div>
                 <div className={s.twoColBody}>
@@ -244,9 +204,11 @@ export default async function AboutPage() {
         {/* Founder intro / chaptered story ("My Story") */}
         <section className={`${s.section} ${s.sectionAltDark}`}>
           <div className={s.sectionInner}>
-            <span className="t-label t-label-eyebrow">{f.eyebrow ?? "Meet our founder"}</span>
+            <span className="t-label t-label-eyebrow">
+              {a.founderEyebrow ?? "Meet our founder"}
+            </span>
             <h2 className={s.twoColTitle} style={{ marginTop: "1rem", maxWidth: "16ch" }}>
-              {f.title ?? "Meet"} <em>{f.titleEm ?? "Our Founder."}</em>
+              {a.founderTitle ?? "Meet"} <em>{a.founderTitleEm ?? "Our Founder."}</em>
             </h2>
             {founderChapters.length > 0 ? (
               <>
@@ -310,11 +272,10 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* Intro band 2, "No generic protocol, no national average," moved
-            here (after My Story) per redesign feedback, out of its array order. */}
-        {introBands.length > 1 && (
+        {/* Second intro band renders here, after "My Story," per redesign feedback. */}
+        {Boolean(bandAfterFounder.title || bandAfterFounder.body || bandAfterFounder.eyebrow) && (
           <section className={s.bandSection}>
-            <BandSection band={introBands[1]} idx={1} />
+            <BandSection band={bandAfterFounder} idx={1} />
           </section>
         )}
 
@@ -323,13 +284,13 @@ export default async function AboutPage() {
           <section className={`${s.section} ${s.sectionOffWhite}`}>
             <div className={s.sectionInner}>
               <div style={{ marginBottom: "var(--s-12)", textAlign: "center" }}>
-                <span className="t-label t-label-eyebrow">{ts.eyebrow ?? "Our team"}</span>
+                <span className="t-label t-label-eyebrow">{a.teamEyebrow ?? "Our team"}</span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem", marginInline: "auto" }}>
-                  {ts.title ?? "The People Who"} <em>{ts.titleEm ?? "Walk Beside You."}</em>
+                  {a.teamTitle ?? "The People Who"} <em>{a.teamTitleEm ?? "Walk Beside You."}</em>
                 </h2>
                 <p className={s.twoColBody} style={{ marginTop: "1.5rem", marginInline: "auto" }}>
-                  {ts.sub ??
-                    "ClearPath is more than a service, each member of our team is here to listen, guide, and support you at your own pace."}
+                  {a.teamSub ??
+                    "Conscious Pregnancy is more than a service, each member of our team is here to listen, guide, and support you at your own pace."}
                 </p>
               </div>
               <div className={`${s.articleGrid} ${s.articleGrid3}`}>
@@ -366,21 +327,21 @@ export default async function AboutPage() {
           >
             <div className={s.photoOverlayContent}>
               <span className="t-label t-label-eyebrow">
-                {p.eyebrow ?? "Real people. Real change."}
+                {a.pebblesEyebrow ?? "Real people. Real change."}
               </span>
               <blockquote>
-                {p.quote ??
+                {a.pebblesQuote ??
                   "Every path is unique, the important thing is taking the next step, no matter how small."}
               </blockquote>
               <p className="t-label" style={{ marginTop: "var(--s-4)" }}>
-                {p.attribution ?? "Anna Keller · Therapist and Founder of ClearPath"}
+                {a.pebblesAttribution ?? "Dr. Ashley Alden · Founder of Conscious Pregnancy"}
               </p>
               <Link
                 href="/contact"
                 className="btn btn-ghost-light"
                 style={{ marginTop: "var(--s-6)" }}
               >
-                <span className="btn-dot" /> {p.ctaLabel ?? "Start your journey"}
+                <span className="btn-dot" /> {a.pebblesCtaLabel ?? "Start your journey"}
               </Link>
             </div>
           </section>
@@ -392,10 +353,10 @@ export default async function AboutPage() {
             <div className={s.twoCol}>
               <div>
                 <span className="t-label t-label-eyebrow">
-                  {st.eyebrow ?? "Real people. Real change."}
+                  {a.storyEyebrow ?? "Real people. Real change."}
                 </span>
                 <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                  {st.title ?? "Finding each other"} <em>{st.titleEm ?? "again."}</em>
+                  {a.storyTitle ?? "Finding each other"} <em>{a.storyTitleEm ?? "again."}</em>
                 </h2>
                 <p
                   className={s.twoColBodyLead}
@@ -416,14 +377,14 @@ export default async function AboutPage() {
                   // Highlighted paragraph sits right after the "My path has since
                   // expanded..." paragraph in Sanity's original body order (idx 1
                   // of storyRest), the spot it occupied before being split out.
-                  if (idx === 1 && st.highlightedBody) {
+                  if (idx === 1 && a.storyHighlightedBody) {
                     els.push(
                       <p
                         key={`hl-${idx}`}
                         className={s.storyHighlight}
                         style={{ marginTop: "var(--s-4)" }}
                       >
-                        {st.highlightedBody}
+                        {a.storyHighlightedBody}
                       </p>,
                     );
                   }
@@ -489,16 +450,16 @@ export default async function AboutPage() {
             <div className={s.sectionInner}>
               <div className={s.twoCol}>
                 <div>
-                  <span className="t-label t-label-eyebrow">{q.eyebrow ?? "FAQ"}</span>
+                  <span className="t-label t-label-eyebrow">{a.faqEyebrow ?? "FAQ"}</span>
                   <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
-                    {q.title ?? "Your questions."} <em>{q.titleEm ?? "Answered."}</em>
+                    {a.faqTitle ?? "Your questions."} <em>{a.faqTitleEm ?? "Answered."}</em>
                   </h2>
                   <p className={s.twoColBody} style={{ marginTop: "var(--s-6)" }}>
-                    {q.sub ?? "Not sure what to expect? These answers might help."}
+                    {a.faqSub ?? "Not sure what to expect? These answers might help."}
                   </p>
-                  {q.footnote && (
+                  {a.faqFootnote && (
                     <p className="t-body-sm" style={{ marginTop: "var(--s-4)", maxWidth: "40ch" }}>
-                      {q.footnote}
+                      {a.faqFootnote}
                     </p>
                   )}
                 </div>
@@ -518,16 +479,16 @@ export default async function AboutPage() {
         {/* Closing CTA */}
         {!FLAGS.OMIT_ABOUT_SECTIONS.closingCta && (
           <section className={s.closingCta}>
-            <span className="t-label t-label-eyebrow">{c.eyebrow ?? "Begin Your Journey"}</span>
+            <span className="t-label t-label-eyebrow">{a.ctaEyebrow ?? "Begin Your Journey"}</span>
             <h2 className={s.closingTitle}>
-              {c.title ?? "Ready to find"} <em>{c.titleEm ?? "your path?"}</em>
+              {a.ctaTitle ?? "Ready to find"} <em>{a.ctaTitleEm ?? "your path?"}</em>
             </h2>
             <p className={s.closingBody}>
-              {c.body ??
-                "If this story resonates with you, maybe it's time to start your own. Therapy isn't about quick fixes, it's about meaningful change, one clear step at a time."}
+              {a.ctaBody ??
+                "If this story resonates with you, maybe it's time to start your own. Change happens one clear step at a time."}
             </p>
             <Link href="/contact" className="btn btn-primary">
-              <span className="btn-dot" /> {c.ctaLabel ?? "Start your journey"}
+              <span className="btn-dot" /> {a.ctaLabel ?? "Start your journey"}
             </Link>
           </section>
         )}

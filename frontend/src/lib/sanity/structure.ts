@@ -157,42 +157,10 @@ export const structure: StructureResolver = (S) =>
       S.listItem()
         .title("About Page")
         .child(
-          S.list()
+          S.document()
             .title("About Page")
-            .items([
-              S.listItem()
-                .title("1. Hero")
-                .child(
-                  S.document()
-                    .title("About: Hero")
-                    .schemaType("aboutHero")
-                    .documentId("aboutHero-singleton"),
-                ),
-              S.listItem()
-                .title("2. Intro (3 bands, render after Hero, after Founder, and at page end)")
-                .child(
-                  S.document()
-                    .title("About: Intro")
-                    .schemaType("aboutIntro")
-                    .documentId("aboutIntro-singleton"),
-                ),
-              S.listItem()
-                .title("3. Founder (My Story)")
-                .child(
-                  S.document()
-                    .title("About: Founder")
-                    .schemaType("aboutFounder")
-                    .documentId("aboutFounder-singleton"),
-                ),
-              S.listItem()
-                .title("4. Story (My Path)")
-                .child(
-                  S.document()
-                    .title("About: Story")
-                    .schemaType("aboutStory")
-                    .documentId("aboutStory-singleton"),
-                ),
-            ]),
+            .schemaType("aboutPage")
+            .documentId("aboutPage-singleton"),
         ),
       S.divider(),
       S.listItem()
@@ -202,15 +170,7 @@ export const structure: StructureResolver = (S) =>
             .title("Services Page")
             .items([
               S.listItem()
-                .title("1. Hero")
-                .child(
-                  S.document()
-                    .title("Services — Hero")
-                    .schemaType("servicesHero")
-                    .documentId("servicesHero-singleton"),
-                ),
-              S.listItem()
-                .title("2. CTA")
+                .title("1. CTA")
                 .child(
                   S.document()
                     .title("Services CTA")
