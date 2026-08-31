@@ -6,6 +6,7 @@ import BlobImage from "@/components/BlobImage";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
+  aboutHeroQuery,
   aboutIntroQuery,
   aboutFounderQuery,
   aboutTeamSectionQuery,
@@ -75,9 +76,9 @@ type Band = {
   surface?: string;
 };
 
-// idx is the band's position in aboutIntro.bands[], used for the "/ 0N" eyebrow
-// suffix and the surface/reverse alternation, independent of where on the page
-// the band actually renders (band 2 renders out of array order, after "My Story").
+// idx is the band's position in aboutIntro.bands[], used for the surface/reverse
+// alternation, independent of where on the page the band actually renders
+// (band 2 renders out of array order, after "My Story").
 function BandSection({ band, idx }: { band: Band; idx: number }) {
   const isNight = (band.surface ?? (idx % 2 === 1 ? "navy" : "cream")) === "navy";
   return (
@@ -87,9 +88,7 @@ function BandSection({ band, idx }: { band: Band; idx: number }) {
         .join(" ")}
     >
       <div>
-        <span className="t-label t-label-eyebrow">
-          {band.eyebrow} {`/ ${String(idx + 1).padStart(2, "0")}`}
-        </span>
+        <span className="t-label t-label-eyebrow">{band.eyebrow}</span>
         <h2 className={s.bandTitle} style={{ marginTop: "1rem" }}>
           {band.title}
         </h2>
@@ -119,7 +118,8 @@ function LeafMark({ size = 24 }: { size?: number }) {
 
 export default async function AboutPage() {
   const opts = { cache: "no-store" } as const;
-  const [intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
+  const [hero, intro, founder, teamSection, team, pebbles, story, faq, cta] = await Promise.all([
+    client.fetch(aboutHeroQuery, {}, opts),
     client.fetch(aboutIntroQuery, {}, opts),
     client.fetch(aboutFounderQuery, {}, opts),
     client.fetch(aboutTeamSectionQuery, {}, opts),
@@ -130,6 +130,7 @@ export default async function AboutPage() {
     client.fetch(aboutCtaQuery, {}, opts),
   ]);
 
+  const h = hero ?? {};
   const i = intro ?? {};
   const f = founder ?? {};
   const ts = teamSection ?? {};
@@ -514,13 +515,32 @@ export default async function AboutPage() {
           </section>
         )}
 
-        {/* Intro band 3, "Science and energetics, working as one," renders
-            last, just before the footer, out of its array order. */}
-        {introBands.length > 2 && (
-          <section className={s.bandSection}>
-            <BandSection band={introBands[2]} idx={2} />
-          </section>
-        )}
+        {/* Prepping the Palace CTA, moved here from the top of the page. */}
+        <section className={s.hero}>
+          <div className={s.heroWisp} aria-hidden="true">
+            <svg
+              viewBox="0 0 1516 443"
+              preserveAspectRatio="none"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+            >
+              <path d="M0 441V0H1514V441C1514 441 1214.5 229 757 229C299.5 229 0 441 0 441Z" />
+            </svg>
+          </div>
+          <div className={s.heroInnerStacked}>
+            <h1 className={s.heroTitle}>
+              {h.titleLine1 ?? "Your Path,"} <em>{h.titleEm ?? "Our Purpose."}</em>
+            </h1>
+            <span className={`t-label t-label-eyebrow ${s.heroEyebrow}`}>
+              {h.eyebrow ?? "About"}
+            </span>
+            <p className={s.heroLeadLarge}>
+              {h.lead ??
+                "Find out who we are, what we stand for, and how we can support your journey."}
+            </p>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

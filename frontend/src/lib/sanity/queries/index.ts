@@ -203,6 +203,10 @@ export const approachSectionQuery = groq`*[_type == "approachSection"][0] {
 
 /* ── About-page section queries ────────────────────────────────── */
 
+export const aboutHeroQuery = groq`*[_type == "aboutHero"][0] {
+  eyebrow, titleLine1, titleEm, lead
+}`;
+
 export const aboutIntroQuery = groq`*[_type == "aboutIntro"][0] {
   eyebrow, title, titleEm, body,
   bands[] { eyebrow, title, body, highlightedBody, image, surface }
