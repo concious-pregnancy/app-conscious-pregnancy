@@ -79,7 +79,15 @@ type Band = {
 // idx is the band's position in aboutIntro.bands[], used for the surface/reverse
 // alternation, independent of where on the page the band actually renders
 // (band 2 renders out of array order, after "My Story").
-function BandSection({ band, idx }: { band: Band; idx: number }) {
+function BandSection({
+  band,
+  idx,
+  showCredentials,
+}: {
+  band: Band;
+  idx: number;
+  showCredentials?: boolean;
+}) {
   const isNight = (band.surface ?? (idx % 2 === 1 ? "navy" : "cream")) === "navy";
   return (
     <div
@@ -94,6 +102,7 @@ function BandSection({ band, idx }: { band: Band; idx: number }) {
         </h2>
         <p className={s.bandBody}>{band.body}</p>
         {band.highlightedBody && <p className={s.bandHighlight}>{band.highlightedBody}</p>}
+        {showCredentials && <p className={s.bandCredentials}>L.Ac., DACM, MTOM, Dip. of O.M.</p>}
       </div>
       <img
         src={imgUrl(band.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`)}
@@ -197,7 +206,9 @@ export default async function AboutPage() {
         {introBands.length > 0 ? (
           <section className={s.bandSection}>
             {introBands.map((band, idx) =>
-              idx === 1 || idx === 2 ? null : <BandSection key={idx} band={band} idx={idx} />,
+              idx === 1 || idx === 2 ? null : (
+                <BandSection key={idx} band={band} idx={idx} showCredentials={idx === 0} />
+              ),
             )}
           </section>
         ) : (
