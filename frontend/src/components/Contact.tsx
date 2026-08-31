@@ -87,8 +87,8 @@ export default function Contact({ content }: { content?: ContactContent }) {
               Prefer to chat first?{" "}
               <a href="mailto:ashley@goldenlife.care" className={styles.trustLink}>
                 Send us an email
-              </a>{" "}
-              or connect with us on social.
+              </a>
+              .
             </p>
           </div>
         </div>
