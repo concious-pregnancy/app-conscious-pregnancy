@@ -102,7 +102,12 @@ function BandSection({
         </h2>
         <p className={s.bandBody}>{band.body}</p>
         {band.highlightedBody && <p className={s.bandHighlight}>{band.highlightedBody}</p>}
-        {showCredentials && <p className={s.bandCredentials}>L.Ac., DACM, MTOM, Dip. of O.M.</p>}
+        {showCredentials && (
+          <>
+            <p className={s.bandName}>Dr. Ashley Alden</p>
+            <p className={s.bandCredentials}>L.Ac., DACM, MTOM, Dip. of O.M.</p>
+          </>
+        )}
       </div>
       <img
         src={imgUrl(band.image, `${IMG}/RQK6FjdwGi88lXjfiA3iUnV5rvc.jpg`)}
