@@ -142,4 +142,11 @@
   .thread {
     display: none;
   }
+  /* The photo's subject sits ~72% across the frame, not centered. At
+     mobile's much narrower aspect ratio, background-size: cover with
+     center positioning crops her out of view entirely. Shift the focal
+     point to keep her in frame. */
+  .image {
+    background-position: 72% center;
+  }
 }

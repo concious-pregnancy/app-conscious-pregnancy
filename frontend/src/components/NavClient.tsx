@@ -143,7 +143,11 @@ export default function NavClient({
             Journey" CTA is hidden. Desktop keeps the CTA, so this row only
             shows once the nav has collapsed to the mobile layout. */}
         <li className={styles.menuCtaItem}>
-          <Link href={ctaHref} onClick={() => setMenuOpen(false)}>
+          <Link
+            href={ctaHref}
+            onClick={() => setMenuOpen(false)}
+            className={pathname === ctaHref ? styles.activeLink : undefined}
+          >
             Contact
           </Link>
         </li>

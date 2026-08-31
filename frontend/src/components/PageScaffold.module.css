@@ -1046,9 +1046,22 @@ html[data-mode="yin"] .closingCta {
   }
 }
 
+/* Below the two-column breakpoint, .stickySection stacks to a single
+   column (see above), which turns this sticky-positioned "in this story"
+   chapter list into a floating overlay that pins over the chapter content
+   scrolling beneath it. There's no room for a side-rail nav at that width
+   anyway, so it's simplest to just hide it and let the chapters themselves
+   (.stepList) carry the section. */
 .stickyHead {
-  position: sticky;
-  top: calc(var(--nav-h) + var(--s-8));
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .stickyHead {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s-8));
+  }
 }
 
 .stepList {
