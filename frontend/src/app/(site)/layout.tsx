@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MotionProvider from "@/components/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
+import { OG_IMAGE } from "@/lib/og";
 import "../globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://consciouspregnancy.care";
@@ -36,21 +37,14 @@ export const metadata: Metadata = {
     description:
       "Before the baby, there is you. A whole-body, whole-partnership approach to preconception and pregnancy with Dr. Ashley Alden.",
     locale: "en_US",
-    images: [
-      {
-        url: "/og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Conscious Pregnancy with Dr. Ashley Alden",
-      },
-    ],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "Conscious Pregnancy | Dr. Ashley Alden",
     description:
       "Before the baby, there is you. Functional medicine, TCM, somatic healing, and psychedelic integration for preconception and pregnancy.",
-    images: ["/og.jpg"],
+    images: [OG_IMAGE.url],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
@@ -108,7 +102,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           "@type": "MedicalBusiness",
           name: "Conscious Pregnancy with Dr. Ashley Alden",
           url: SITE_URL,
-          image: `${SITE_URL}/og.jpg`,
+          image: `${SITE_URL}${OG_IMAGE.url}`,
           priceRange: "$$$",
           telephone: "",
           address: {
