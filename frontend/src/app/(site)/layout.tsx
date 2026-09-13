@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import MotionProvider from "@/components/MotionProvider";
 import { JsonLd } from "@/components/JsonLd";
 import { OG_IMAGE } from "@/lib/og";
+import { ASHLEY_ALDEN, BUSINESS_ID, ORGANIZATION_ID, PERSON_ID, VENICE_CA } from "@/lib/schema";
 import "../globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://consciouspregnancy.care";
@@ -75,18 +76,18 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         data={{
           "@context": "https://schema.org",
           "@type": "Organization",
+          "@id": ORGANIZATION_ID,
           name: "Conscious Pregnancy",
           url: SITE_URL,
           logo: `${SITE_URL}/icon.svg`,
           description:
-            "A whole-body, whole-partnership approach to preconception and pregnancy with Dr. Ashley Alden — functional medicine, Traditional Chinese Medicine, somatic healing, and psychedelic integration.",
-          founder: {
-            "@type": "Person",
-            name: "Ashley Alden",
-            honorificSuffix: "DACM, L.Ac.",
-            jobTitle: "Doctor of Acupuncture and Chinese Medicine",
+            "A whole-body, whole-partnership approach to preconception and pregnancy with Dr. Ashley Alden, combining functional medicine, Traditional Chinese Medicine, somatic healing, and psychedelic integration.",
+          founder: ASHLEY_ALDEN,
+          parentOrganization: {
+            "@type": "Organization",
+            name: "Golden Life Wellness & Acupuncture",
+            url: "https://drashleyalden.com",
           },
-          sameAs: [],
         }}
       />
       <JsonLd
@@ -96,34 +97,27 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           name: "Conscious Pregnancy",
           url: SITE_URL,
           inLanguage: "en-US",
+          publisher: { "@id": ORGANIZATION_ID },
         }}
       />
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "MedicalBusiness",
+          "@id": BUSINESS_ID,
           name: "Conscious Pregnancy with Dr. Ashley Alden",
           url: SITE_URL,
           image: `${SITE_URL}${OG_IMAGE.url}`,
           priceRange: "$$$",
-          telephone: "",
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "Venice",
-            addressRegion: "CA",
-            addressCountry: "US",
-          },
+          address: VENICE_CA,
           medicalSpecialty: [
             "Acupuncture",
             "FunctionalMedicine",
             "TraditionalChineseMedicine",
             "PreconceptionCare",
           ],
-          founder: {
-            "@type": "Person",
-            name: "Ashley Alden",
-            honorificSuffix: "DACM, L.Ac.",
-          },
+          founder: { "@id": PERSON_ID },
+          parentOrganization: { "@id": ORGANIZATION_ID },
         }}
       />
       <MotionProvider />

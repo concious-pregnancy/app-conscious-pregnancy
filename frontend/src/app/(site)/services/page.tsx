@@ -3,10 +3,12 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ServicePanels, { type ServicePanelDoc } from "@/components/ServicePanels";
+import { JsonLd } from "@/components/JsonLd";
 import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { servicesPanelsQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { pageMetadata } from "@/lib/og";
+import { breadcrumbs, serviceList } from "@/lib/schema";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -42,8 +44,14 @@ export default async function ServicesPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbs("Services", "/services")} />
+      <JsonLd data={serviceList(panels ?? [])} />
       <Nav />
       <main className={s.pageMain}>
+        {/* The page opens straight into the photo panels, which have no page
+            title, so the h1 is for screen readers and crawlers only. */}
+        <h1 className={s.srOnly}>Services</h1>
+
         {/* Service panels: full-bleed dark photographic per service */}
         <ServicePanels panels={servicePanels} />
 

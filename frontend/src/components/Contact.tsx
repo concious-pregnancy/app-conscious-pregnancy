@@ -73,11 +73,11 @@ export default function Contact({ content }: { content?: ContactContent }) {
           <p data-reveal className={styles.label}>
             {label}
           </p>
-          <h2 data-reveal className={styles.heading}>
+          <h1 data-reveal className={styles.heading}>
             {headingLine1}
             <br />
             {headingLine2}
-          </h2>
+          </h1>
           <p data-reveal className={styles.sub}>
             {sub}
           </p>

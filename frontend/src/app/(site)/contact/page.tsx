@@ -3,9 +3,11 @@ import Nav from "@/components/Nav";
 import Contact from "@/components/Contact";
 import Locations from "@/components/Locations";
 import Footer from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { sanityFetch } from "@/lib/sanity/client";
 import { contactSectionQuery } from "@/lib/sanity/queries";
 import { pageMetadata } from "@/lib/og";
+import { breadcrumbs } from "@/lib/schema";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact | Conscious Pregnancy",
@@ -19,6 +21,7 @@ export default async function ContactPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbs("Contact", "/contact")} />
       <Nav />
       <main>
         <Contact content={contactContent} />

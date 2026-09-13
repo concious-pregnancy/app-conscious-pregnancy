@@ -7,7 +7,9 @@ import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { aboutPageQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
+import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata } from "@/lib/og";
+import { ABOUT_PROFILE, breadcrumbs } from "@/lib/schema";
 import s from "@/components/PageScaffold.module.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -74,10 +76,13 @@ function BandSection({
   band,
   idx,
   showCredentials,
+  heading: Heading = "h2",
 }: {
   band: Band;
   idx: number;
   showCredentials?: boolean;
+  /** The first band on the page is the page's h1. */
+  heading?: "h1" | "h2";
 }) {
   const isNight = (band.surface ?? (idx % 2 === 1 ? "navy" : "cream")) === "navy";
   return (
@@ -88,9 +93,9 @@ function BandSection({
     >
       <div>
         <span className="t-label t-label-eyebrow">{band.eyebrow}</span>
-        <h2 className={s.bandTitle} style={{ marginTop: "1rem" }}>
+        <Heading className={s.bandTitle} style={{ marginTop: "1rem" }}>
           {band.title}
-        </h2>
+        </Heading>
         <p className={s.bandBody}>{band.body}</p>
         {band.highlightedBody && <p className={s.bandHighlight}>{band.highlightedBody}</p>}
         {showCredentials && (
@@ -169,12 +174,14 @@ export default async function AboutPage() {
 
   return (
     <>
+      <JsonLd data={ABOUT_PROFILE} />
+      <JsonLd data={breadcrumbs("About", "/about")} />
       <Nav />
       <main className={s.pageMain}>
         {/* Intro (band renders here; second band moves after "My Story") */}
         {hasIntroBand ? (
           <section className={s.bandSection}>
-            <BandSection band={bandBeforeFounder} idx={0} showCredentials />
+            <BandSection band={bandBeforeFounder} idx={0} showCredentials heading="h1" />
           </section>
         ) : (
           <section className={`${s.section} ${s.sectionPaper}`}>
@@ -184,10 +191,10 @@ export default async function AboutPage() {
                   <span className="t-label t-label-eyebrow">
                     {a.introEyebrow ?? "The Way We Help"}
                   </span>
-                  <h2 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
+                  <h1 className={s.twoColTitle} style={{ marginTop: "1rem" }}>
                     {a.introTitle ?? "We start by"}{" "}
                     <em>{a.introTitleEm ?? "listening, really listening."}</em>
-                  </h2>
+                  </h1>
                 </div>
                 <div className={s.twoColBody}>
                   <p className={s.twoColBodyLead}>{introLead}</p>

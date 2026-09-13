@@ -13,7 +13,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://consciouspregnancy
 
 const BODY = `# Conscious Pregnancy
 
-> Preconception and pregnancy care from Dr. Ashley Alden (DACM, L.Ac.) in Venice,
+> Preconception and pregnancy care from Dr. Ashley Alden (L.Ac., DACM, MTOM) in Venice,
 > California. A whole-body, whole-partnership approach that combines functional
 > medicine, Traditional Chinese Medicine, somatic healing, and nutritional
 > biochemistry. The guiding framework is "Prepping the Palace": preparing both
@@ -29,9 +29,9 @@ const BODY = `# Conscious Pregnancy
 
 - [Services](${BASE_URL}/services): Preconception preparation, pregnancy support, and postpartum care grounded in functional medicine and Traditional Chinese Medicine.
 
-## Writing
+## Contact
 
-- [Journal](${BASE_URL}/journal): Articles on prenatal nutrition (methylfolate, choline, DHA), blood-sugar regulation, thyroid and hormonal health, nervous-system support, toxic-load reduction, and physiological birth preparation.
+- [Contact](${BASE_URL}/contact): Book a discovery call. Dr. Ashley Alden's team reaches out within 24 hours.
 
 ## Approach
 

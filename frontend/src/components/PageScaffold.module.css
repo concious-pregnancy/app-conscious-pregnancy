@@ -6,6 +6,19 @@
   padding-top: var(--nav-h);
 }
 
+/* Present for screen readers and crawlers, invisible on screen. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Page hero ─────────────────────────────────────────────── */
 /* Reference: clearpath /about,/services,/journal scroll 0 — large
    serif title left-side, small lead paragraph top-right, eyebrow
