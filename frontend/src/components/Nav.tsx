@@ -1,4 +1,4 @@
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { navSectionQuery } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
 import { FLAGS } from "@/flags";
@@ -29,7 +29,7 @@ const DEFAULTS = {
 };
 
 export default async function Nav() {
-  const data = await client.fetch<NavData | null>(navSectionQuery).catch(() => null);
+  const data = await sanityFetch<NavData | null>(navSectionQuery).catch(() => null);
 
   // Hide links to held-back pages regardless of whether they come from Sanity
   // or the fallback defaults. Match on the destination path so a Sanity-authored

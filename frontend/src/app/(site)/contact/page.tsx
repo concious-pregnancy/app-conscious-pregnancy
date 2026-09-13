@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Contact from "@/components/Contact";
 import Locations from "@/components/Locations";
 import Footer from "@/components/Footer";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { contactSectionQuery } from "@/lib/sanity/queries";
 import { pageMetadata } from "@/lib/og";
 
@@ -15,9 +15,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function ContactPage() {
-  const contactContent = await client
-    .fetch(contactSectionQuery, {}, { cache: "no-store" })
-    .catch(() => null);
+  const contactContent = await sanityFetch(contactSectionQuery).catch(() => null);
 
   return (
     <>

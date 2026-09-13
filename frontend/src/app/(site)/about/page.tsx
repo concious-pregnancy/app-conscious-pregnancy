@@ -3,7 +3,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { aboutPageQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
@@ -122,10 +122,9 @@ function LeafMark({ size = 24 }: { size?: number }) {
 }
 
 export default async function AboutPage() {
-  const opts = { cache: "no-store" } as const;
   const [aboutPage, servicesCta] = await Promise.all([
-    client.fetch(aboutPageQuery, {}, opts),
-    client.fetch(servicesCtaQuery, {}, opts),
+    sanityFetch(aboutPageQuery),
+    sanityFetch(servicesCtaQuery),
   ]);
 
   const a = aboutPage ?? {};

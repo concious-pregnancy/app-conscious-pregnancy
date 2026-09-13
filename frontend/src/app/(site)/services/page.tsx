@@ -3,7 +3,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ServicePanels, { type ServicePanelDoc } from "@/components/ServicePanels";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { servicesPanelsQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { pageMetadata } from "@/lib/og";
@@ -26,10 +26,9 @@ function imgUrl(image: SanityImage, fallback: string): string {
 }
 
 export default async function ServicesPage() {
-  const opts = { cache: "no-store" } as const;
   const [panels, cta] = await Promise.all([
-    client.fetch<ServicePanelQueryDoc[]>(servicesPanelsQuery, {}, opts),
-    client.fetch(servicesCtaQuery, {}, opts),
+    sanityFetch<ServicePanelQueryDoc[]>(servicesPanelsQuery),
+    sanityFetch(servicesCtaQuery),
   ]);
 
   const c = cta ?? {};
