@@ -5,5 +5,6 @@ export const OG_IMAGE = {
   url: "/og-heart-hands.jpg",
   width: 1200,
   height: 630,
+  type: "image/jpeg",
   alt: "Hands forming a heart over a pregnant belly, held from behind by a partner",
 };

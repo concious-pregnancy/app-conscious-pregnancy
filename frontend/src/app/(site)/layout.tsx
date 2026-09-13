@@ -44,12 +44,14 @@ export const metadata: Metadata = {
     title: "Conscious Pregnancy | Dr. Ashley Alden",
     description:
       "Before the baby, there is you. Functional medicine, TCM, somatic healing, and psychedelic integration for preconception and pregnancy.",
-    images: [OG_IMAGE.url],
+    images: [OG_IMAGE],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    // iOS ignores SVG touch icons. iMessage link previews and home-screen
+    // bookmarks need a PNG.
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   robots: {
     index: true,
