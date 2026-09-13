@@ -6,13 +6,15 @@ import ServicePanels, { type ServicePanelDoc } from "@/components/ServicePanels"
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { servicesPanelsQuery, servicesCtaQuery } from "@/lib/sanity/queries";
+import { pageMetadata } from "@/lib/og";
 import s from "@/components/PageScaffold.module.css";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMetadata({
+  title: "Services | Conscious Pregnancy",
   description:
     "Functional and Eastern medicine, somatic healing, acupuncture, and pre-conception care for both partners.",
-};
+  path: "/services",
+});
 
 const IMG = "/clearpath-ref/services";
 

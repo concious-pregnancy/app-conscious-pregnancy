@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | Conscious Pregnancy",
   },
   description:
-    "A whole-body, whole-partnership approach to preconception and pregnancy. Functional medicine, Traditional Chinese Medicine, somatic healing, and psychedelic integration for the preparation that matters most.",
+    "Whole-body, whole-partnership preconception and pregnancy care with Dr. Ashley Alden. Functional medicine, TCM, somatic healing, and psychedelic integration.",
   applicationName: "Conscious Pregnancy",
   authors: [{ name: "Dr. Ashley Alden, DACM, L.Ac." }],
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: SITE_URL,
+    url: "/",
     siteName: "Conscious Pregnancy",
     title: "Conscious Pregnancy | Dr. Ashley Alden",
     description:

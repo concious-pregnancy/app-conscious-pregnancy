@@ -10,6 +10,7 @@ import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { serviceBySlugQuery, servicePageQuery, serviceSlugsQuery } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
+import { pageMetadata } from "@/lib/og";
 import s from "@/components/PageScaffold.module.css";
 
 export const revalidate = 300;
@@ -141,10 +142,11 @@ export async function generateMetadata({
   if (!service) return { title: "Service not found" };
   const baseTitle = service.seo?.title?.trim() || service.title?.trim() || "Service";
   const suffix = chrome?.metaTitleSuffix ?? DEFAULTS.metaTitleSuffix;
-  return {
+  return pageMetadata({
     title: baseTitle + suffix,
     description: service.seo?.description?.trim() || service.body?.trim() || undefined,
-  };
+    path: `/services/${slug}`,
+  });
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
