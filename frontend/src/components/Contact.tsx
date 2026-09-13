@@ -85,7 +85,7 @@ export default function Contact({ content }: { content?: ContactContent }) {
           <div className={styles.trust}>
             <p className={styles.trustContact}>
               Prefer to chat first?{" "}
-              <a href="mailto:ashley@goldenlife.care" className={styles.trustLink}>
+              <a href="mailto:hello@consciouspregnancy.care" className={styles.trustLink}>
                 Send us an email
               </a>
               .
