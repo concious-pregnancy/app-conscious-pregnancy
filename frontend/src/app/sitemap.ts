@@ -1,10 +1,8 @@
 import type { MetadataRoute } from "next";
 import { groq } from "next-sanity";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://consciouspregnancy.care";
-
-export const dynamic = "force-dynamic";
 
 type SlugRow = { slug: string; _updatedAt?: string };
 
@@ -27,8 +25,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const [services, journal] = await Promise.all([
-    client.fetch<SlugRow[]>(allServiceSlugsForSitemap).catch(() => []),
-    client.fetch<SlugRow[]>(allJournalSlugsForSitemap).catch(() => []),
+    sanityFetch<SlugRow[]>(allServiceSlugsForSitemap).catch(() => []),
+    sanityFetch<SlugRow[]>(allJournalSlugsForSitemap).catch(() => []),
   ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [

@@ -6,13 +6,11 @@ import type { PortableTextBlock } from "@portabletext/types";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { serviceBySlugQuery, servicePageQuery, serviceSlugsQuery } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
 import s from "@/components/PageScaffold.module.css";
-
-export const revalidate = 300;
 
 type SanityImage =
   | {
@@ -121,7 +119,7 @@ const portableComponents: PortableTextComponents = {
 };
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const slugs = await client.fetch<string[]>(serviceSlugsQuery).catch(() => [] as string[]);
+  const slugs = await sanityFetch<string[]>(serviceSlugsQuery).catch(() => [] as string[]);
   return slugs.filter(Boolean).map((slug) => ({ slug }));
 }
 
@@ -132,10 +130,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const [data, chrome] = await Promise.all([
-    client
-      .fetch<{ service: Service | null }>(serviceBySlugQuery, { slug })
-      .catch(() => ({ service: null })),
-    client.fetch<ServicePageData | null>(servicePageQuery).catch(() => null),
+    sanityFetch<{ service: Service | null }>(serviceBySlugQuery, { slug }).catch(() => ({
+      service: null,
+    })),
+    sanityFetch<ServicePageData | null>(servicePageQuery).catch(() => null),
   ]);
   const service = data.service;
   if (!service) return { title: "Service not found" };
@@ -151,10 +149,10 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
 
   const [data, chromeData] = await Promise.all([
-    client
-      .fetch<{ service: Service | null; related: RelatedService[] }>(serviceBySlugQuery, { slug })
-      .catch(() => ({ service: null, related: [] as RelatedService[] })),
-    client.fetch<ServicePageData | null>(servicePageQuery).catch(() => null),
+    sanityFetch<{ service: Service | null; related: RelatedService[] }>(serviceBySlugQuery, {
+      slug,
+    }).catch(() => ({ service: null, related: [] as RelatedService[] })),
+    sanityFetch<ServicePageData | null>(servicePageQuery).catch(() => null),
   ]);
 
   const service = data.service;

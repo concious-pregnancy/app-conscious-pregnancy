@@ -15,7 +15,7 @@ import Journal from "@/components/Journal";
 import Stats from "@/components/Stats";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
   faqsQuery,
@@ -40,7 +40,6 @@ import {
 } from "@/lib/sanity/queries";
 
 export default async function Home() {
-  const fetchOpts = { cache: "no-store" } as const;
   const [
     faqs,
     faqSectionContent,
@@ -62,25 +61,25 @@ export default async function Home() {
     philosophyContent,
     approachContent,
   ] = await Promise.all([
-    client.fetch(faqsQuery, {}, fetchOpts),
-    client.fetch(faqSectionQuery, {}, fetchOpts),
-    client.fetch(pricingTiersQuery, {}, fetchOpts),
-    client.fetch(pricingSectionQuery, {}, fetchOpts),
-    client.fetch(servicesQuery, {}, fetchOpts),
-    client.fetch(serviceExtrasQuery, {}, fetchOpts),
-    client.fetch(servicesSectionQuery, {}, fetchOpts),
-    client.fetch(journalArticlesQuery, {}, fetchOpts),
-    client.fetch(journalSectionQuery, {}, fetchOpts),
-    client.fetch(testimonialQuery, {}, fetchOpts),
-    client.fetch(heroSectionQuery, {}, fetchOpts),
-    client.fetch(balanceSectionQuery, {}, fetchOpts),
-    client.fetch(listenSectionQuery, {}, fetchOpts),
-    client.fetch(statsSectionQuery, {}, fetchOpts),
-    client.fetch(processSectionQuery, {}, fetchOpts),
-    client.fetch(credentialsSectionQuery, {}, fetchOpts),
-    client.fetch(readySectionQuery, {}, fetchOpts),
-    client.fetch(philosophySectionQuery, {}, fetchOpts),
-    client.fetch(approachSectionQuery, {}, fetchOpts),
+    sanityFetch(faqsQuery),
+    sanityFetch(faqSectionQuery),
+    sanityFetch(pricingTiersQuery),
+    sanityFetch(pricingSectionQuery),
+    sanityFetch(servicesQuery),
+    sanityFetch(serviceExtrasQuery),
+    sanityFetch(servicesSectionQuery),
+    sanityFetch(journalArticlesQuery),
+    sanityFetch(journalSectionQuery),
+    sanityFetch(testimonialQuery),
+    sanityFetch(heroSectionQuery),
+    sanityFetch(balanceSectionQuery),
+    sanityFetch(listenSectionQuery),
+    sanityFetch(statsSectionQuery),
+    sanityFetch(processSectionQuery),
+    sanityFetch(credentialsSectionQuery),
+    sanityFetch(readySectionQuery),
+    sanityFetch(philosophySectionQuery),
+    sanityFetch(approachSectionQuery),
   ]);
 
   // Editor-curated picks override the collection fallback. Empty array (or
