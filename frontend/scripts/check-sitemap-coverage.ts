@@ -18,7 +18,8 @@ const SITEMAP_PATH = resolve(APP_DIR, "sitemap.ts");
 
 /**
  * Routes that should NOT be in the sitemap (post-submit landings, noindex, etc.).
- * Service detail pages are left out on purpose; the sitemap lists only the four
+ * Service detail pages are left out on purpose (noindex, see
+ * src/app/(site)/services/[slug]/layout.tsx); the sitemap lists only the four
  * top-level pages.
  */
 const EXCLUDED_ROUTES = new Set<string>(["/services/[slug]"]);
