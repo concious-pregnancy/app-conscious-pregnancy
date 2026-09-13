@@ -7,6 +7,7 @@ import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { journalIndexPageQuery, journalArticlesFullQuery } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
+import { pageMetadata } from "@/lib/og";
 import s from "@/components/PageScaffold.module.css";
 
 export const revalidate = 300;
@@ -83,10 +84,11 @@ function imgUrl(image: SanityImage): string | null {
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await client.fetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null);
-  return {
+  return pageMetadata({
     title: data?.metaTitle?.trim() || DEFAULTS.metaTitle,
     description: data?.metaDescription?.trim() || DEFAULTS.metaDescription,
-  };
+    path: "/journal",
+  });
 }
 
 function ArticleCard({

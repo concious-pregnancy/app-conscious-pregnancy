@@ -14,6 +14,7 @@ import {
   journalArticleSlugsQuery,
 } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
+import { OG_IMAGE, pageMetadata } from "@/lib/og";
 import s from "@/components/PageScaffold.module.css";
 
 export const revalidate = 300;
@@ -161,10 +162,35 @@ export async function generateMetadata({
   if (!article) return { title: "Article not found" };
   const baseTitle = article.seo?.title?.trim() || article.title?.trim() || "Article";
   const suffix = chrome?.metaTitleSuffix ?? DEFAULTS.metaTitleSuffix;
-  return {
+  // Share the article's own photo, cropped to the 1200x630 card size and
+  // forced to JPEG so every scraper can read it. Sanity upscales small
+  // sources, so anything under card size falls back to the site image rather
+  // than going out blurry. Asset refs encode size: image-<id>-<w>x<h>-<ext>.
+  const [, w = 0, h = 0] = (article.image?.asset?._ref?.match(/-(\d+)x(\d+)-/) ?? []).map(Number);
+  const image =
+    article.image && w >= 1200 && h >= 630
+      ? {
+          url: urlFor(article.image)
+            .width(1200)
+            .height(630)
+            .fit("crop")
+            .format("jpg")
+            .quality(80)
+            .url(),
+          width: 1200,
+          height: 630,
+          type: "image/jpeg",
+          alt: article.imageAlt?.trim() || article.title?.trim() || OG_IMAGE.alt,
+        }
+      : OG_IMAGE;
+  return pageMetadata({
     title: baseTitle + suffix,
     description: article.seo?.description?.trim() || article.excerpt?.trim() || undefined,
-  };
+    path: `/journal/${slug}`,
+    image,
+    type: "article",
+    publishedTime: article.publishedAt,
+  });
 }
 
 export default async function JournalArticlePage({

@@ -7,12 +7,14 @@ import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { aboutPageQuery, servicesCtaQuery } from "@/lib/sanity/queries";
 import { FLAGS } from "@/flags";
+import { pageMetadata } from "@/lib/og";
 import s from "@/components/PageScaffold.module.css";
 
-export const metadata: Metadata = {
-  title: "About",
+export const metadata: Metadata = pageMetadata({
+  title: "About | Conscious Pregnancy",
   description: "Find out who we are, what we stand for, and how we can support your journey.",
-};
+  path: "/about",
+});
 
 const IMG = "/clearpath-ref/about";
 const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
