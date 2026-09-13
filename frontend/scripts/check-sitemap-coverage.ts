@@ -17,20 +17,24 @@ const APP_DIR = resolve(import.meta.dirname, "../src/app");
 const SITEMAP_PATH = resolve(APP_DIR, "sitemap.ts");
 
 /**
- * Static routes that should NOT be in the sitemap (post-submit landings, noindex, etc.).
+ * Routes that should NOT be in the sitemap (post-submit landings, noindex, etc.).
+ * Service detail pages are left out on purpose (noindex, see
+ * src/app/(site)/services/[slug]/layout.tsx); the sitemap lists only the four
+ * top-level pages.
  */
-const EXCLUDED_ROUTES = new Set<string>([]);
+const EXCLUDED_ROUTES = new Set<string>(["/services/[slug]"]);
 
 /**
- * Route subtrees excluded from the sitemap: Sanity Studio, API routes, and the
- * internal design-system reference surface (dev-only, not public content).
+ * Route subtrees excluded from the sitemap: Sanity Studio, API routes, the
+ * internal design-system reference surface (dev-only, not public content), and
+ * the journal (noindex until it launches, see src/app/(site)/journal/layout.tsx).
  */
-const EXCLUDED_ROUTE_PREFIXES = ["/studio", "/api/", "/design-system"];
+const EXCLUDED_ROUTE_PREFIXES = ["/studio", "/api/", "/design-system", "/journal"];
 
 /**
  * Dynamic route families covered by Sanity-driven sitemap entries.
  */
-const DYNAMIC_ROUTE_FAMILIES = ["/services/[slug]", "/journal/[slug]"];
+const DYNAMIC_ROUTE_FAMILIES: string[] = [];
 
 function filePathToRoute(filePath: string): string {
   const route = relative(APP_DIR, filePath)

@@ -15,6 +15,8 @@ import Journal from "@/components/Journal";
 import Stats from "@/components/Stats";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { faqPage } from "@/lib/schema";
 import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
@@ -141,6 +143,7 @@ export default async function Home() {
         )}
         {!FLAGS.OMIT_SECTIONS.stats && <Stats content={statsContent} />}
         <FAQ items={faqs} sectionContent={faqSectionContent} />
+        <JsonLd data={faqPage(faqs ?? [])} />
       </main>
       <Footer />
     </>
