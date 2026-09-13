@@ -6,7 +6,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import {
   journalArticleBySlugQuery,
@@ -15,8 +15,6 @@ import {
 } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
 import s from "@/components/PageScaffold.module.css";
-
-export const revalidate = 300;
 
 type SanityImage =
   | {
@@ -141,7 +139,7 @@ const portableComponents: PortableTextComponents = {
 };
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const slugs = await client.fetch<string[]>(journalArticleSlugsQuery).catch(() => [] as string[]);
+  const slugs = await sanityFetch<string[]>(journalArticleSlugsQuery).catch(() => [] as string[]);
   return slugs.filter(Boolean).map((slug) => ({ slug }));
 }
 
@@ -152,10 +150,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const [data, chrome] = await Promise.all([
-    client
-      .fetch<{ article: Article | null }>(journalArticleBySlugQuery, { slug })
-      .catch(() => ({ article: null })),
-    client.fetch<ArticlePageData | null>(journalArticlePageQuery).catch(() => null),
+    sanityFetch<{ article: Article | null }>(journalArticleBySlugQuery, { slug }).catch(() => ({
+      article: null,
+    })),
+    sanityFetch<ArticlePageData | null>(journalArticlePageQuery).catch(() => null),
   ]);
   const article = data.article;
   if (!article) return { title: "Article not found" };
@@ -175,12 +173,10 @@ export default async function JournalArticlePage({
   const { slug } = await params;
 
   const [data, chromeData] = await Promise.all([
-    client
-      .fetch<{ article: Article | null; related: RelatedArticle[] }>(journalArticleBySlugQuery, {
-        slug,
-      })
-      .catch(() => ({ article: null, related: [] as RelatedArticle[] })),
-    client.fetch<ArticlePageData | null>(journalArticlePageQuery).catch(() => null),
+    sanityFetch<{ article: Article | null; related: RelatedArticle[] }>(journalArticleBySlugQuery, {
+      slug,
+    }).catch(() => ({ article: null, related: [] as RelatedArticle[] })),
+    sanityFetch<ArticlePageData | null>(journalArticlePageQuery).catch(() => null),
   ]);
 
   const article = data.article;

@@ -3,13 +3,11 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BlobImage from "@/components/BlobImage";
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/image";
 import { journalIndexPageQuery, journalArticlesFullQuery } from "@/lib/sanity/queries";
 import { normalizeHref } from "@/lib/href";
 import s from "@/components/PageScaffold.module.css";
-
-export const revalidate = 300;
 
 const IMG = "/clearpath-ref/journal";
 const LEAF = `${IMG}/9O8sLldl6mV9miUVjkyrhGJsZ7c.svg`;
@@ -82,7 +80,7 @@ function imgUrl(image: SanityImage): string | null {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await client.fetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null);
+  const data = await sanityFetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null);
   return {
     title: data?.metaTitle?.trim() || DEFAULTS.metaTitle,
     description: data?.metaDescription?.trim() || DEFAULTS.metaDescription,
@@ -122,8 +120,8 @@ function ArticleCard({
 
 export default async function JournalPage() {
   const [indexData, sanityArticles] = await Promise.all([
-    client.fetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null),
-    client.fetch<SanityArticle[]>(journalArticlesFullQuery).catch(() => [] as SanityArticle[]),
+    sanityFetch<IndexPageData | null>(journalIndexPageQuery).catch(() => null),
+    sanityFetch<SanityArticle[]>(journalArticlesFullQuery).catch(() => [] as SanityArticle[]),
   ]);
 
   const d = indexData ?? {};

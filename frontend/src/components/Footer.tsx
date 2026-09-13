@@ -1,4 +1,4 @@
-import { client } from "@/lib/sanity/client";
+import { sanityFetch } from "@/lib/sanity/client";
 import { footerSectionQuery } from "@/lib/sanity/queries";
 import FooterClient, { type FooterLink } from "./FooterClient";
 
@@ -36,7 +36,7 @@ const DEFAULTS = {
 };
 
 export default async function Footer() {
-  const data = await client.fetch<FooterData | null>(footerSectionQuery).catch(() => null);
+  const data = await sanityFetch<FooterData | null>(footerSectionQuery).catch(() => null);
 
   const template = data?.copyrightTemplate?.trim() || DEFAULTS.copyrightTemplate;
   const copyrightLine = template.replace("{{year}}", String(new Date().getFullYear()));
