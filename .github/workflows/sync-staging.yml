@@ -1,0 +1,32 @@
+# Keeps the long-lived staging branch (staging.consciouspregnancy.care, a
+# preview deployment that reads Sanity drafts) level with main. Fast-forward
+# only: if someone commits straight to staging the push fails instead of
+# discarding that work. The deploy hook forces a build because Vercel can
+# skip a branch whose commit was already deployed to production.
+name: Sync staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-staging
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fast-forward staging to main
+        run: git push origin origin/main:refs/heads/staging
+
+      - name: Deploy staging
+        run: curl -fsS -X POST "${{ secrets.VERCEL_STAGING_DEPLOY_HOOK }}"
